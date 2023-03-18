@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anchorContent" maxHeight="869.0" maxWidth="921.0" minHeight="869.0" minWidth="921.0" prefHeight="869.0" prefWidth="921.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.HelloController">
+   <children>
+      <TabPane layoutX="1.0" prefHeight="869.0" prefWidth="921.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Services">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="921.0" />
+            </content>
+          </Tab>
+          <Tab text="Lits">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Dispositifs Médicaux">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Ambulances">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Utilisateurs">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="142.0" prefWidth="762.0" />
+               </content>
+            </Tab>
+            <Tab>
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="142.0" prefWidth="762.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
