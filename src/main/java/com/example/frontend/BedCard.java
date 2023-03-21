@@ -1,6 +1,5 @@
 package com.example.frontend;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -8,7 +7,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
 
 public class BedCard extends BorderPane {
     int numEspace;
@@ -28,7 +26,7 @@ public class BedCard extends BorderPane {
         Tooltip.install(this, tooltip);
 
         // Icon
-        Image image = new Image("icons8-lit-d&#39;hôpital-64.png");
+        Image image = new Image("lit.png");
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(100);
         imageView.setFitHeight(70);

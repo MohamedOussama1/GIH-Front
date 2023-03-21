@@ -37,30 +37,32 @@ public class HelloController implements Initializable {
     Button btnAmbulances;
     @FXML
     Button btnAdmin;
+    @FXML
+    Button btnLogistique;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-    public void onBtnDashboardClick(ActionEvent event){
+    public void onBtnDashboardClick(ActionEvent event) throws IOException{
         if (currentContent == "dashboard")
             return;
         currentContent = "dashboard";
-        AnchorPane anchorPaneDashboard = new AnchorPane();
-        anchorPaneDashboard.setPrefSize(921, 869);
-        anchorPaneDashboard.setStyle("-fx-background-color: red;");
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("dashboard.fxml"));
+        Pane pane = fxmlLoader.load();
         anchorContent.getChildren().clear();
-        anchorContent.getChildren().add(anchorPaneDashboard);
+        anchorContent.setPrefSize(921, 869);
+        anchorContent.getChildren().add(pane);
 
     }
-    public void onBtnServiceClick(ActionEvent event){
+    public void onBtnServiceClick(ActionEvent event) throws IOException{
         if (currentContent == "services")
             return;
         currentContent = "services";
-        AnchorPane anchorPaneServices= new AnchorPane();
-        anchorPaneServices.setPrefSize(921, 869);
-        anchorPaneServices.setStyle("-fx-background-color: red;");
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("services.fxml"));
+        Pane pane = fxmlLoader.load();
         anchorContent.getChildren().clear();
-        anchorContent.getChildren().add(anchorPaneServices);
+        anchorContent.setPrefSize(921, 869);
+        anchorContent.getChildren().add(pane);
 
     }
     public void onBtnLitsClick(ActionEvent event) throws IOException {
@@ -68,43 +70,52 @@ public class HelloController implements Initializable {
             return;
         currentContent = "lits";
         FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("lits.fxml"));
+        TabPane pane = fxmlLoader.load();
+        anchorContent.getChildren().clear();
+        anchorContent.setPrefSize(921, 869);
+        anchorContent.getChildren().add(pane);
+    }
+    public void onBtnDmClick(ActionEvent event) throws IOException{
+        if (currentContent == "dm")
+            return;
+        currentContent = "dm";
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("dms.fxml"));
+        Pane pane = fxmlLoader.load();
+        anchorContent.getChildren().clear();
+        anchorContent.setPrefSize(921, 869);
+        anchorContent.getChildren().add(pane);
+
+    }
+    public void onBtnAmbulancesClick(ActionEvent event) throws IOException{
+        if (currentContent == "ambulances")
+            return;
+        currentContent = "ambulances";
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("ambulances.fxml"));
+        Pane pane = fxmlLoader.load();
+        anchorContent.getChildren().clear();
+        anchorContent.setPrefSize(921, 869);
+        anchorContent.getChildren().add(pane);
+
+    }
+    public void onBtnAdminClick(ActionEvent event) throws IOException{
+        if (currentContent == "admin")
+            return;
+        currentContent = "admin";
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("admin.fxml"));
         Pane pane = fxmlLoader.load();
         anchorContent.getChildren().clear();
         anchorContent.setPrefSize(921, 869);
         anchorContent.getChildren().add(pane);
     }
-    public void onBtnDmClick(ActionEvent event){
-        if (currentContent == "dm")
+    public void onBtnLogistiqueClick(ActionEvent event) throws IOException{
+        if (currentContent == "logistique")
             return;
-        currentContent = "dm";
-        AnchorPane anchorPaneDm = new AnchorPane();
-        anchorPaneDm.setPrefSize(921, 869);
-        anchorPaneDm.setStyle("-fx-background-color: red;");
+        currentContent = "logistique";
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("logistique.fxml"));
+        Pane pane = fxmlLoader.load();
         anchorContent.getChildren().clear();
-        anchorContent.getChildren().add(anchorPaneDm);
-
-    }
-    public void onBtnAmbulancesClick(ActionEvent event){
-        if (currentContent == "ambulances")
-            return;
-        currentContent = "ambulances";
-        AnchorPane anchorPaneAmbulances = new AnchorPane();
-        anchorPaneAmbulances.setPrefSize(921, 869);
-        anchorPaneAmbulances.setStyle("-fx-background-color: red;");
-        anchorContent.getChildren().clear();
-        anchorContent.getChildren().add(anchorPaneAmbulances);
-
-    }
-    public void onBtnAdminClick(ActionEvent event){
-        if (currentContent == "admin")
-            return;
-        currentContent = "admin";
-        AnchorPane anchorPaneAdmin = new AnchorPane();
-        anchorPaneAdmin.setPrefSize(921, 869);
-        anchorPaneAdmin.setStyle("-fx-background-color: red;");
-        anchorContent.getChildren().clear();
-        anchorContent.getChildren().add(anchorPaneAdmin);
-
+        anchorContent.setPrefSize(921, 869);
+        anchorContent.getChildren().add(pane);
     }
 
 }

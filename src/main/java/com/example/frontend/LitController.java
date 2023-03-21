@@ -37,6 +37,18 @@ public class LitController implements Initializable {
     @FXML
     Button btnReservations;
     @FXML
+    Button btnDeplacer;
+    @FXML
+    Button btnResetAll;
+    @FXML
+    Label lblAncien;
+    @FXML
+    Label lblNouveau;
+    @FXML
+    ChoiceBox<String> chBoxType = new ChoiceBox<>();
+    @FXML
+    ChoiceBox<Integer> chBoxNumero = new ChoiceBox<>();
+    @FXML
     GridPane gridLit = new GridPane();
     @FXML
     DatePicker dpDateDebut;
@@ -60,8 +72,16 @@ public class LitController implements Initializable {
         chBoxService.setItems(FXCollections.observableArrayList(departements));
         chBoxEspace.setItems(FXCollections.observableArrayList(Arrays.asList("Salle", "Chambre")));
         chBoxEtat.setItems(FXCollections.observableArrayList(Arrays.asList("Disponible", "Occupé")));
+        chBoxType.setItems(FXCollections.observableArrayList(Arrays.asList("Salle", "Chambre")));
     }
 
+    @FXML
+    public void onChBoxTypeHiding(ActionEvent event){
+
+    }
+    @FXML
+    public void onBtnDeplacerClick(ActionEvent event){
+    }
     @FXML
     public void onBtnReservations(ActionEvent event){
         Response response = target
