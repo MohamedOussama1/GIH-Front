@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +16,10 @@
           </Tab>
           <Tab text="Lits">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="387.0" layoutY="215.0" prefHeight="38.0" prefWidth="111.0" style="-fx-font-weight: bold; -fx-font-size: 30;" text="ILYASS " />
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="Dispositifs Médicaux">
