@@ -140,13 +140,9 @@ public class LitController implements Initializable {
 
         // Listen to Stock event
         gridLit.addEventHandler(WindowChangeEvent.WINDOW_CHANGE_EVENT, event -> {
-            System.out.println("Almost");
             chBoxService.setValue(service);
             chBoxEspace.setValue(typeEspace);
-            System.out.println(service);
-            System.out.println(typeEspace);
             onBtnChercherClick(event);
-            System.out.println("ALLO");
         });
     }
     public static String toRGBCode( Color color )
@@ -205,15 +201,11 @@ public class LitController implements Initializable {
 
     @FXML
     public void onBtnChercherClick(Event event) {
-        System.out.println("Hello");
         // Send http request
         gridLit.getChildren().clear();
         Response response;
         service = chBoxService.getSelectionModel().getSelectedItem();
         typeEspace = chBoxEspace.getSelectionModel().getSelectedItem();
-
-        System.out.println(service);
-        System.out.println(typeEspace);
         chBoxService.setValue("");
         chBoxEspace.setValue("");
         if (service != null) {
