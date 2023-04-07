@@ -1,0 +1,241 @@
+
+.bi-trash-fill {
+-fx-background-color: #C0392B;
+    -fill: currentColor;
+    -fx-shape: "M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z";
+}
+
+.check-circle-fill {
+-fx-fill: currentColor;
+-fx-background-color: #008000;
+-fx-shape: "M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z";
+}
+
+.button4
+{
+
+    -fx-text-fill: #ffffff;
+    -fx-background-color :linear-gradient(to top left, #D0D3D4      , #D7DBDD  );
+    -fx-background-radius :  30 30 30 30;
+}
+.button4:hover
+{
+ -fx-background-color :linear-gradient(to top left, #85C1E9, #EAF2F8  );
+  -fx-background-radius :  30 30 30 30;
+}
+.button4:pressed
+{
+ -fx-background-color :linear-gradient(to top left, #85C1E9, #F8F9F9  );
+ -fx-background-radius :  30 30 30 30;
+}
+
+.pane{
+-fx-background-color :linear-gradient(to top left, #E5E7E9, #F8F9F9  );
+  -fx-background-radius :  30 30 30 30;
+}
+.button5 {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #f1f1f1;
+    -fx-border-color: rgba(0, 0, 255, 0.2);
+    -fx-border-width: 2px;
+    -fx-border-radius: 30px;
+    -fx-background-radius: 30px;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 0.7em 1.5em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1);
+    -fx-transition-duration: 0.2s;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14pt;
+}
+
+.button5:hover {
+    -fx-background-color: linear-gradient(to top left, #85C1E9, #EAF2F8);
+    -fx-border-color: rgba(0, 0, 255, 0.5);
+}
+
+.button5:pressed {
+    -fx-background-color: linear-gradient(to top left, #85C1E9, #F8F9F9);
+    -fx-border-color: rgba(0, 0, 255, 0.8);
+}
+
+.button5 .text {
+    -fx-fill: #333333;
+    -fx-font-family: "Arial";
+    -fx-font-size: 10pt;
+}
+.button {
+    -fx-background-color: #2196f3;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial, sans-serif;
+    -fx-padding: 8px 16px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #1e87f0;
+    -fx-cursor: hand;
+}
+
+.button:pressed {
+    -fx-background-color: #1976d2;
+    -fx-cursor: hand;
+}
+.choice-box {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: 0;
+    -fx-padding: 0.25em 0.5em;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial, sans-serif;
+    -fx-border-width: 1px;
+    -fx-border-color: #A9A9A9;
+    -fx-border-radius: 4px;
+}
+
+.choice-box:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+.choice-box:focused {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: -0.2, -0.2, -0.8, -0.2;
+    -fx-border-color: #1E90FF;
+    -fx-border-width: 2px;
+}
+
+.choice-box:arrow {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: 0;
+    -fx-padding: 0.25em 0.5em;
+    -fx-border-width: 1px;
+    -fx-border-color: #A9A9A9;
+    -fx-border-radius: 0 4px 4px 0;
+}
+
+.choice-box:arrow:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+.choice-box:disabled {
+    -fx-opacity: 0.5;
+}
+
+.choice-box:disabled .arrow {
+    -fx-opacity: 0.5;
+}
+.mac-pane {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #c9c9c9;
+    -fx-border-width: 0.5px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+.button6 {
+    -fx-background-color: #2980b9;
+    -fx-background-radius: 5px;
+    -fx-text-fill: #fff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);
+    -fx-transition-duration: 0.2s;
+}
+
+.button6:hover {
+    -fx-background-color: #3498db;
+}
+
+.button6:pressed {
+    -fx-background-color: #2980b9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 2, 0, 0, 1);
+}
+.delete-button {
+    -fx-background-color: #C0392B;
+    -fx-background-radius: 5px;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c62828;
+}
+
+.delete-button:pressed {
+    -fx-background-color: #b71c1c;
+}
+.label1 {
+    -fx-font-family: "Helvetica Neue";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+.choice-box-medical {
+    -fx-background-color: #F9F9F9;
+    -fx-border-color: #D5D5D5;
+    -fx-border-radius: 5;
+    -fx-padding: 5 10;
+    -fx-font-size: 14;
+    -fx-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.choice-box-medical .arrow-button {
+    -fx-background-color: #F9F9F9;
+    -fx-padding: 5;
+}
+
+.choice-box-medical .arrow-button:hover {
+    -fx-background-color: #E0E0E0;
+}
+
+.choice-box-medical .arrow {
+    -fx-background-color: #000000;
+    -fx-background-insets: 0;
+}
+
+.choice-box-medical .arrow:hover {
+    -fx-background-color: #333333;
+}
+
+.choice-box-medical .list-view {
+    -fx-background-color: #F9F9F9;
+    -fx-border-color: #D5D5D5;
+    -fx-border-radius: 5;
+}
+
+.choice-box-medical .list-view .list-cell {
+    -fx-font-size: 14;
+    -fx-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.choice-box-medical .list-view .list-cell:hover {
+    -fx-background-color: #E0E0E0;
+}
+
+.choice-box-medical .list-view .list-cell:pressed {
+    -fx-background-color: #BFBFBF;
+}
+.button-order {
+    -fx-background-color: #229954;
+    -fx-text-fill: white;
+    -fx-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 15px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}
+
+.button-order:hover {
+    -fx-background-color: #27ae60;
+}
+
+.button-order:pressed {
+    -fx-background-color: #1e8449;
+}

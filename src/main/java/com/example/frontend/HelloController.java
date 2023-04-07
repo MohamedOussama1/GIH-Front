@@ -22,7 +22,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class HelloController implements Initializable {
-    static String currentContent = "lits";
+    static String currentContent;
     @FXML
     AnchorPane anchorContent;
     @FXML
@@ -63,7 +63,6 @@ public class HelloController implements Initializable {
         anchorContent.getChildren().clear();
         anchorContent.setPrefSize(921, 869);
         anchorContent.getChildren().add(pane);
-
     }
     public void onBtnLitsClick(ActionEvent event) throws IOException {
         if (currentContent == "lits")

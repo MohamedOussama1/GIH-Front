@@ -3,28 +3,30 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.CheckComboBox?>
 
-
-<TabPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.LitController">
+<TabPane fx:id="tabPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.LitController">
    <tabs>
-      <Tab closable="false" text="Consulter">
+      <Tab closable="false" text="Consultation / Localisation">
          <content>
-            <AnchorPane fx:id="anchorContent" maxHeight="869.0" maxWidth="921.0" minHeight="869.0" minWidth="921.0" prefHeight="869.0" prefWidth="921.0">
+            <AnchorPane maxHeight="869.0" maxWidth="921.0" minHeight="869.0" minWidth="921.0" prefHeight="869.0" prefWidth="921.0">
                <children>
-                  <ScrollPane layoutX="1.0" layoutY="169.0" prefHeight="702.0" prefWidth="917.0">
+                  <ScrollPane fx:id="scrollPane" layoutX="3.0" layoutY="147.0" prefHeight="714.0" prefWidth="915.0">
                      <content>
-                        <GridPane fx:id="gridLit" hgap="20.0" prefHeight="697.0" prefWidth="915.0" stylesheets="@../../../stylesheet.css" vgap="20.0">
+                        <GridPane fx:id="gridLit" hgap="20.0" prefHeight="281.0" prefWidth="912.0" stylesheets="@../../../stylesheet.css" vgap="20.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -32,66 +34,56 @@
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </GridPane>
                      </content>
                   </ScrollPane>
-                  <ChoiceBox fx:id="chBoxService" layoutY="35.0" prefWidth="150.0" />
-                  <Label layoutX="53.0" style="-fx-font-weight: bold;" text="Service" />
-                  <ChoiceBox fx:id="chBoxEspace" layoutX="385.0" layoutY="35.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="chBoxEtat" layoutX="768.0" layoutY="35.0" prefWidth="150.0" />
-                  <Label layoutX="436.0" style="-fx-font-weight: bold;" text=" Espace" />
-                  <Label layoutX="831.0" style="-fx-font-weight: bold;" text="Etat" />
+                  <ChoiceBox fx:id="chBoxService" layoutX="276.0" layoutY="35.0" prefWidth="150.0" />
+                  <Label layoutX="329.0" layoutY="9.0" style="-fx-font-weight: bold;" text="Service" />
+                  <ChoiceBox fx:id="chBoxEspace" layoutX="494.0" layoutY="35.0" prefWidth="150.0" />
+                  <Label layoutX="546.0" layoutY="9.0" style="-fx-font-weight: bold;" text=" Espace" />
                   <Button fx:id="btnChercher" layoutX="426.0" layoutY="99.0" mnemonicParsing="false" onAction="#onBtnChercherClick" text="Chercher" />
                </children>
             </AnchorPane>
          </content>
       </Tab>
-      <Tab closable="false" text="Deplacer">
+      <Tab closable="false" text="Création">
          <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane fx:id="anchorContent11" maxHeight="869.0" maxWidth="921.0" minHeight="869.0" minWidth="921.0" prefHeight="869.0" prefWidth="921.0">
                <children>
-                  <AnchorPane layoutX="47.0" layoutY="3.0" prefHeight="200.0" prefWidth="742.0">
+                  <VBox alignment="CENTER" layoutX="219.0" layoutY="51.0" prefHeight="768.0" prefWidth="483.0" spacing="20.0" style="-fx-background-color: #0099cc; -fx-background-radius: 10;">
                      <children>
-                        <Label layoutX="7.0" layoutY="30.0" style="-fx-font-weight: bold;" text="Type :" />
-                        <ChoiceBox fx:id="chBoxType" layoutX="81.0" layoutY="26.0" prefWidth="150.0" />
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 15;" text="Type" />
+                        <ChoiceBox fx:id="chBoxTypeCreer" prefWidth="150.0" style="-fx-background-radius: 10;" />
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 15;" text="Model" />
+                        <ChoiceBox fx:id="chBoxModel" layoutX="289.0" layoutY="400.0" prefWidth="150.0" style="-fx-background-radius: 10;" />
+                        <HBox alignment="CENTER" maxWidth="182.0" prefHeight="39.0" prefWidth="182.0">
+                           <children>
+                              <TextField fx:id="txtLongeur" alignment="CENTER" maxWidth="41.0" prefHeight="26.0" prefWidth="41.0" promptText="long" style="-fx-background-color: white; -fx-background-radius: 10;" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="21.0" style="-fx-font-weight: bold;" text="x" />
+                              <TextField fx:id="txtLargeur" alignment="CENTER" maxWidth="41.0" prefHeight="26.0" prefWidth="41.0" promptText="larg" style="-fx-background-color: white; -fx-background-radius: 10;" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="21.0" style="-fx-font-weight: bold;" text="x" />
+                              <TextField fx:id="txtHauteur" alignment="CENTER" maxWidth="56.0" prefHeight="26.0" prefWidth="41.0" promptText="haut" style="-fx-background-color: white; -fx-background-radius: 10;" />
+                              <Label prefHeight="18.0" prefWidth="25.0" style="-fx-font-weight: bold;" text="Cm" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <CheckComboBox fx:id="comboFonctions" prefWidth="150.0" title="fonctions" />
+                        <TextField fx:id="txtChargeMax" alignment="CENTER" layoutX="289.0" layoutY="530.0" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText=" charge maximal (Kg)" style="-fx-background-color: white; -fx-background-radius: 10;" />
+                        <TextField fx:id="txtGarantie" alignment="CENTER" layoutX="289.0" layoutY="553.0" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="garantie (Y)" style="-fx-background-color: white; -fx-background-radius: 10;" />
+                        <TextField fx:id="txtPrix" alignment="CENTER" layoutX="289.0" layoutY="576.0" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="prix (Dh)" style="-fx-background-color: white; -fx-background-radius: 10;" />
+                        <TextArea fx:id="txtDescription" maxWidth="300.0" prefHeight="150.0" prefWidth="200.0" promptText="description " style="-fx-background-radius: 10;" />
+                        <Label layoutX="349.0" layoutY="127.0" style="-fx-font-weight: bold; -fx-font-size: 15;" text="Quantité" />
+                        <Spinner fx:id="spinnerQuantityLit" editable="true" style="-fx-background-radius: 10;" />
+                        <ColorPicker fx:id="colorPicker" promptText="display color" />
+                        <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#onBtnAjouterLit" style="-fx-background-radius: 10;" text="Créer" />
                      </children>
-                  </AnchorPane>
-                  <ChoiceBox fx:id="chBoxNumero" layoutX="386.0" layoutY="28.0" prefWidth="150.0" />
-                  <Label layoutX="614.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Ancien :" />
-                  <Label fx:id="lblAncien" layoutX="696.0" layoutY="10.0" text="salle00" />
-                  <Label layoutX="614.0" layoutY="54.0" style="-fx-font-weight: bold;" text="Nouveau :" />
-                  <Label fx:id="lblNouveau" layoutX="696.0" layoutY="54.0" text="chambre00" />
-                  <Label layoutX="303.0" layoutY="32.0" style="-fx-font-weight: bold;" text="Numéro :" />
-                  <Button fx:id="btnResetAll" layoutX="362.0" layoutY="152.0" mnemonicParsing="false" text="Reset all" />
-               </children>
-            </AnchorPane>
-         </content>
-      </Tab>
-      <Tab closable="false" text="Reservation">
-         <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <AnchorPane layoutX="186.0" layoutY="68.0" prefHeight="598.0" prefWidth="549.0">
-                     <children>
-                        <Button fx:id="btnAjouter" layoutX="220.0" layoutY="320.0" mnemonicParsing="false" onAction="#onBtnAjouterLit" text="AjouterTest" />
-                        <DatePicker fx:id="dpDateDebut" layoutX="306.0" layoutY="102.0" promptText="Date de début" />
-                        <DatePicker fx:id="dpDateFin" layoutX="30.0" layoutY="102.0" promptText="Date de fin" />
-                        <Button fx:id="btnOccuper" layoutX="216.0" layoutY="162.0" mnemonicParsing="false" onAction="#onBtnOccuperLit" text="OccuperTest" />
-                        <TextField fx:id="txtId" layoutX="244.0" layoutY="31.0" prefHeight="26.0" prefWidth="35.0" promptText="id" />
-                        <Button fx:id="btnReservations" layoutX="203.0" layoutY="235.0" mnemonicParsing="false" onAction="#onBtnReservations" text="ReservationsTest" />
-                        <ListView fx:id="lstReservations" layoutX="180.0" layoutY="462.0" prefHeight="58.0" prefWidth="190.0" />
-                     </children>
-                  </AnchorPane>
+                  </VBox>
                </children>
             </AnchorPane>
          </content>
