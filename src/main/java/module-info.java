@@ -9,6 +9,8 @@ module com.example.frontend {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires org.json;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
 
     opens com.example.frontend to javafx.fxml;
     exports com.example.frontend;

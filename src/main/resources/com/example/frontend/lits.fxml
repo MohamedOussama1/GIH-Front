@@ -9,16 +9,23 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<TabPane fx:id="tabPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.LitController">
+<!--<?import org.controlsfx.control.CheckComboBox?>-->
+
+<TabPane fx:id="tabPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.LitController">
    <tabs>
       <Tab closable="false" text="Consultation / Localisation">
          <content>
@@ -73,7 +80,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <CheckComboBox fx:id="comboFonctions" prefWidth="150.0" title="fonctions" />
+<!--                        <CheckComboBox fx:id="comboFonctions" prefWidth="150.0" title="fonctions" />-->
                         <TextField fx:id="txtChargeMax" alignment="CENTER" layoutX="289.0" layoutY="530.0" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText=" charge maximal (Kg)" style="-fx-background-color: white; -fx-background-radius: 10;" />
                         <TextField fx:id="txtGarantie" alignment="CENTER" layoutX="289.0" layoutY="553.0" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="garantie (Y)" style="-fx-background-color: white; -fx-background-radius: 10;" />
                         <TextField fx:id="txtPrix" alignment="CENTER" layoutX="289.0" layoutY="576.0" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="prix (Dh)" style="-fx-background-color: white; -fx-background-radius: 10;" />
@@ -84,6 +91,72 @@
                         <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#onBtnAjouterLit" style="-fx-background-radius: 10;" text="Créer" />
                      </children>
                   </VBox>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+
+      <Tab closable="false" text="Admission">
+         <content>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER" layoutX="118.0" layoutY="66.0" prefHeight="196.0" prefWidth="830.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="472.0">
+                     <children>
+                        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="196.0" prefWidth="640.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="157.0" prefWidth="538.0" spacing="50.0">
+                                 <children>
+                                    <Label prefHeight="43.0" prefWidth="79.0" style="-fx-font-weight: bold;" text="Service">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="48.0" prefWidth="225.0">
+                                       <children>
+                                          <ChoiceBox fx:id="chBoxReservationService11" prefHeight="38.0" prefWidth="156.0" visible="false" />
+                                          <Label fx:id="labelService" text="Label">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </StackPane>
+                                    <Button fx:id="btnReservationSearch" mnemonicParsing="false" onAction="#onBtnReservationSearch" prefHeight="73.0" prefWidth="95.0" text="Chercher" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="143.0" layoutY="216.0" prefHeight="424.0" prefWidth="918.0" spacing="50.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="359.0">
+                     <children>
+                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="422.0" prefWidth="785.0" HBox.hgrow="ALWAYS">
+                           <content>
+                              <TableView fx:id="tableReservation" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#OnMouseClicked" prefHeight="424.0" prefWidth="778.0">
+                                 <columns>
+                                    <TableColumn fx:id="tabecolumn1" prefWidth="125.66668701171875" text="Column X" />
+                                    <TableColumn fx:id="tabecolumn2" prefWidth="167.0" text="Column X" />
+                                    <TableColumn fx:id="actioncolumn" prefWidth="147.0" text="Action" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                        <Button fx:id="btnSaveAllreservation" mnemonicParsing="false" onAction="#onBtnSaveAllreservationClick" prefHeight="73.0" prefWidth="83.0" text="Save" />
+                     </children>
+                  </HBox>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="38.0" layoutX="400.0" layoutY="762.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+      <Tab closable="false" text="Historique">
+         <content>
+            <AnchorPane fx:id="anchorpaneHistorique" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="817.0" prefWidth="1420.0">
+               <children>
+                  <ScrollPane fx:id="scrollhistorique" layoutX="2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="824.0" prefWidth="1390.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="22.0">
+                     <content>
+                        <FlowPane fx:id="flowHistorique" prefHeight="853.0" prefWidth="1374.0" />
+                     </content></ScrollPane>
                </children>
             </AnchorPane>
          </content>

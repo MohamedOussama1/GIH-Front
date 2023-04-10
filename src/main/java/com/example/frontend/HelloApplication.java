@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,7 +16,11 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("GIH.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1210, 920);
+        Pane pane=fxmlLoader.load();
+//        pane.setMinHeight(800);
+//        pane.setPrefSize(100,100);
+        Scene scene = new Scene(pane);
+
         scene.getStylesheets().add("stylesheet.css");
         stage.setTitle("Hello!");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -30,6 +35,10 @@ public class HelloApplication extends Application {
             }
         });
         stage.setScene(scene);
+        stage.sizeToScene();
+        stage.setMaximized(false);
+//        stage.setMinHeight(800);
+//        stage.setMinWidth(800);
         stage.show();
 
     }
