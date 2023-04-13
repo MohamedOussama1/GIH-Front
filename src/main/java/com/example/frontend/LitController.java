@@ -6,6 +6,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.MessageBodyReader;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -20,6 +21,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -70,7 +72,9 @@ public class LitController implements Initializable {
     String service;
     String typeEspace;
 
-    private Client client = ClientBuilder.newClient();
+
+    private Client client = ClientBuilder.newClient()
+            .register(JacksonFeature.class);
 
     private WebTarget target = client.target("http://localhost:8081");
     protected void formatTextFieldToNumbersOnly(TextField textField, int max) {
@@ -101,8 +105,9 @@ public class LitController implements Initializable {
         // Load Departements
         Response getResponse = target
                 .path("departement")
-                .request()
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
+        System.out.println(getResponse);
         List<String> departements = getResponse.readEntity(List.class);
 
         // Set up Creation fields

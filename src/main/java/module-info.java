@@ -1,5 +1,13 @@
 module com.example.frontend {
 
+    requires com.fasterxml.jackson.jaxrs.json;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.jaxrs.base;
+    requires com.fasterxml.jackson.module.jaxb;
+    requires jersey.media.json.jackson;
+    requires java.xml;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;

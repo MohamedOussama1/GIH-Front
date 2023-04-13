@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.glassfish.jersey.jackson.JacksonFeature;
 
 import java.net.URL;
 import java.util.List;
@@ -19,7 +20,8 @@ public class ServiceController implements Initializable {
     @FXML
     Label titre;
 
-    private Client client = ClientBuilder.newClient();
+    private Client client = ClientBuilder.newClient()
+            .register(JacksonFeature.class);
 
     private WebTarget target = client.target("http://localhost:8081");
 

@@ -18,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -25,9 +26,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class StockController implements Initializable {
-    private static Client client = ClientBuilder.newClient();
+    private Client client = ClientBuilder.newClient()
+            .register(JacksonFeature.class);
 
-    private static WebTarget target = client.target("http://localhost:8081");
+    private WebTarget target = client.target("http://localhost:8081");
     @FXML
     ScrollPane scrollPaneStock;
     @FXML
@@ -52,7 +54,13 @@ public class StockController implements Initializable {
                 .path("stock")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
-        List<String> litsStock = stockResponse.readEntity(List.class);
+        Response departementStockResponse = target
+                .path("departement")
+                .path("stock")
+                .queryParam("nomDepartement", nomDepartement)
+                .request()
+                .get();
+        List<String> litsStock = departementStockResponse.readEntity(List.class);
         System.out.println(litsStock);
 
         gridStock = new GridPane();

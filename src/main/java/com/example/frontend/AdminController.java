@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -107,7 +108,8 @@ public class AdminController implements Initializable {
     private ChoiceBox<String> supprimerServiceChoiceBox = new ChoiceBox<>();
 
 
-    private Client client = ClientBuilder.newClient();
+    private Client client = ClientBuilder.newClient()
+            .register(JacksonFeature.class);
 
     private WebTarget target = client.target("http://localhost:8081");
 

@@ -3,22 +3,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="1210.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1218.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.HelloController">
    <children>
       <AnchorPane fx:id="anchorContent" layoutX="253.0" layoutY="26.0" prefHeight="869.0" prefWidth="921.0" />
-      <VBox alignment="TOP_CENTER" prefHeight="920.0" prefWidth="225.0" spacing="30.0" style="-fx-background-color: #0099cc;">
+      <VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="225.0" spacing="30.0" style="-fx-background-color: #0099cc;">
          <children>
             <ImageView fitHeight="88.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
                <image>
-                  <Image url="utilisateur.png" />
+<!--                  <Image url="utilisateur.png" />-->
                </image>
             </ImageView>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="138.0" style="-fx-text-fill: white; -fx-font-size: 30;" text="Admin" textAlignment="CENTER">
@@ -30,7 +29,7 @@
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="dashboard.png" />
+<!--                        <Image url="dashboard.png" />-->
                      </image></ImageView>
                </graphic>
                <padding>
@@ -41,7 +40,7 @@
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="sac.png" />
+<!--                        <Image url="sac.png" />-->
                      </image></ImageView>
                </graphic>
                <padding>
@@ -52,7 +51,7 @@
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="lit.png" />
+<!--                        <Image url="lit.png" />-->
                      </image></ImageView>
                </graphic>
                <padding>
@@ -63,7 +62,7 @@
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="dm.png" />
+<!--                        <Image url="dm.png" />-->
                      </image></ImageView>
                </graphic>
                <padding>
@@ -74,7 +73,7 @@
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="ambulance.png" />
+<!--                        <Image url="ambulance.png" />-->
                      </image></ImageView>
                </graphic>
                <padding>
@@ -85,7 +84,7 @@
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="admin.png" />
+<!--                        <Image url="admin.png" />-->
                      </image></ImageView>
                </graphic>
                <padding>
