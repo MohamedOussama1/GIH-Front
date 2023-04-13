@@ -109,7 +109,7 @@
                      </content>
                   </ScrollPane>
                   <ChoiceBox fx:id="chBoxServiceStock" layoutX="388.0" layoutY="68.0" prefWidth="150.0" />
-                  <Label layoutX="440.0" layoutY="39.0" style="-fx-font-weight: bold;" text="Service" />
+                  <Label layoutX="427.0" layoutY="35.0" style="-fx-font-weight: bold; -fx-font-size: 20;" text="Service" />
                   <ScrollPane fx:id="scrollPaneToAdd" layoutX="4.0" layoutY="549.0" prefHeight="320.0" prefWidth="915.0">
                      <content>
                         <GridPane fx:id="gridLitsToAdd" hgap="20.0" prefHeight="227.0" prefWidth="912.0" stylesheets="@../../../stylesheet.css" vgap="20.0">
@@ -126,7 +126,9 @@
                         </GridPane>
                      </content>
                   </ScrollPane>
-                  <Button fx:id="btnAffecter" layoutX="435.0" layoutY="491.0" mnemonicParsing="false" onAction="#onBtnAffecterClick" text="Affecter" />
+                  <Button fx:id="btnAffecter" layoutX="435.0" layoutY="491.0" mnemonicParsing="false" onAction="#onAffecterClick" text="Affecter" />
+                  <Label alignment="CENTER" layoutX="14.0" layoutY="116.0" prefHeight="24.0" prefWidth="137.0" style="-fx-font-weight: bold; -fx-font-size: 20;" text="Stock Général" textAlignment="CENTER" />
+                  <Label fx:id="lblStockService" layoutX="14.0" layoutY="494.0" prefHeight="24.0" prefWidth="188.0" style="-fx-font-weight: bold; -fx-font-size: 20;" text="Stock " textAlignment="CENTER" />
                </children>
             </AnchorPane>
          </content>

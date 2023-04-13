@@ -30,6 +30,7 @@ public class BedCard extends StackPane {
     int code;
     boolean occupied;
     double percentEtat;
+    String colorHex;
     Rectangle background;
     ImageView bedIcon;
     Label label;
@@ -75,6 +76,23 @@ public class BedCard extends StackPane {
 
     }
     public int getBedId() {
-        return code;
+        return id;
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
+
+    public String getColorHex() {
+        return colorHex;
+    }
+
+    public void setColorHex(String colorHex) {
+        this.colorHex = colorHex;
+        background.setFill(Color.web(colorHex));
     }
 }
