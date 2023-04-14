@@ -50,10 +50,11 @@ public class ServiceController implements Initializable {
                     .path(elt)
                     .path("/Chambre")
                     .path("/lits")
-                    .path("False")
+                    .path("false")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get();
             List<String> alldispobedch = getResponse3.readEntity(List.class);
+            System.out.println(alldispobedch);
 
 
             Response getResponse4 = target
@@ -61,17 +62,18 @@ public class ServiceController implements Initializable {
                     .path(elt)
                     .path("/Salle")
                     .path("/lits")
-                    .path("False")
+                    .path("false")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get();
             List<String> alldispobedsalle = getResponse4.readEntity(List.class);
+            System.out.println(alldispobedsalle);
 
             Response getResponse5 = target
                     .path("departement")
                     .path(elt)
                     .path("/Chambre")
                     .path("/lits")
-                    .path("True")
+                    .path("true")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get();
             List<String> alloccupiedch = getResponse5.readEntity(List.class);
@@ -81,7 +83,7 @@ public class ServiceController implements Initializable {
                     .path(elt)
                     .path("/Salle")
                     .path("/lits")
-                    .path("True")
+                    .path("true")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get();
             List<String> alloccupiedsalle = getResponse6.readEntity(List.class);

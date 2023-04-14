@@ -147,6 +147,7 @@ public class LitController implements Initializable {
                     service = newValue;
                     populateStock();
                     lblStockService.setText("Stock " + newValue);
+                    gridLitsToAdd.getChildren().clear();
                 }));
 
         // Load Departements
@@ -168,24 +169,29 @@ public class LitController implements Initializable {
         valueFactory.setValue(1);
         spinnerQuantityLit.setValueFactory(valueFactory);
         chBoxTypeCreer.setItems(FXCollections.observableArrayList(Arrays.asList("ELECTRIQUE", "MECANIQUE")));
-        chBoxModel.setItems(FXCollections.observableArrayList(Arrays.asList(
-                "STANDARD",
-                "ROTATION",
-                "PESEE",
-                "BARIATRIQUE",
-                "CIRCULATION",
-                "TRAITEMENT"
-        )));
+        chBoxTypeCreer.setItems(FXCollections.observableArrayList(
+                target
+                        .path("lits")
+                        .path("types")
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .get()
+                        .readEntity(List.class))
+        );
+        chBoxModel.setItems(FXCollections.observableArrayList(
+                        target
+                                .path("lits")
+                                .path("models")
+                                .request(MediaType.APPLICATION_JSON_TYPE)
+                                .get()
+                                .readEntity(List.class))
+        );
         comboFonctions.getItems().addAll(
-                "REGLAGE_DE_LA_HAUTEUR",
-                "REGLAGE_DOSSIER",
-                "POSITION_JAMBES",
-                "INCLINAISON_LIT",
-                "TRENDELENBURG",
-                "ANTI_TRENDELENBURG",
-                "BARRIERES_SECURITE",
-                "POSITION_LATERALE",
-                "POSITION_ASSISE"
+                target
+                        .path("lits")
+                        .path("fonctions")
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .get()
+                        .readEntity(List.class)
         );
         chBoxService.setItems(FXCollections.observableArrayList(departements));
         chBoxEspace.setItems(FXCollections.observableArrayList("Salle", "Chambre"));
@@ -328,7 +334,7 @@ public class LitController implements Initializable {
                 .path(service)
                 .path(typeEspace)
                 .path("lits")
-                .request()
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
         // Retrieve list
@@ -420,56 +426,4 @@ public class LitController implements Initializable {
 
     }
 
-//
-//            // Populate grid with returned List
-//            int row = 0;
-//            int column = 0;
-//            int litInd = 0;
-//            while (litInd < espaceLitsLst.size()) {
-//                JSONObject espaceLits = new JSONObject(espaceLitsLst.get(litInd));
-//                System.out.println(espaceLits);
-//                JSONArray lits = espaceLits.getJSONArray("litLst");
-//                List<BedCard> bedCards = new ArrayList<>();
-//                lits.forEach(elt -> {
-//                    JSONObject lit = (JSONObject) elt;
-//                    JSONObject litDescription = (JSONObject) lit.get("litDescription");
-//                    String colorHex = "#99cc66";
-//                    if (lit.getBoolean("occupied") == true)
-//                        colorHex = "orange";
-//                    BedCard bedCard = new BedCard(
-//                            lit.getInt("id"),
-//                            "lit.png",
-//                            colorHex,
-//                            lit.getInt("code"),
-//                            lit.getBoolean("occupied"),
-//                            lit.getDouble("percentEtat"),
-//                            litDescription.getDouble("chargeMax"),
-//                            litDescription.getString("type"),
-//                            litDescription.getString("modelLit"),
-//                            litDescription.getString("description")
-//                    );
-//                    bedCards.add(bedCard);
-//                });
-//                RoomCard roomCard;
-//                if (typeEspace == "Salle") {
-//                    JSONObject salle = espaceLits.getJSONObject("salle");
-//                    roomCard = new RoomCard(2, salle.getString("typeSalle").split("_")[1] + " " + salle.get("numero"), bedCards, service, typeEspace, salle.getInt("numero"), gridLit);
-//                } else {
-//                    JSONObject chambre = espaceLits.getJSONObject("chambre");
-//                    int capacity;
-//                    String typeChambre = chambre.getString("typeChambre");
-//                    capacity = typeChambre.equals("SINGLE") ? 1 : typeChambre.equals("DOUBLE") ? 2 : 4;
-//                    roomCard = new RoomCard(capacity, "Chambre" + chambre.get("numero"), bedCards, service, typeEspace, chambre.getInt("numero"), gridLit);
-//                }
-//                gridLit.add(roomCard, column, row, 1, 1);
-//                if (column == 4) {
-//                    column = 0;
-//                    row += 1;
-//                } else {
-//                    column += 1;
-//                }
-//                litInd += 1;
-//            }
-//        }
-//    }
 }

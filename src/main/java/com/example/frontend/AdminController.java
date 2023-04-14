@@ -117,7 +117,7 @@ public class AdminController implements Initializable {
     protected void onAfficherService(ActionEvent event) throws IOException {
         Response getResponse = target
                 .path("departement")
-                .request()
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
         List<String> demandes = getResponse.readEntity(List.class);
         ListServiceAfficher.setItems(FXCollections.observableArrayList(demandes));
@@ -142,7 +142,7 @@ public class AdminController implements Initializable {
         Response getResponse = target.path("demandeaffectation")
                 .path("demandesDepartement")
                 .queryParam("nomDepartement", nomDepartement)
-                .request()
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
         if (getResponse.getStatus() == Response.Status.OK.getStatusCode()) {
@@ -197,13 +197,13 @@ public class AdminController implements Initializable {
 
             if (nomDepartement == null || nomDepartement.equals("Default")) {
                 getResponse = target.path("demandeaffectation")
-                        .request()
+                        .request(MediaType.APPLICATION_JSON_TYPE)
                         .get();
             } else {
                 getResponse = target.path("demandeaffectation")
                         .path("demandesDepartement")
                         .queryParam("nomDepartement", nomDepartement)
-                        .request()
+                        .request(MediaType.APPLICATION_JSON_TYPE)
                         .get();
             }
 
@@ -265,7 +265,7 @@ public class AdminController implements Initializable {
                     int id = demande.getId();
                     Response response = target
                             .path("demandeaffectation/" + id + "/" + newValue)
-                            .request()
+                            .request(MediaType.APPLICATION_JSON_TYPE)
                             .put(Entity.entity("", MediaType.APPLICATION_JSON));
 
 
@@ -325,7 +325,7 @@ private List<DemandeAffectationFE> demandesAEnvoyer = new ArrayList<>();
                         .queryParam("Departement", departement)
                         .queryParam("qte", qte);
 
-                Response response = currentTarget.request().post(Entity.json(""));
+                Response response = currentTarget.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.json(""));
                 if (response.getStatus() != 200) {
                     throw new RuntimeException("Failed to save demandeaffectation: " + response.getStatus());
                 }
@@ -359,7 +359,7 @@ private List<DemandeAffectationFE> demandesAEnvoyer = new ArrayList<>();
 
         Response getmyResponse = target
                 .path("departement")
-                .request()
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
         List<String> departements = getmyResponse.readEntity(List.class);
         ServiceChoiceBox.setItems(FXCollections.observableArrayList(departements));
@@ -380,7 +380,7 @@ private List<DemandeAffectationFE> demandesAEnvoyer = new ArrayList<>();
                                 .path("departement")
                                 .path("salle")
                                 .queryParam("nomDepartement", selectedDepartement)
-                                .request()
+                                .request(MediaType.APPLICATION_JSON_TYPE)
                                 .get();
                         String jsonString = getSalleResponse.readEntity(String.class);
                         JSONArray jsonArray = new JSONArray(jsonString);
@@ -398,7 +398,7 @@ private List<DemandeAffectationFE> demandesAEnvoyer = new ArrayList<>();
                                 .path("departement")
                                 .path("chambre")
                                 .queryParam("nomDepartement", selectedDepartement)
-                                .request()
+                                .request(MediaType.APPLICATION_JSON_TYPE)
                                 .get();
                         String jsonString = getEspaceResponse.readEntity(String.class);
                         JSONArray jsonArray = new JSONArray(jsonString);
