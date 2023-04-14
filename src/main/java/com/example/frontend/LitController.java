@@ -168,7 +168,6 @@ public class LitController implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 40);
         valueFactory.setValue(1);
         spinnerQuantityLit.setValueFactory(valueFactory);
-        chBoxTypeCreer.setItems(FXCollections.observableArrayList(Arrays.asList("ELECTRIQUE", "MECANIQUE")));
         chBoxTypeCreer.setItems(FXCollections.observableArrayList(
                 target
                         .path("lits")
@@ -194,8 +193,8 @@ public class LitController implements Initializable {
                         .readEntity(List.class)
         );
         chBoxService.setItems(FXCollections.observableArrayList(departements));
-        chBoxEspace.setItems(FXCollections.observableArrayList("Salle", "Chambre"));
         chBoxServiceStock.setItems(FXCollections.observableArrayList(departements));
+        chBoxEspace.setItems(FXCollections.observableArrayList("Salle", "Chambre"));
 
         // Listen to Stock event
         gridLit.addEventHandler(WindowChangeEvent.WINDOW_CHANGE_EVENT, event -> {
