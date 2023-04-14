@@ -9,12 +9,16 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.CheckComboBox?>
 
@@ -129,6 +133,46 @@
                   <Button fx:id="btnAffecter" layoutX="435.0" layoutY="491.0" mnemonicParsing="false" onAction="#onAffecterClick" text="Affecter" />
                   <Label alignment="CENTER" layoutX="14.0" layoutY="116.0" prefHeight="24.0" prefWidth="137.0" style="-fx-font-weight: bold; -fx-font-size: 20;" text="Stock Général" textAlignment="CENTER" />
                   <Label fx:id="lblStockService" layoutX="14.0" layoutY="494.0" prefHeight="24.0" prefWidth="188.0" style="-fx-font-weight: bold; -fx-font-size: 20;" text="Stock " textAlignment="CENTER" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+      <Tab closable="false" text="Admission">
+         <content>
+            <AnchorPane maxHeight="869.0" maxWidth="921.0" minHeight="869.0" minWidth="921.0" prefHeight="869.0" prefWidth="921.0">
+               <children>
+                  <ScrollPane layoutX="62.0" layoutY="186.0">
+                     <content>
+                        <TableView fx:id="tableReservation" prefHeight="534.0" prefWidth="789.0">
+                          <columns>
+                            <TableColumn fx:id="tabecolumn1" prefWidth="75.0" text="Column X" />
+                            <TableColumn fx:id="tabecolumn2" prefWidth="75.0" text="Column X" />
+                              <TableColumn prefWidth="75.0" text="Action" />
+                          </columns>
+                        </TableView>
+                     </content>
+                  </ScrollPane>
+                  <Button fx:id="btnReservationSearch" layoutX="427.0" layoutY="136.0" mnemonicParsing="false" onAction="#onBtnReservationSearch" style="-fx-background-radius: 10;" text="Chercher" />
+                  <Button fx:id="btnSaveAllreservation" layoutX="434.0" layoutY="738.0" mnemonicParsing="false" onAction="#onBtnSaveAllreservationClick" style="-fx-background-radius: 10;" text="Save" />
+                  <StackPane layoutX="378.0" layoutY="53.0" prefHeight="59.0" prefWidth="157.0">
+                     <children>
+                        <ChoiceBox fx:id="chBoxReservationService11" prefWidth="150.0" />
+                     </children>
+                  </StackPane>
+                  <Label fx:id="labelService" layoutX="423.0" layoutY="28.0" style="-fx-font-size: 20;" text="Service" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+      <Tab closable="false" text="Historique">
+         <content>
+            <AnchorPane maxHeight="869.0" maxWidth="921.0" minHeight="869.0" minWidth="921.0" prefHeight="869.0" prefWidth="921.0">
+               <children>
+                  <ScrollPane fx:id="scrollhistorique" layoutX="36.0" layoutY="65.0">
+                     <content>
+                        <FlowPane fx:id="flowHistorique" prefHeight="740.0" prefWidth="849.0" />
+                     </content>
+                  </ScrollPane>
                </children>
             </AnchorPane>
          </content>
