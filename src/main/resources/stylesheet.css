@@ -54,13 +54,13 @@
 }
 .button {
     -fx-background-color: #2196f3;
-    -fx-background-radius: 20;
+    -fx-background-radius: 10px;
     -fx-background-insets: 0;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-font-family: Arial, sans-serif;
-    -fx-padding: 8px 16px;
+    -fx-padding: 4px 4px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1);
 }
 

@@ -6,6 +6,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -20,6 +21,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -30,7 +32,7 @@ public class BookCardApp  {
 
     AnchorPane primaryStage=new AnchorPane();
 
-    FlowPane parentGridPane;
+    static FlowPane parentGridPane;
 
     String fristname;
 
@@ -44,15 +46,16 @@ public class BookCardApp  {
 
 
 
-    public BookCardApp(){
+    public BookCardApp(String nomDepartement){
         // Create the parent GridPane
        parentGridPane = new FlowPane();
+
 
         scroll=new ScrollPane();
 
         scroll.setContent(parentGridPane);
 
-        parentGridPane.setPadding(new Insets(20));
+        parentGridPane.setPadding(new Insets(10));
 
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
@@ -60,7 +63,8 @@ public class BookCardApp  {
              //   scroll.setStyle("-fx-background-color: rgba(0,0,0); ");
 
 //        parentGridPane.setStyle("-fx-background-color: rgb(255,255,255); ");
-     parentGridPane.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, rgba(63,144,155,0.71), rgba(80,152,203,0.65),rgba(195,206,217,0.76));");
+//     parentGridPane.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, rgba(63,144,155,0.71), rgba(80,152,203,0.65),rgba(195,206,217,0.76));");
+        parentGridPane.setStyle("-fx-background-color: rgb(3,91,117)");
         parentGridPane.setHgap(5);
         parentGridPane.setVgap(5);
 //        parentGridPane.setPadding(new Insets(20));
@@ -71,19 +75,22 @@ public class BookCardApp  {
 
         ////  HTTP request ///////////////////////////////
 
-        String userName_Login="rachidjarmouni";
-        String password_Login="1234";
-        String test=userName_Login+":"+password_Login;
+         fristname="user1";
 
-         client = ClientBuilder.newClient();
+         password="1234,user";
+
+         test=fristname+":"+password;
+
+         client = ClientBuilder.newClient().register(JacksonFeature.class);
 
          target = client.target("http://localhost:8081");
 
         Response getResponse = target
                 .path("lits")
                 .path("litinespace")
-                .request()
-                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(test.getBytes()))
+                .queryParam("nomDepartement", nomDepartement)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+//                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(test.getBytes()))
                 .get();
 
 
@@ -129,7 +136,7 @@ public class BookCardApp  {
             // set border to flow pane
 //            g1.setBorder(border);
 
-            Label barLabel = new Label("                                            Chambre "+key.get("idEspace"));
+            Label barLabel = new Label("                                            " + key.get("type") + " " +key.get("numero"));
             barLabel.setStyle("-fx-font-family: 'Arial Black'");
 
 
@@ -146,41 +153,34 @@ public class BookCardApp  {
 
 
 
-            g1.setPadding(new Insets(10,10,10,10));
+            g1.setPadding(new Insets(5,5,5,5));
 //            g1.setStyle("-fx-background-color: rgb(177,225,31);");
-            g1.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, rgb(255,255,255), rgb(255,255,255),rgb(255,255,255));-fx-background-radius: 10");
+            g1.setStyle("-fx-background-radius: 10px; -fx-background-color: rgb(255,255,255);");
 
             for(JSONObject value:data2.get(key)){
 
-                if(value.getBoolean("occupied")) {
+                    if (value.getBoolean("occupied")) {
 
-                    BookCard b1 = new BookCard("The Lord ", value.get("idLit").toString(),
-                            new Image("C:\\Users\\Fujitsu LifeBook u\\Downloads\\empty\\src\\main\\java\\com\\example\\frontend\\green.png"));
+                        BookCard b1 = new BookCard("The Lord ", value.get("idLit").toString(),
+                                new Image("red.png"), value.get("code").toString());
 
-//                    BookCard b1 = new BookCard("The Lord ", value.get("idLit").toString(),
-//                           null);
+                        g1.getChildren().add(b1);
+                    } else {
+                        BookCard b1 = new BookCard("The Lord ", value.get("idLit").toString(),
+                                new Image("green.png"), value.get("code").toString());
 
-                    g1.getChildren().add(b1);
-                }
-                else{
-                    BookCard b1 = new BookCard("The Lord ", value.get("idLit").toString(),
-                            new Image("C:\\Users\\Fujitsu LifeBook u\\Downloads\\empty\\src\\main\\java\\com\\example\\frontend\\red.png"));
+                        g1.getChildren().add(b1);
 
-//                    BookCard b1 = new BookCard("The Lord ", value.get("idLit").toString(),
-//                            null);
-
-                    g1.getChildren().add(b1);
-
-                }
-
+                    }
             }
 
-            g1.setPadding(new Insets(50,50,50,50));
+//            g1.setPadding(new Insets(50,50,50,50));
+            g1.setPadding(new Insets(10,10,10,10));
 
             g1.setVgap(10);
             g1.setHgap(10);
-
-            parentGridPane.getChildren().add(bp);
+            if (g1.getChildren().size() < 5)
+                parentGridPane.getChildren().add(bp);
 
 
         }
@@ -225,15 +225,15 @@ class BookCard extends Pane {
 
 
 
-    public BookCard(String title, String idLit, Image coverImage) {
+    public BookCard(String title, String idLit, Image coverImage, String code) {
         coverImageView = new ImageView(coverImage);
-        coverImageView.setFitWidth(100);
+        coverImageView.setFitWidth(80);
         coverImageView.setPreserveRatio(true);
         titleLabel = new Label(title);
         titleLabel.setStyle("-fx-font-weight: bold;");
         titleLabel.setAlignment(Pos.CENTER);
 
-        authorLabel = new Label(idLit);
+        authorLabel = new Label(code);
         authorLabel.setStyle("-fx-font-style: italic;");
         authorLabel.setAlignment(Pos.BOTTOM_RIGHT);
 
@@ -247,11 +247,13 @@ class BookCard extends Pane {
 
         //initialize the client to send http request
 
-        String userName_Login="rachidjarmouni";
-        String password_Login="1234";
-        String test=userName_Login+":"+password_Login;
+        fristname="user1";
 
-        client = ClientBuilder.newClient();
+        password="1234,user";
+
+        test=fristname+":"+password;
+
+        client = ClientBuilder.newClient().register(JacksonFeature.class);
 
         target = client.target("http://localhost:8081");
 
@@ -263,39 +265,55 @@ class BookCard extends Pane {
         MenuItem deleteItem4 = new MenuItem("Liberer Lit");
         deleteItem.setStyle("-fx-font-weight: bold;");
 
+        // Delete lit
+        deleteItem.setOnAction(event -> {
+            Response response = target
+                    .path("lits")
+                    .path(idLit)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .method("DELETE");
+            if (response.getStatus() == 200) {
+                BookCardApp.parentGridPane.getChildren().remove(this);
+            }
+        });
 
         // liberer lit
 
+
         deleteItem4.setOnAction(event -> {
 
-            if(coverImageView.getImage().getUrl().contains("green.png")){
-                coverImageView.setImage(new Image("red.png"));
-//
-//
-          }
-//            if(coverImageView.getImage().getUrl().contains("red.png")){
-            else{
+            if(coverImageView.getImage().getUrl().contains("red.png")) {
                 coverImageView.setImage(new Image("green.png"));
+//            if(coverImageView.getImage().getUrl().contains("red.png")){
 
+                // Handle delete action
+                Response getResponse = target
+                        .path("lits")
+                        .path("occuperlit")
+                        .queryParam("id", idLit)
+                        .request(MediaType.APPLICATION_JSON)
+                        // .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(test.getBytes()))
+                        .put(Entity.json("{}"));
+                Response putResponse = target
+                        .path("lits")
+                        .path("reservation")
+                        .queryParam("idLit", idLit)
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .put(Entity.json(""));
+
+
+                if (getResponse.getStatus() == Response.Status.OK.getStatusCode()) {
+                    System.out.println("HTTP PUT request libererLit succeeded.");
+                } else {
+                    System.out.println("HTTP PUT request failed with status code " + getResponse.getStatus());
+                }
+
+                if (putResponse.getStatus() == Response.Status.OK.getStatusCode()) {
+                    System.out.println("HTTP PUT request  saveExitDate succeeded.");
+                } else {
+                    System.out.println("HTTP PUT request failed with status code " + getResponse.getStatus());
+                }
             }
-
-            // Handle delete action
-            Response getResponse = target
-                    .path("lits")
-                    .path("occuperlit")
-                    .queryParam("id",idLit)
-                    .request(MediaType.APPLICATION_JSON)
-                    .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(test.getBytes()))
-                    .put(Entity.json("{}"));
-//
-
-
-            if (getResponse.getStatus() == Response.Status.OK.getStatusCode()) {
-                System.out.println("HTTP PUT request succeeded.");
-            } else {
-                System.out.println("HTTP PUT request failed with status code " + getResponse.getStatus());
-            }
-
             // close the JAX-RS client instance
 //            client.close();
         });
@@ -317,7 +335,7 @@ class BookCard extends Pane {
 
             // Add the pop-up window content to the Stage
             StackPane popupPane = new StackPane(popupLabel);
-            popupPane.setPadding(new Insets(20));
+            popupPane.setPadding(new Insets(10));
             popupStage.setScene(new Scene(popupPane, 300, 200));
 
 

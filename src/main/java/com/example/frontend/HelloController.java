@@ -8,11 +8,17 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -39,8 +45,47 @@ public class HelloController implements Initializable {
     Button btnAdmin;
     @FXML
     Button btnLogistique;
+    @FXML
+    Button buttonLogin=new Button();
+    @FXML
+    ImageView profileImg;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    }
+    @FXML
+    void OnLoginClick(ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("login.fxml"));
+        Pane pane = null;
+        try {
+            pane = fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene=new Scene(pane);
+        Stage stage=new Stage();
+        stage.setScene(scene);
+        stage.setHeight(700);
+        stage.setWidth(800);
+
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+
+
+        // display a stage with block the application untill i close stage (like dialog)
+        Stage current = (Stage) buttonLogin.getScene().getWindow();
+        stage.initOwner(current);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+
+                Stage dd=(Stage)buttonLogin.getScene().getWindow();
+                dd.close();
+
+            }
+        });
 
     }
     public void onBtnDashboardClick(ActionEvent event) throws IOException{

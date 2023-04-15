@@ -147,7 +147,8 @@ public class LitController implements Initializable {
 
     @FXML
     Button btnSaveAllreservation=new Button();
-
+    @FXML
+    ChoiceBox<String> chBoxHistorique = new ChoiceBox<>();
     List<String> list_of_all_reservation=new ArrayList<>();
     static String userName_Login;
     static String password_Login;
@@ -211,6 +212,9 @@ public class LitController implements Initializable {
                     populateStock();
                     lblStockService.setText("Stock " + newValue);
                     gridLitsToAdd.getChildren().clear();
+                    lblStockService.setVisible(true);
+                    scrollPaneToAdd.setVisible(true);
+                    btnAffecter.setVisible(true);
                 }));
 
         // Load Departements
@@ -231,6 +235,14 @@ public class LitController implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 40);
         valueFactory.setValue(1);
         spinnerQuantityLit.setValueFactory(valueFactory);
+
+
+        // Populate ChoiceBoxes
+        chBoxService.setItems(FXCollections.observableArrayList(departements));
+        chBoxServiceStock.setItems(FXCollections.observableArrayList(departements));
+        chBoxReservationService11.setItems(FXCollections.observableArrayList(departements));
+        chBoxHistorique.setItems(FXCollections.observableArrayList(departements));
+        chBoxEspace.setItems(FXCollections.observableArrayList("Salle", "Chambre"));
         chBoxTypeCreer.setItems(FXCollections.observableArrayList(
                 target
                         .path("lits")
@@ -255,10 +267,6 @@ public class LitController implements Initializable {
                         .get()
                         .readEntity(List.class)
         );
-        chBoxService.setItems(FXCollections.observableArrayList(departements));
-        chBoxServiceStock.setItems(FXCollections.observableArrayList(departements));
-        chBoxReservationService11.setItems(FXCollections.observableArrayList(departements));
-        chBoxEspace.setItems(FXCollections.observableArrayList("Salle", "Chambre"));
 
         // Listen to Stock event
         gridLit.addEventHandler(WindowChangeEvent.WINDOW_CHANGE_EVENT, event -> {
@@ -266,6 +274,40 @@ public class LitController implements Initializable {
             chBoxEspace.setValue(typeEspace);
             onBtnChercherClick(event);
         });
+
+
+        chBoxReservationService11.setVisible(true);
+//        labelService.setVisible(false);
+
+        chBoxHistorique.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)-> {
+
+            BookCardApp book = new BookCardApp(newValue);
+
+            flowHistorique = book.parentGridPane;
+            scrollhistorique.setContent(flowHistorique);
+
+            scrollhistorique.setStyle("-fx-background-color: rgb(3,91,117)");
+
+            scrollhistorique.setFitToWidth(true);
+
+            scrollhistorique.setFitToHeight(true);
+            scrollhistorique.setPrefHeight(650);
+
+        });
+//        BookCardApp book = new BookCardApp(this);
+//
+//        flowHistorique = book.parentGridPane;
+//        scrollhistorique.setContent(flowHistorique);
+//
+//        scrollhistorique.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, rgba(83,155,63,0.71), rgba(83,155,63,0.65),rgba(83,155,63,0.76));");
+//
+//        scrollhistorique.setFitToWidth(true);
+//
+//        scrollhistorique.setFitToHeight(true);
+//        scrollhistorique.setPrefHeight(650);
+
+        tabecolumn1.setText("ID");
+        tabecolumn2.setText("Chambre");
     }
 
     private static void populateStock() {
@@ -290,8 +332,11 @@ public class LitController implements Initializable {
     public void onAffecterClick() {
         if (service.equals(null))
             return;
+        lblStockService.setVisible(false);
+        scrollPaneToAdd.setVisible(false);
+        btnAffecter.setVisible(false);
         String service = chBoxServiceStock.getValue();
-        System.out.println(service);
+        chBoxService.getSelectionModel().clearSelection();
         for (Node node : gridLitsToAdd.getChildren()){
             BedCard bedCard = (BedCard) node;
             int numStock = service.equals("Neurologie") ? 1 : service.equals("Cardiologie") ? 2 : service.equals("Oncologie") ? 3 : 4;
@@ -490,7 +535,6 @@ public class LitController implements Initializable {
 
     // Rachid
 
-    @FXML
     public void onBtnReservationSearch(ActionEvent actionEvent) throws JsonProcessingException {
 
 
@@ -505,10 +549,10 @@ public class LitController implements Initializable {
                 .path("lits")
                 .path("litdisponible")
                 .request(MediaType.APPLICATION_JSON_TYPE)
-                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(test.getBytes()))
+                //  .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("user1:1234,user".getBytes()))
                 .get();
 
-        tabecolumn2.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().get("espace").toString()));
+        tabecolumn2.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().get("Espace").toString()));
         tabecolumn1.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue().get("id").toString()));
 
 
@@ -603,7 +647,7 @@ public class LitController implements Initializable {
     }
 
     @FXML
-    void onBtnSaveAllreservationClick(ActionEvent event) {
+    void onBtnSaveAllreservationClick(ActionEvent event) throws JsonProcessingException {
 
         for(String elt:list_of_all_reservation){
 
@@ -619,7 +663,7 @@ public class LitController implements Initializable {
 
         }
 
-//        this.onBtnReservationSearch(new ActionEvent());
+        this.onBtnReservationSearch(event);
 //        tableReservation.refresh();
 
     }

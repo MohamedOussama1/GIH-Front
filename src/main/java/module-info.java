@@ -17,6 +17,9 @@ module com.example.frontend {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires org.json;
+    requires java.desktop;
+    requires org.joml;
+    requires obj;
 
     opens com.example.frontend to javafx.fxml;
     exports com.example.frontend;
