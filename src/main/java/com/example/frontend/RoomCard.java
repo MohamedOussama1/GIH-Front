@@ -23,6 +23,9 @@ public class RoomCard extends VBox {
     int numEspace;
     private  Label label;
     private int capacity;
+    String nomDepartement;
+    int oldRow;
+    int oldColumn;
     GridPane gridPane;
     public RoomCard(){}
     public RoomCard(int capacity, String labelText, List<BedCard> bedCards, String nomDepartement, String typeEspace, int numEspace, GridPane gridPane) {
@@ -32,6 +35,7 @@ public class RoomCard extends VBox {
         this.label = new Label();
         this.numEspace = numEspace;
         this.typeEspace = typeEspace;
+        this.nomDepartement = nomDepartement;
         this.gridPane = gridPane;
 
         // Set up the grid pane
@@ -41,10 +45,24 @@ public class RoomCard extends VBox {
         grid.setPadding(new Insets(10));
         grid.setPrefSize(200, 200);
 
+        // Set up the label
+        label.setText(labelText);
+        label.setAlignment(Pos.CENTER);
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        label.setStyle("-fx-text-fill: #3f51b5");
+        VBox.setMargin(label, new Insets(5));
+
+        // Add the grid and label to the room card
+        getChildren().addAll(grid, label);
+        setAlignment(Pos.CENTER);
+        setSpacing(10);
+        setStyle("-fx-background-color: rgb(240,240,255); -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-width: 1px; -fx-border-color: black;" +
+                "-fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)");
+
         // Set up the beds
         for (int i = 0; i < capacity; i++) {
             if (i >= bedCards.size()) {
-                SelectableRectangle background = new SelectableRectangle(90, 90, nomDepartement, typeEspace, String.valueOf(numEspace), gridPane);
+                SelectableRectangle background = new SelectableRectangle(this, i%2, i/2, 90, 90, nomDepartement, typeEspace, String.valueOf(numEspace), gridPane);
                 grid.add(background, i%2, i/2);
             }
             else {
@@ -53,16 +71,10 @@ public class RoomCard extends VBox {
             }
         }
 
-        // Set up the label
-        label.setText(labelText);
-        label.setAlignment(Pos.CENTER);
-        label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        VBox.setMargin(label, new Insets(5));
-
-        // Add the grid and label to the room card
-        getChildren().addAll(grid, label);
-        setAlignment(Pos.CENTER);
-        setSpacing(10);
-        setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-width: 1px; -fx-border-color: #BDBDBD;");
     }
+
+    public GridPane getGrid() {
+        return grid;
+    }
+
 }

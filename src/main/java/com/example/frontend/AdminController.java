@@ -111,7 +111,7 @@ public class AdminController implements Initializable {
     private Client client = ClientBuilder.newClient()
             .register(JacksonFeature.class);
 
-    private WebTarget target = client.target("http://localhost:8081");
+    private WebTarget target = client.target(Connextion_info.url);
 
     @FXML
     protected void onAfficherService(ActionEvent event) throws IOException {
@@ -136,7 +136,6 @@ public class AdminController implements Initializable {
 
 
     @FXML
-
         protected void onAfficherDemandes(ActionEvent event) throws IOException {
         String nomDepartement = ServicesDemandesChoiceBox.getValue();
         Response getResponse = target.path("demandeaffectation")
@@ -289,7 +288,6 @@ private ObservableList<DemandeAffectationFE> tableData = FXCollections.observabl
 private List<DemandeAffectationFE> demandesAEnvoyer = new ArrayList<>();
 
     public void onAjouterDemandeAffectation(ActionEvent event) throws IOException {
-
             String typeLit = TypeLitChoiceBox.getValue();
             String modelLit = ModelLitChoiceBox.getValue();
             String service = ServiceChoiceBox.getValue();
@@ -303,9 +301,6 @@ private List<DemandeAffectationFE> demandesAEnvoyer = new ArrayList<>();
             departementColumn.setCellValueFactory(new PropertyValueFactory<>("departement"));
             ajouterDemandesTableView.refresh();
             demandesAEnvoyer.add(DAFE);
-
-
-
     }
 
     public void onCommanderButtonClicked (ActionEvent event) throws IOException {

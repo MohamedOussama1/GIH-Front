@@ -12,7 +12,7 @@ public class UserRole {
     String role = "normal";
     Client client = ClientBuilder.newClient();
 
-    WebTarget target = client.target("http://localhost:8081");
+    WebTarget target = client.target(Connextion_info.url);
 
     public String getRole(String name, String password) {
 

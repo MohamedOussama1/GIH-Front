@@ -59,7 +59,7 @@ public class BedCard extends StackPane {
 
         label = new Label(String.valueOf(code));
         label.setPadding(new Insets(5));
-        label.setStyle("-fx-font-weight: bold; -fx-background-color: #0099cc; -fx-border-radius: 10px; -fx-min-width: 70; -fx-alignment: center; -fx-background-radius: 10 10 0 0");
+        label.setStyle("-fx-font-weight: bold; -fx-background-color: #3f51b5; -fx-border-radius: 10px; -fx-min-width: 70; -fx-alignment: center; -fx-background-radius: 10 10 0 0");
         label.setTextFill(Color.WHITE);
 
         bedIcon = new ImageView();

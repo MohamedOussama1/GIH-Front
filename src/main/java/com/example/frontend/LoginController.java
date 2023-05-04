@@ -59,7 +59,7 @@ public class LoginController implements Initializable {
 
         Client client = ClientBuilder.newClient();
 
-        WebTarget target = client.target("http://localhost:8081");
+        WebTarget target = client.target(Connextion_info.url);
 
          getResponse = target
                 .path("login/all")

@@ -14,8 +14,8 @@ import java.util.Optional;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("GIH.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1218, 930);
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("transparent.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1221, 741);
         scene.getStylesheets().add("stylesheet.css");
         stage.setTitle("Hello!");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

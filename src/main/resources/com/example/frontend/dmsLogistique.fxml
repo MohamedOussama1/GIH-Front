@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DmLogistiqueController">
+   <children>
+      <TabPane prefHeight="760.0" prefWidth="996.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="Demande">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="40.0" layoutY="79.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label layoutX="10.0" layoutY="10.0" />
+                              <Label layoutX="10.0" layoutY="27.0" />
+                           </children>
+                        </VBox>
+                        <Text layoutX="146.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <TabPane prefHeight="707.0" prefWidth="996.0" tabClosingPolicy="UNAVAILABLE">
+                           <tabs>
+                              <Tab text="afficher demandes">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="645.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);">
+                                       <children>
+                                          <Button fx:id="btnAfficherDemandesDm" layoutX="539.0" layoutY="18.0" mnemonicParsing="false" onAction="#onAfficherDemandesDm" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Afficher Demandes" textFill="WHITE" />
+                                          <TableView fx:id="afficherDemandesTableView" layoutX="249.0" layoutY="77.0" maxHeight="532.0" maxWidth="864.0" prefHeight="532.0" prefWidth="443.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;" stylesheets="@../../../stylesheet.css">
+                                             <columns>
+                                                <TableColumn fx:id="idCol" prefWidth="69.0" text="Id" />
+                                                <TableColumn fx:id="serviceCol" prefWidth="110.0" text="Service" />
+                                                <TableColumn fx:id="dateDebutCol" prefWidth="133.0" text="Date Debut" />
+                                                <TableColumn fx:id="etatDemandeCol" prefWidth="105.0" text="Etat" />
+                                             </columns>
+                                          </TableView>
+                                          <ChoiceBox fx:id="chBoxEtatDemande" layoutX="249.0" layoutY="21.0" prefWidth="150.0" stylesheets="@../../../stylesheet.css" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                           </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Créer DM">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="162.0" layoutY="74.0" prefHeight="62.0" prefWidth="122.0" stylesheets="@../../../stylesheet.css" />
+                        <Text layoutX="146.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Button layoutX="742.0" layoutY="82.0" mnemonicParsing="false" onAction="#onAjouterDM" text="Ajouter" />
+                        <HBox alignment="CENTER" layoutX="64.0" layoutY="82.0" prefHeight="34.0" prefWidth="603.0" spacing="30.0" stylesheets="@../../../stylesheet.css">
+                           <children>
+                              <Label text="NOM DM :" />
+                              <TextField fx:id="nomdm" prefHeight="26.0" prefWidth="125.0" />
+                              <Label text="QTE :" />
+                              <TextField fx:id="qtedm" prefHeight="27.0" prefWidth="45.0" />
+                              <Label text="TYPE  :" />
+                              <ChoiceBox fx:id="typedmChoiceBox" prefWidth="150.0" />
+                           </children>
+                        </HBox>
+                        <Text layoutX="76.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="vous n'avez pas trouvé votre type? cliquer ici pour ajouter un nouveau :" />
+                        <Button fx:id="créertypedm" layoutX="503.0" layoutY="154.0" mnemonicParsing="false" text="créer type" />
+                        <HBox alignment="CENTER" layoutX="138.0" layoutY="214.0" prefHeight="51.0" prefWidth="569.0" spacing="30.0">
+                           <children>
+                              <Label fx:id="typedmlabel" text="NOM TYPE DM :" />
+                              <TextField fx:id="typedm" />
+                              <Button fx:id="ajoutertypedm" mnemonicParsing="false" onAction="#onAjouterTypeDM" text="Ajouter" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

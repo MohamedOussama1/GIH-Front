@@ -41,7 +41,7 @@ public class ServiceCard extends BorderPane {
         ImageView dispobed = new ImageView("dispobed.png");
         dispobed.setFitWidth(30);
         dispobed.setFitHeight(30);
-        ImageView occupiedbed = new ImageView("occupedbed.png");
+        ImageView occupiedbed = new ImageView("occupebed.png");
         occupiedbed.setFitWidth(30);
         occupiedbed.setFitHeight(30);
 
@@ -77,7 +77,8 @@ public class ServiceCard extends BorderPane {
         bottom.getChildren().addAll(bottom1, bottom2);
 
 
-        this.setStyle("-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 20px;");
+        this.setStyle("-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 20px;" +
+                "-fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)");
 
         // Create Pie Chart
 

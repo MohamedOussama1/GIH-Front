@@ -27,7 +27,7 @@ public class StockController implements Initializable {
     private static Client client = ClientBuilder.newClient()
             .register(JacksonFeature.class);
 
-    private static WebTarget target = client.target("http://localhost:8081");
+    private static WebTarget target = client.target(Connextion_info.url);
     @FXML
     ScrollPane scrollPaneStock;
     @FXML
@@ -36,9 +36,14 @@ public class StockController implements Initializable {
     static String numEspace;
     static String nomDepartement;
     static GridPane gridPane;
+    static int row;
+    static int column;
+    static BedCard selectedBed;
 
 
-    public StockController(String nomDepartement, String newEspace, String numEspace, GridPane gridPane) {
+    public StockController(int row, int column, String nomDepartement, String newEspace, String numEspace, GridPane gridPane) {
+        this.row = row;
+        this.column = column;
         this.nomDepartement = nomDepartement;
         this.newEspace = newEspace;
         this.numEspace = numEspace;
@@ -77,7 +82,7 @@ public class StockController implements Initializable {
 
     public static void addStockAction(List<BedCard> bedCards) {
        bedCards.forEach(bedCard -> bedCard.setOnMouseClicked(event -> {
-
+                selectedBed = bedCard;
                // Move lit
                int id = Integer.valueOf(bedCard.getBedId());
 
@@ -90,10 +95,13 @@ public class StockController implements Initializable {
                        .request(MediaType.APPLICATION_JSON_TYPE)
                        .put(Entity.json("Hello"));
 
-               System.out.println(response);
                // Insert BedCard in selected Position
                if (response.getStatus() == 200) {
                    gridPane.fireEvent(new WindowChangeEvent());
+                   LitController.selectedGridRow = row;
+                   LitController.selectedGridColumn = column;
+                   LitServiceController.selectedGridRow = row;
+                   LitServiceController.selectedGridColumn = column;
                }
 
                // Close window
@@ -102,55 +110,4 @@ public class StockController implements Initializable {
            })
        );
    }
-//        int row = 0;
-//        int column = 0;
-//        int litInd = 0;
-//        while (litInd < litsStock.size()) {
-//            JSONObject lit = new JSONObject(litsStock.get(litInd));
-//            JSONObject litDescription = (JSONObject) lit.get("litDescription");
-//            System.out.println(lit);
-//            BedCard bedCard = new BedCard(
-//                    lit.getInt("id"),
-//                    "lit.png",
-//                    litDescription.getString("frontColor"),
-//                    lit.getInt("code"),
-//                    lit.getBoolean("occupied"),
-//                    lit.getDouble("percentEtat"),
-//                    litDescription.getDouble("chargeMax"),
-//                    litDescription.getString("type"),
-//                    litDescription.getString("modelLit"),
-//                    litDescription.getString("description")
-//            );
-//            bedCard.setOnMouseClicked(event -> {
-//
-//                // Move lit
-//                int id = Integer.valueOf(lit.getInt("id"));
-//                Response response = target
-//                        .path("departement")
-//                        .path(nomDepartement)
-//                        .queryParam("idLit", id)
-//                        .queryParam("typeEspace", newEspace)
-//                        .queryParam("numEspace", numEspace)
-//                        .request(MediaType.APPLICATION_JSON_TYPE)
-//                        .put(Entity.json("Hello"));
-//
-//                // Insert BedCard in selected Position
-//                if (response.getStatus() == 200) {
-//                    gridPane.fireEvent(new WindowChangeEvent());
-//                }
-//
-//                // Close window
-//                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//                stage.close();
-//            });
-//            gridStock.add(bedCard, column, row, 1, 1);
-//            if (column == 8) {
-//                column = 0;
-//                row += 1;
-//            } else {
-//                column += 1;
-//            }
-//            litInd += 1;
-//        }
-//    }
 }

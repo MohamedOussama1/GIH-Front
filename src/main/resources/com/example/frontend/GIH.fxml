@@ -8,15 +8,15 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.image.Image?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1218.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.HelloController">
+<AnchorPane style="-fx-background-color: rgb(240,240,255)" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="741.0" prefWidth="1218.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.HelloController">
    <children>
-      <AnchorPane fx:id="anchorContent" layoutX="224.0" layoutY="1.0" prefHeight="930.0" prefWidth="996.0">
+      <AnchorPane fx:id="anchorContent" layoutX="224.0" layoutY="1.0" prefHeight="741.0" prefWidth="996.0">
          <children>
-            <Label alignment="CENTER" layoutX="224.0" layoutY="405.0" style="-fx-font-size: 50;" text="Welcome back to GIH" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="258.0" layoutY="346.0" style="-fx-font-size: 50;" text="Welcome back to GIH" textAlignment="CENTER" />
          </children></AnchorPane>
-      <VBox alignment="TOP_CENTER" prefHeight="930.0" prefWidth="225.0" spacing="15.0" style="-fx-background-color: #035b75;">
+      <VBox alignment="TOP_CENTER" prefHeight="743.0" prefWidth="225.0" spacing="15.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3);">
          <children>
-            <ImageView fitHeight="88.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="profileImg" fitHeight="55.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
@@ -29,9 +29,9 @@
                   <Insets bottom="20.0" top="-15.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onBtnDashboardClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #035b75; -fx-font-weight: bold; -fx-font-size: 20;" text="Dashboard">
+            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#onBtnDashboardClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #3f51b5; -fx-font-weight: bold; -fx-font-size: 20;" text="Dashboard">
                <graphic>
-                  <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dashImg" fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="dashboard.png" />
                      </image></ImageView>
@@ -40,9 +40,9 @@
                   <Insets left="10.0" />
                </padding>
             </Button>
-            <Button fx:id="btnServices" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="197.0" mnemonicParsing="false" onAction="#onBtnServiceClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #035b75; -fx-font-weight: bold; -fx-font-size: 20;" text="Services">
+            <Button fx:id="btnServices" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="197.0" mnemonicParsing="false" onAction="#onBtnServiceClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #3f51b5; -fx-font-weight: bold; -fx-font-size: 20;" text="Services">
                <graphic>
-                  <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="serviceImg" fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="sac.png" />
                      </image></ImageView>
@@ -51,7 +51,7 @@
                   <Insets left="10.0" />
                </padding>
             </Button>
-            <Button fx:id="btnLits" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="285.0" mnemonicParsing="false" onAction="#onBtnLitsClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #035b75; -fx-font-weight: bold; -fx-font-size: 20;" text="Lits">
+            <Button fx:id="btnLits" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="285.0" mnemonicParsing="false" onAction="#onBtnLitsClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #3f51b5; -fx-font-weight: bold; -fx-font-size: 20;" text="Lits">
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -62,7 +62,7 @@
                   <Insets left="10.0" />
                </padding>
             </Button>
-            <Button fx:id="btnDms" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="373.0" mnemonicParsing="false" onAction="#onBtnDmClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #035b75; -fx-font-weight: bold; -fx-font-size: 20;" text="Dispositifs">
+            <Button fx:id="btnDms" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="373.0" mnemonicParsing="false" onAction="#onBtnDmClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #3f51b5; -fx-font-weight: bold; -fx-font-size: 20;" text="Dispositifs">
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -73,7 +73,7 @@
                   <Insets left="10.0" />
                </padding>
             </Button>
-            <Button fx:id="btnAmbulances" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="461.0" mnemonicParsing="false" onAction="#onBtnAmbulancesClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #035b75; -fx-font-weight: bold; -fx-font-size: 20;" text="Ambulances">
+            <Button fx:id="btnAmbulances" alignment="BASELINE_LEFT" layoutX="11.0" layoutY="461.0" mnemonicParsing="false" onAction="#onBtnAmbulancesClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #3f51b5; -fx-font-weight: bold; -fx-font-size: 20;" text="Ambulances">
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -84,37 +84,34 @@
                   <Insets left="10.0" />
                </padding>
             </Button>
-            <Button fx:id="btnAdmin" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="559.0" mnemonicParsing="false" onAction="#onBtnAdminClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #035b75; -fx-font-weight: bold; -fx-font-size: 20;" text="Admin">
+            <Button fx:id="btnAdmin" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="559.0" mnemonicParsing="false" onAction="#onBtnAdminClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #3f51b5; -fx-font-weight: bold; -fx-font-size: 20;" text="Admin">
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="admin.png" />
-                     </image>
-                  </ImageView>
+                     </image></ImageView>
                </graphic>
                <padding>
                   <Insets left="10.0" />
                </padding>
             </Button>
-            <Button fx:id="btnLogistique" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="559.0" mnemonicParsing="false" onAction="#onBtnLogistiqueClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #035b75; -fx-font-weight: bold; -fx-font-size: 20;" text="Logistique">
+            <Button fx:id="btnLogistique" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="559.0" mnemonicParsing="false" onAction="#onBtnLogistiqueClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color:#3f51b5; -fx-font-weight: bold; -fx-font-size: 20;" text="Logistique">
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="logistique.png" />
-                     </image>
-                  </ImageView>
+                        <Image url="logistic.png" />
+                     </image></ImageView>
                </graphic>
                <padding>
                   <Insets left="10.0" />
                </padding>
             </Button>
-            <Button fx:id="buttonLogin" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="739.0" mnemonicParsing="false" onAction="#OnLoginClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #035b75; -fx-font-weight: bold; -fx-font-size: 20;" text="Login">
+            <Button fx:id="buttonLogin" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="739.0" mnemonicParsing="false" onAction="#OnLoginClick" prefHeight="58.0" prefWidth="212.0" style="-fx-background-color: #3f51b5; -fx-font-weight: bold; -fx-font-size: 20;" text="Login">
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="login.png" />
-                     </image>
-                  </ImageView>
+                     </image></ImageView>
                </graphic>
                <padding>
                   <Insets left="10.0" />

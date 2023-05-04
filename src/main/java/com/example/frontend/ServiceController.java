@@ -24,7 +24,7 @@ public class ServiceController implements Initializable {
     private Client client = ClientBuilder.newClient()
             .register(JacksonFeature.class);
 
-    private WebTarget target = client.target("http://localhost:8081");
+    private WebTarget target = client.target(Connextion_info.url);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

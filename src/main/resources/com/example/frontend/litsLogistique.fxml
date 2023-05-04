@@ -15,17 +15,17 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.CheckComboBox?>
 
 <TabPane fx:id="tabPane" prefHeight="760.0" prefWidth="996.0" stylesheets="@../../../stylesheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.LitController">
    <tabs>
-      <Tab closable="false" text="Consultation / Localisation">
+      <Tab closable="false" text="Lits">
          <content>
             <AnchorPane maxHeight="712.0" maxWidth="996.0" minHeight="712.0" minWidth="921.0" prefHeight="712.0" prefWidth="996.0" style="-fx-background-color: #d4e8ee; -fx-background-color: rgb(240,240,255);">
                <children>
@@ -53,7 +53,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </VBox>
-                  <HBox alignment="CENTER" layoutX="258.0" layoutY="6.0" prefHeight="50.0" prefWidth="480.0" spacing="50.0">
+                  <HBox alignment="CENTER" layoutX="258.0" layoutY="7.0" prefHeight="50.0" prefWidth="480.0" spacing="50.0">
                      <children>
                         <VBox spacing="5.0">
                            <children>
@@ -67,55 +67,94 @@
                               <ChoiceBox fx:id="chBoxEspace" prefHeight="26.0" prefWidth="150.0" />
                            </children>
                         </VBox>
+                        <Button fx:id="btnChercher" mnemonicParsing="false" onAction="#onBtnChercherClick" prefHeight="35.0" prefWidth="116.0" style="-fx-background-radius: 10;" styleClass="button6" text="Chercher" />
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
          </content>
       </Tab>
-      <Tab closable="false" text="Admission">
+      <Tab closable="false" text="Affectation">
          <content>
-            <AnchorPane maxHeight="712.0" maxWidth="996.0" minHeight="712.0" minWidth="921.0" prefHeight="712.0" prefWidth="996.0" style="-fx-background-color: rgb(3,91,117,0.96); -fx-background-color: rgb(240,240,255);">
+            <AnchorPane maxHeight="930.0" maxWidth="996.0" minHeight="699.0" minWidth="921.0" prefHeight="699.0" prefWidth="996.0">
                <children>
-                  <VBox alignment="CENTER" layoutX="205.0" layoutY="30.0" prefHeight="652.0" prefWidth="587.0" spacing="10.0" style="-fx-background-color: #035b75; -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
+                  <VBox alignment="CENTER" maxHeight="712.0" prefHeight="712.0" prefWidth="996.0" spacing="5.0" style="-fx-background-color: rgb(3,91,117,0.96); -fx-background-color: rgb(240,240,255);">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="67.0" prefWidth="469.0" spacing="5.0">
+                        <VBox alignment="CENTER_LEFT" maxHeight="310.0" maxWidth="930.0" prefHeight="310.0" prefWidth="930.0" spacing="10.0" style="-fx-background-color: #035b75; -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
                            <children>
-                              <Label alignment="CENTER" prefHeight="43.0" prefWidth="452.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 35;" text="Admission des réservations" textAlignment="CENTER" />
-                              <Label style="-fx-text-fill: white; -fx-font-size: 15;" text="Veuillez indiquer les réservations à admettre" />
-                           </children>
-                        </VBox>
-                        <Line endX="374.29290771484375" endY="-2.027750015258789E-4" startX="-100.0" style="-fx-stroke: white;" />
-                        <HBox alignment="BOTTOM_CENTER" prefHeight="56.0" prefWidth="505.0" spacing="50.0">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="56.0" prefWidth="150.0" spacing="5.0">
-                                 <children>
-                                    <Label fx:id="labelService" style="-fx-font-size: 15; -fx-text-fill: white;" text="Service" />
-                                    <ChoiceBox fx:id="chBoxReservationService11" prefHeight="29.0" prefWidth="150.0" style="-fx-background-color: white;" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="403.0" prefWidth="510.0">
-                           <children>
-                              <ScrollPane maxWidth="530.0" prefHeight="403.0" prefWidth="378.0">
+                              <Label fx:id="lblStock" alignment="CENTER" prefHeight="24.0" prefWidth="137.0" style="-fx-font-size: 20; -fx-text-fill: white;" text="Stock Général" textAlignment="CENTER" visible="false" />
+                              <ScrollPane fx:id="scrollPaneAffecter" prefHeight="286.0" prefWidth="975.0" visible="false">
                                  <content>
-                                    <TableView fx:id="tableReservation" prefHeight="405.0" prefWidth="362.0" style="-fx-background-radius: 20;">
-                                      <columns>
-                                        <TableColumn fx:id="tabecolumn1" prefWidth="120.0" text="Column X" />
-                                        <TableColumn fx:id="tabecolumn2" prefWidth="120.0" text="Column X" />
-                                          <TableColumn fx:id="actioncolumn" prefWidth="120.0" text="Action" />
-                                      </columns>
-                                    </TableView>
+                                    <GridPane fx:id="gridStockAffecter" hgap="20.0" prefHeight="227.0" prefWidth="912.0" stylesheets="@../../../stylesheet.css" vgap="20.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </GridPane>
                                  </content>
                               </ScrollPane>
                            </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <HBox alignment="CENTER_LEFT" maxWidth="930.0" prefHeight="44.0" prefWidth="930.0" spacing="100.0">
+                           <children>
+                              <HBox spacing="5.0">
+                                 <children>
+                                    <Label prefHeight="38.0" prefWidth="71.0" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #3f51b5;" text="Service" />
+                                    <ChoiceBox fx:id="chBoxServiceStock" prefHeight="41.0" prefWidth="158.0" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </HBox>
+                              <Button fx:id="btnAffecter" mnemonicParsing="false" onAction="#onAffecterClick" prefHeight="43.0" prefWidth="90.0" style="-fx-background-radius: 10;" text="Affecter" visible="false" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
                         </HBox>
-                        <Button fx:id="btnSaveAllreservation" mnemonicParsing="false" onAction="#onBtnSaveAllreservationClick" prefHeight="39.0" prefWidth="382.0" style="-fx-background-radius: 10; -fx-font-size: 21; -fx-font-weight: bold;" text="Save" />
+                        <VBox alignment="CENTER_LEFT" maxHeight="310.0" maxWidth="930.0" prefHeight="310.0" prefWidth="930.0" spacing="10.0" style="-fx-background-color: #035b75; -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
+                           <children>
+                              <Label fx:id="lblStockService" prefHeight="24.0" prefWidth="188.0" style="-fx-font-size: 20; -fx-text-fill: white;" text="Stock " textAlignment="CENTER" visible="false" />
+                              <ScrollPane fx:id="scrollPaneToAdd" prefHeight="320.0" prefWidth="915.0" visible="false">
+                                 <content>
+                                    <GridPane fx:id="gridLitsToAdd" hgap="20.0" prefHeight="227.0" prefWidth="912.0" stylesheets="@../../../stylesheet.css" vgap="20.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </GridPane>
+                                 </content>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </ScrollPane>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
                      </children>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
                   </VBox>
                </children>
             </AnchorPane>
@@ -223,7 +262,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="39.0" prefWidth="507.0">
                            <children>
-                              <Button fx:id="btnAjouter" alignment="CENTER" mnemonicParsing="false" onAction="#onBtnAjouterLit" prefHeight="48.0" prefWidth="507.0" style="-fx-background-radius: 10; -fx-font-size: 21; -fx-font-weight: bold;" text="Commander" />
+                              <Button fx:id="btnAjouter" alignment="CENTER" mnemonicParsing="false" onAction="#onBtnAjouterLit" prefHeight="48.0" prefWidth="507.0" style="-fx-background-radius: 10; -fx-font-size: 21; -fx-font-weight: bold;" styleClass="button6" text="Commander" />
                            </children>
                         </VBox>
                      </children>
@@ -235,110 +274,33 @@
             </AnchorPane>
          </content>
       </Tab>
-      <Tab closable="false" text="Historique">
+      <Tab closable="false" text="Demandes">
          <content>
-            <AnchorPane maxHeight="712.0" maxWidth="1002.0" minHeight="712.0" minWidth="921.0" prefHeight="712.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <VBox layoutX="14.0" layoutY="93.0" prefHeight="590.0" prefWidth="976.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
+                  <AnchorPane maxHeight="704.0" minHeight="642.0" minWidth="0.0" prefHeight="704.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);" stylesheets="@../../../stylesheet.css">
                      <children>
-                        <ScrollPane fx:id="scrollhistorique" prefHeight="550.0" prefWidth="899.0">
-                           <content>
-                              <FlowPane fx:id="flowHistorique" prefHeight="736.0" prefWidth="1700.0" />
-                           </content>
-                        </ScrollPane>
+                        <ChoiceBox fx:id="ServicesDemandesChoiceBox1" layoutX="516.0" layoutY="75.0" prefHeight="26.0" prefWidth="196.0" />
+                        <Button fx:id="afficherDemandes1" layoutX="805.0" layoutY="72.0" mnemonicParsing="false" onAction="#onChangerEtatDemandes" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Afficher Demandes" textFill="WHITE" />
+                        <Label layoutX="420.0" layoutY="78.0" style="-fx-text-fill: #3f51b5;" styleClass="label1" stylesheets="@../../../stylesheet.css" text="Service :">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="affecterDemandesTableView" layoutX="18.0" layoutY="147.0" maxHeight="537.0" maxWidth="972.0" prefHeight="537.0" prefWidth="972.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 20;">
+                           <columns>
+                              <TableColumn fx:id="idCBColumn" prefWidth="67.0" text="Id" />
+                              <TableColumn fx:id="departementCBColumn" prefWidth="113.0" text="Service" />
+                              <TableColumn fx:id="typeLitCBColumn" prefWidth="116.0" text="Type Lit" />
+                              <TableColumn fx:id="modelLitCBColumn" prefWidth="128.0" text="Model Lit" />
+                              <TableColumn fx:id="qteCBColumn" prefWidth="77.0" text="Quantité" />
+                              <TableColumn fx:id="date_debutCBColumn" prefWidth="160.0" text="Date Demande" />
+                              <TableColumn fx:id="date_finCBColumn" prefWidth="162.0" text="Date Modification" />
+                              <TableColumn fx:id="etatDemandeCBColumn" prefWidth="113.0" text="Etat Demande" />
+                           </columns>
+                        </TableView>
                      </children>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </VBox>
-                  <ChoiceBox fx:id="chBoxHistorique" layoutX="424.0" layoutY="50.0" prefWidth="150.0" />
-                  <Label layoutX="465.0" layoutY="20.0" style="-fx-font-weight: bold; -fx-font-size: 20; -fx-text-fill: #3f51b5;" text="Service" />
-               </children>
-            </AnchorPane>
-         </content>
-      </Tab>
-      <Tab closable="false" text="Affectation">
-         <content>
-            <AnchorPane maxHeight="930.0" maxWidth="996.0" minHeight="699.0" minWidth="921.0" prefHeight="699.0" prefWidth="996.0">
-               <children>
-                  <VBox alignment="CENTER" maxHeight="712.0" prefHeight="712.0" prefWidth="996.0" spacing="5.0" style="-fx-background-color: rgb(3,91,117,0.96); -fx-background-color: rgb(240,240,255);">
-                     <children>
-                        <VBox alignment="CENTER_LEFT" maxHeight="310.0" maxWidth="930.0" prefHeight="310.0" prefWidth="930.0" spacing="10.0" style="-fx-background-color: #035b75; -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
-                           <children>
-                              <Label fx:id="lblStock" alignment="CENTER" prefHeight="24.0" prefWidth="137.0" style="-fx-font-size: 20; -fx-text-fill: white;" text="Stock Général" textAlignment="CENTER" visible="false" />
-                              <ScrollPane fx:id="scrollPaneAffecter" prefHeight="286.0" prefWidth="975.0" visible="false">
-                                 <content>
-                                    <GridPane fx:id="gridStockAffecter" hgap="20.0" prefHeight="227.0" prefWidth="912.0" stylesheets="@../../../stylesheet.css" vgap="20.0">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                    </GridPane>
-                                 </content>
-                              </ScrollPane>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                        <HBox alignment="CENTER_LEFT" maxWidth="930.0" prefHeight="44.0" prefWidth="930.0" spacing="100.0">
-                           <children>
-                              <HBox spacing="5.0">
-                                 <children>
-                                    <Label prefHeight="38.0" prefWidth="71.0" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #3f51b5;" text="Service" />
-                                    <ChoiceBox fx:id="chBoxServiceStock" prefHeight="41.0" prefWidth="158.0" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </HBox>
-                              <Button fx:id="btnAffecter" mnemonicParsing="false" onAction="#onAffecterClick" prefHeight="43.0" prefWidth="90.0" style="-fx-background-radius: 10;" text="Affecter" visible="false" />
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <VBox alignment="CENTER_LEFT" maxHeight="310.0" maxWidth="930.0" prefHeight="310.0" prefWidth="930.0" spacing="10.0" style="-fx-background-color: #035b75; -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
-                           <children>
-                              <Label fx:id="lblStockService" prefHeight="24.0" prefWidth="188.0" style="-fx-font-size: 20; -fx-text-fill: white;" text="Stock " textAlignment="CENTER" visible="false" />
-                              <ScrollPane fx:id="scrollPaneToAdd" prefHeight="320.0" prefWidth="915.0" visible="false">
-                                 <content>
-                                    <GridPane fx:id="gridLitsToAdd" hgap="20.0" prefHeight="227.0" prefWidth="912.0" stylesheets="@../../../stylesheet.css" vgap="20.0">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                    </GridPane>
-                                 </content>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </ScrollPane>
-                           </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </VBox>
+                  </AnchorPane>
                </children>
             </AnchorPane>
          </content>

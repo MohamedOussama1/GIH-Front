@@ -9,24 +9,24 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.ServiceController">
+<BorderPane prefHeight="760.0" prefWidth="996.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.ServiceController">
    <center>
-      <ScrollPane prefHeight="918.0" prefWidth="923.0">
+      <ScrollPane prefHeight="713.0" prefWidth="923.0">
          <content>
-            <AnchorPane fx:id="anchorContent" maxHeight="1798.0" maxWidth="974.0" minHeight="869.0" minWidth="921.0" prefHeight="1798.0" prefWidth="974.0">
+            <AnchorPane fx:id="anchorContent" maxHeight="760.0" maxWidth="996.0" minHeight="711.0" minWidth="921.0" prefHeight="760.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);">
                <children>
-                  <GridPane fx:id="gridPane" hgap="30.0" layoutX="68.0" layoutY="113.0" prefHeight="1177.0" prefWidth="786.0" vgap="30.0">
+                  <GridPane fx:id="gridPane" hgap="30.0" layoutX="64.0" layoutY="101.0" prefHeight="732.0" prefWidth="869.0" vgap="30.0">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="561.2000122070312" minWidth="10.0" prefWidth="382.1999877929687" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="383.9999877929688" minWidth="10.0" prefWidth="373.4000122070313" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="561.2000122070312" minWidth="10.0" prefWidth="420.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="421.0" minWidth="10.0" prefWidth="419.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="422.80000000000007" minHeight="10.0" prefHeight="323.40001220703124" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="424.79998779296875" minHeight="0.0" prefHeight="381.5999877929688" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="356.0" minHeight="10.0" prefHeight="323.20001220703125" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="422.80000000000007" minHeight="10.0" prefHeight="301.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="424.79998779296875" minHeight="0.0" prefHeight="292.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="356.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
-                  <Label fx:id="titre" layoutX="212.0" layoutY="27.0" text="Statistiques des Lits par Services :" textFill="#3149c1">
+                  <Label fx:id="titre" layoutX="249.0" layoutY="29.0" text="Statistiques des Lits par Services :" textFill="#3149c1">
                      <font>
                         <Font size="34.0" />
                      </font>

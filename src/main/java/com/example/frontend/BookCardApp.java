@@ -64,7 +64,7 @@ public class BookCardApp  {
 
 //        parentGridPane.setStyle("-fx-background-color: rgb(255,255,255); ");
 //     parentGridPane.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, rgba(63,144,155,0.71), rgba(80,152,203,0.65),rgba(195,206,217,0.76));");
-        parentGridPane.setStyle("-fx-background-color: rgb(3,91,117)");
+        parentGridPane.setStyle("-fx-background-color:  linear-gradient(to bottom right, #3f51b5, #2196f3)");
         parentGridPane.setHgap(5);
         parentGridPane.setVgap(5);
 //        parentGridPane.setPadding(new Insets(20));
@@ -83,7 +83,7 @@ public class BookCardApp  {
 
          client = ClientBuilder.newClient().register(JacksonFeature.class);
 
-         target = client.target("http://localhost:8081");
+         target = client.target(Connextion_info.url);
 
         Response getResponse = target
                 .path("lits")
@@ -122,10 +122,6 @@ public class BookCardApp  {
 
         for(JSONObject key: data2.keySet()){
 
-            BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THICK);
-            Border border = new Border(borderStroke);
-
-
             // create flow pane
             FlowPane g1=new FlowPane();
 
@@ -137,7 +133,7 @@ public class BookCardApp  {
 //            g1.setBorder(border);
 
             Label barLabel = new Label("                                            " + key.get("type") + " " +key.get("numero"));
-            barLabel.setStyle("-fx-font-family: 'Arial Black'");
+            barLabel.setStyle("-fx-font-family: 'Arial Black'; -fx-text-fill: white;");
 
 
 
@@ -161,12 +157,12 @@ public class BookCardApp  {
 
                     if (value.getBoolean("occupied")) {
 
-                        BookCard b1 = new BookCard("The Lord ", value.get("idLit").toString(),
+                        BookCard b1 = new BookCard("Rachid", value.get("idLit").toString(),
                                 new Image("red.png"), value.get("code").toString());
 
                         g1.getChildren().add(b1);
                     } else {
-                        BookCard b1 = new BookCard("The Lord ", value.get("idLit").toString(),
+                        BookCard b1 = new BookCard("Rachid", value.get("idLit").toString(),
                                 new Image("green.png"), value.get("code").toString());
 
                         g1.getChildren().add(b1);
@@ -255,7 +251,7 @@ class BookCard extends Pane {
 
         client = ClientBuilder.newClient().register(JacksonFeature.class);
 
-        target = client.target("http://localhost:8081");
+        target = client.target(Connextion_info.url);
 
 
         // Create context menu with a "Delete" option
