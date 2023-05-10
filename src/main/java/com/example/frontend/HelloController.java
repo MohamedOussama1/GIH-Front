@@ -36,6 +36,8 @@ public class HelloController implements Initializable {
     @FXML
     Button btnServices;
     @FXML
+    VBox vbox_services;
+    @FXML
     Button btnLits;
     @FXML
     Button btnDms;
@@ -53,6 +55,10 @@ public class HelloController implements Initializable {
     private String role = "admin";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        AnchorPane.setRightAnchor(anchorContent,0.0);
+        AnchorPane.setLeftAnchor(anchorContent,vbox_services.getPrefWidth());
+        AnchorPane.setTopAnchor(anchorContent,0.0);
+        AnchorPane.setBottomAnchor(anchorContent,0.0);
     }
     @FXML
     void OnLoginClick(ActionEvent event) {
@@ -154,8 +160,12 @@ public class HelloController implements Initializable {
         }
         Pane pane = fxmlLoader.load();
         anchorContent.getChildren().clear();
-        anchorContent.setPrefSize(921, 741);
+        AnchorPane.setRightAnchor(pane,0.0);
+        AnchorPane.setBottomAnchor(pane,8.0);
+        AnchorPane.setTopAnchor(pane,0.0);
+        AnchorPane.setLeftAnchor(pane,0.0);
         anchorContent.getChildren().add(pane);
+
 
     }
     public void onBtnAmbulancesClick(ActionEvent event) throws IOException{

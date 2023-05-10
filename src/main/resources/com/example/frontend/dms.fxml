@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -19,7 +21,7 @@
 
 <AnchorPane fx:id="anchorContent" maxHeight="869.0" maxWidth="994.0" minHeight="759.0" minWidth="921.0" prefHeight="759.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DmController">
    <children>
-      <TabPane layoutX="-2.0" layoutY="-4.0" prefHeight="760.0" prefWidth="996.0" stylesheets="@../../../stylesheet.css" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="-2.0" layoutY="-4.0" prefHeight="760.0" prefWidth="996.0" stylesheets="@../../../stylesheet.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
         <tabs>
             <Tab text="Demande">
                <content>
@@ -32,69 +34,79 @@
                            </children>
                         </VBox>
                         <Text layoutX="146.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <TabPane prefHeight="707.0" prefWidth="996.0" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane fx:id="tabPaneDemandes" prefHeight="707.0" prefWidth="996.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <tabs>
-                              <Tab text="Créer Demandes">
+                              <Tab fx:id="tabCréerDemandes" text="Créer Demandes">
                                  <content>
                                     <AnchorPane maxHeight="721.0" minHeight="619.0" minWidth="0.0" prefHeight="639.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);" stylesheets="@../../../stylesheet.css">
                                        <children>
-                                          <HBox alignment="CENTER_RIGHT" layoutX="371.0" layoutY="567.0" prefHeight="30.0" prefWidth="584.0" spacing="40.0">
+                                          <HBox alignment="CENTER" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="598.0" prefWidth="996.0" spacing="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                              <children>
-                                                <Button fx:id="btnDeleteDemandeDm" mnemonicParsing="false" onAction="#onDeleteDetailDemandeDm" prefHeight="27.0" prefWidth="29.0" styleClass="bi-trash-fill" stylesheets="@../../../stylesheet.css" textFill="WHITE" />
-                                                <Button fx:id="btnConfirmDemandeDm" mnemonicParsing="false" onAction="#onConfirmDemandeDm" prefHeight="30.0" prefWidth="31.0" styleClass="check-circle-fill" stylesheets="@../../../stylesheet.css" textFill="WHITE">
-                                                   <font>
-                                                      <Font size="12.0" />
-                                                   </font>
-                                                </Button>
+                                                <AnchorPane prefHeight="608.0" prefWidth="248.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" cache="true" prefHeight="532.0" prefWidth="235.0" spacing="20.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10;">
+                                                         <children>
+                                                            <Label layoutX="99.0" layoutY="72.0" style="-fx-text-fill: white;" styleClass="label1" text="Service :">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ChoiceBox fx:id="chBoxService" layoutX="35.0" layoutY="199.0" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
+                                                            <Label style="-fx-text-fill: white;" styleClass="label1" text="Type :">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ChoiceBox fx:id="chBoxTypeDm" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
+                                                            <Label style="-fx-text-fill: white;" styleClass="label1" text="Nom :">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ChoiceBox fx:id="chBoxNomDm" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
+                                                            <Label layoutX="58.0" layoutY="310.0" style="-fx-text-fill: white;" styleClass="label1" text="Quantité :">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Spinner fx:id="spinnerQuantityDm" prefHeight="42.0" prefWidth="186.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <Button fx:id="btnAddDemandeDm" layoutX="29.0" layoutY="542.0" mnemonicParsing="false" onAction="#onAjouterDetailDemandeDm" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Ajouter" textFill="WHITE" />
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane prefHeight="605.0" prefWidth="544.0">
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" layoutX="75.0" layoutY="542.0" prefHeight="56.0" prefWidth="417.0" spacing="40.0">
+                                                         <children>
+                                                            <Button fx:id="btnDeleteDemandeDm" mnemonicParsing="false" onAction="#onDeleteDetailDemandeDm" prefHeight="27.0" prefWidth="29.0" styleClass="bi-trash-fill" stylesheets="@../../../stylesheet.css" textFill="WHITE" />
+                                                            <Button fx:id="btnConfirmDemandeDm" mnemonicParsing="false" onAction="#onConfirmDemandeDm" prefHeight="30.0" prefWidth="31.0" styleClass="check-circle-fill" stylesheets="@../../../stylesheet.css" textFill="WHITE">
+                                                               <font>
+                                                                  <Font size="12.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </children>
+                                                      </HBox>
+                                                      <TableView fx:id="tblViewAddDetailDemandeDm" cache="true" layoutX="57.0" layoutY="2.0" maxHeight="540.0" maxWidth="610.0" prefHeight="540.0" prefWidth="435.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10;">
+                                                         <columns>
+                                                            <TableColumn fx:id="typeDmColumn" prefWidth="159.0" text="Type " />
+                                                            <TableColumn fx:id="nomDmColumn" prefWidth="161.0" text="Nom" />
+                                                            <TableColumn fx:id="qteDmColumn" minWidth="9.0" prefWidth="127.0" text="Quantité" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
                                              </children>
                                           </HBox>
-                                          <VBox alignment="CENTER" layoutX="157.0" layoutY="16.0" prefHeight="532.0" prefWidth="235.0" spacing="20.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10;">
-                                             <children>
-                                                <Label layoutX="99.0" layoutY="72.0" style="-fx-text-fill: white;" styleClass="label1" text="Service :">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="chBoxService" layoutX="35.0" layoutY="199.0" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
-                                                <Label style="-fx-text-fill: white;" styleClass="label1" text="Type :">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="chBoxTypeDm" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
-                                                <Label style="-fx-text-fill: white;" styleClass="label1" text="Nom :">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="chBoxNomDm" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
-                                                <Label layoutX="58.0" layoutY="310.0" style="-fx-text-fill: white;" styleClass="label1" text="Quantité :">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <Spinner fx:id="spinnerQuantityDm" styleClass="choice-box" />
-                                             </children>
-                                          </VBox>
-                                          <TableView fx:id="tblViewAddDetailDemandeDm" layoutX="474.0" layoutY="16.0" maxHeight="534.0" maxWidth="610.0" prefHeight="532.0" prefWidth="481.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10;">
-                                             <columns>
-                                                <TableColumn fx:id="serviceDmColumn" prefWidth="124.0" text="Service" />
-                                                <TableColumn fx:id="typeDmColumn" prefWidth="124.0" text="Type " />
-                                                <TableColumn fx:id="nomDmColumn" prefWidth="124.0" text="Nom" />
-                                                <TableColumn fx:id="qteDmColumn" prefWidth="108.0" text="Quantité" />
-                                             </columns>
-                                          </TableView>
-                                          <Button fx:id="btnAddDemandeDm" layoutX="186.0" layoutY="560.0" mnemonicParsing="false" onAction="#onAjouterDetailDemandeDm" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Ajouter" textFill="WHITE" />
                                        </children>
                                     </AnchorPane>
                                  </content>
                               </Tab>
-                              <Tab text="Traiter Demandes">
+                              <Tab fx:id="tabTraiterDemandes" text="Traiter Demandes">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="645.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);">
                                        <children>
-                                          <Button fx:id="btnAfficherDemandesDm" layoutX="410.0" layoutY="38.0" mnemonicParsing="false" onAction="#onAfficherDemandesDm" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Afficher Demandes" textFill="WHITE" />
-                                          <TableView fx:id="afficherDemandesTableView" layoutX="306.0" layoutY="111.0" maxHeight="532.0" maxWidth="864.0" prefHeight="532.0" prefWidth="499.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;" stylesheets="@../../../stylesheet.css">
+                                          <TableView fx:id="afficherDemandesTableView" cache="true" layoutX="249.0" layoutY="63.0" maxHeight="532.0" maxWidth="864.0" prefHeight="532.0" prefWidth="499.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;" stylesheets="@../../../stylesheet.css">
                                              <columns>
                                                 <TableColumn fx:id="iddCol" prefWidth="69.0" text="Id" />
                                                 <TableColumn fx:id="serviceCol" prefWidth="110.0" text="Service" />
@@ -106,12 +118,11 @@
                                     </AnchorPane>
                                  </content>
                               </Tab>
-                              <Tab text="Afficher Demandes">
+                              <Tab fx:id="tabAfficherDemandes" text="Afficher Demandes">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="645.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);">
                                        <children>
-                                          <Button fx:id="btnAfficherDemandesDm1" layoutX="410.0" layoutY="38.0" mnemonicParsing="false" onAction="#onAfficherDemandesDm1" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Afficher Demandes" textFill="WHITE" />
-                                          <TableView fx:id="afficherDemandesTableView1" layoutX="306.0" layoutY="111.0" maxHeight="532.0" maxWidth="864.0" prefHeight="532.0" prefWidth="499.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;" stylesheets="@../../../stylesheet.css">
+                                          <TableView fx:id="afficherDemandesTableView1" cache="true" layoutX="249.0" layoutY="63.0" maxHeight="532.0" maxWidth="864.0" prefHeight="532.0" prefWidth="499.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;" stylesheets="@../../../stylesheet.css">
                                              <columns>
                                                 <TableColumn fx:id="idCol1" prefWidth="69.0" text="Id" />
                                                 <TableColumn fx:id="serviceCol1" prefWidth="110.0" text="Service" />
@@ -133,73 +144,157 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <HBox alignment="CENTER" layoutX="53.0" layoutY="83.0" prefHeight="36.0" prefWidth="856.0" spacing="30.0" stylesheets="@../../../../../../../../gg/GIH-Front-gasbi/src/main/resources/stylesheet.css">
+                        <HBox alignment="CENTER" layoutX="100.0" layoutY="17.0" prefHeight="323.0" prefWidth="793.0" spacing="50.0" AnchorPane.bottomAnchor="370.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="103.0" AnchorPane.topAnchor="17.0">
                            <children>
-                              <Label layoutX="177.0" layoutY="20.0" prefHeight="17.0" prefWidth="69.0" text="Type DM ;" />
-                              <ChoiceBox fx:id="typeDM2" layoutX="145.0" layoutY="10.0" prefHeight="36.0" prefWidth="129.0" />
-                              <Label prefHeight="17.0" prefWidth="46.0" text="DM : " />
-                              <ChoiceBox fx:id="dms" layoutX="381.0" layoutY="10.0" prefHeight="36.0" prefWidth="125.0" />
-                              <Label prefHeight="17.0" prefWidth="39.0" text="Qte :" />
-                              <TextField fx:id="qteLivraison" prefHeight="37.0" prefWidth="58.0" />
-                              <Button fx:id="ajouterDetailLivraison" mnemonicParsing="false" onAction="#onAjouterDetailLivraison" text="Ajouter Detail Livraison" />
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="291.0" prefWidth="332.0">
+                                 <children>
+                                    <HBox prefHeight="241.0" prefWidth="323.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="241.0" prefWidth="100.0" spacing="70.0">
+                                             <children>
+                                                <Label prefHeight="30.0" prefWidth="71.0" style="-fx-text-fill: white;" styleClass="label1" text="Type :" />
+                                                <Label prefHeight="30.0" prefWidth="64.0" style="-fx-text-fill: white;" styleClass="label1" text="Nom :" />
+                                                <Label prefHeight="30.0" prefWidth="67.0" style="-fx-text-fill: white;" styleClass="label1" text="Qte :" />
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="CENTER" prefHeight="262.0" prefWidth="225.0" spacing="50.0">
+                                             <children>
+                                                <ChoiceBox fx:id="typeDM2" maxHeight="36.0" maxWidth="145.0" prefHeight="40.0" prefWidth="140.0" />
+                                                <ChoiceBox fx:id="dms" maxHeight="36.0" maxWidth="145.0" prefHeight="40.0" prefWidth="140.0" />
+                                                <Spinner fx:id="spinnerQteLivraison" prefHeight="40.0" prefWidth="140.0" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="ajouterDetailLivraison" layoutX="46.0" layoutY="247.0" mnemonicParsing="false" onAction="#onAjouterDetailLivraison" prefHeight="40.0" prefWidth="207.0" styleClass="button6" text="Ajouter Detail Livraison" />
+                                 </children>
+                              </AnchorPane>
+                              <TableView fx:id="tableDetailLivraison" prefHeight="303.0" prefWidth="335.0">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
                            </children>
                         </HBox>
-                        <ChoiceBox fx:id="fournisseurs" layoutX="356.0" layoutY="319.0" prefWidth="150.0" />
-                        <Label layoutX="274.0" layoutY="328.0" prefHeight="17.0" prefWidth="82.0" text="Fournisseur :" />
-                        <Button fx:id="ajouterLivraison1" layoutX="682.0" layoutY="325.0" mnemonicParsing="false" onAction="#onAjouterLivraison" text="Ajouter Livraison" />
-                        <TableView fx:id="tableDetailLivraison" layoutX="380.0" layoutY="140.0" prefHeight="152.0" prefWidth="251.0">
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
-                        <TableView fx:id="afficherLivraison" layoutX="183.0" layoutY="376.0" prefHeight="312.0" prefWidth="631.0">
-                           <columns>
-                              <TableColumn fx:id="idColumn" prefWidth="86.0" text="id" />
-                              <TableColumn fx:id="fournisseurColumn" prefWidth="208.0" text="fournisseur" />
-                              <TableColumn fx:id="dateColumn" prefWidth="271.0" text="Date Livraison" />
-                           </columns>
-                        </TableView>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="352.0" prefHeight="324.0" prefWidth="1000.0" spacing="30.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="352.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="352.0" spacing="20.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="81.0" prefWidth="312.0" spacing="20.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10; -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3);">
+                                       <children>
+                                          <Label prefHeight="30.0" prefWidth="127.0" style="-fx-text-fill: white;" styleClass="label1" text="Fournisseur :" />
+                                          <ChoiceBox fx:id="fournisseurs" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="ajouterLivraison1" mnemonicParsing="false" onAction="#onAjouterLivraison" prefHeight="40.0" prefWidth="207.0" styleClass="button6" text="Ajouter Livraison" />
+                                 </children>
+                              </VBox>
+                              <TableView fx:id="afficherLivraison" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="298.0" prefWidth="596.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
+                                 <columns>
+                                    <TableColumn fx:id="idColumn" prefWidth="86.0" text="id" />
+                                    <TableColumn fx:id="fournisseurColumn" prefWidth="208.0" text="fournisseur" />
+                                    <TableColumn fx:id="dateColumn" prefWidth="271.0" text="Date Livraison" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Traitement Fournisseur">
+            <Tab text="Fournisseur">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="243.0" layoutY="49.0" text="Ajouter un fournisseur ">
-                           <font>
-                              <Font size="27.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="nomFournisseur" layoutX="99.0" layoutY="126.0" prefHeight="25.0" prefWidth="120.0" />
-                        <TextField fx:id="emailFournisseur" layoutX="370.0" layoutY="126.0" prefHeight="25.0" prefWidth="136.0" />
-                        <TextField fx:id="numFournisseur" layoutX="211.0" layoutY="256.0" />
-                        <Label layoutX="34.0" layoutY="130.0" text="Nom :" />
-                        <Label layoutX="268.0" layoutY="130.0" text="Email :" />
-                        <Label layoutX="128.0" layoutY="260.0" text="Tel :" />
-                        <Button fx:id="btnAjouterFournisseur" layoutX="490.0" layoutY="256.0" mnemonicParsing="false" onAction="#ajouterFournisseur" text="enregistrer" />
-                        <Label layoutX="565.0" layoutY="130.0" text="Ville :" />
-                        <Label layoutX="24.0" layoutY="190.0" text="code APE:" />
-                        <Label layoutX="248.0" layoutY="189.0" text="Forme Juridique :" />
-                        <Label layoutX="533.0" layoutY="190.0" text="Numero siren :" />
-                        <TextField fx:id="formejuridiqueFournisseur" layoutX="371.0" layoutY="185.0" prefHeight="25.0" prefWidth="134.0" />
-                        <TextField fx:id="numsirenFournisseur" layoutX="626.0" layoutY="186.0" prefHeight="25.0" prefWidth="119.0" />
-                        <TextField fx:id="codeapeFournisseur" layoutX="94.0" layoutY="185.0" prefHeight="25.0" prefWidth="117.0" />
-                        <TextField fx:id="villeFournisseur" layoutX="630.0" layoutY="126.0" prefHeight="25.0" prefWidth="111.0" />
-                        <TableView fx:id="afficherFournisseurs" editable="true" layoutX="16.0" layoutY="364.0" onSort="#onAfficherFournisseurs" prefHeight="456.0" prefWidth="895.0">
-                           <columns>
-                              <TableColumn fx:id="nomFCol" prefWidth="99.0" text="nom" />
-                              <TableColumn fx:id="emailFCol" prefWidth="81.0" text="email" />
-                              <TableColumn fx:id="villeFCol" prefWidth="83.0" text="ville" />
-                              <TableColumn fx:id="codeapeFCol" prefWidth="96.0" text="codeape" />
-                              <TableColumn fx:id="formejuridiqueFCol" prefWidth="133.0" text="fourmejuridique" />
-                              <TableColumn fx:id="numsirenFCol" prefWidth="131.0" text="numero siiren" />
-                              <TableColumn fx:id="telFCol" prefWidth="100.0" text="tel" />
-                              <TableColumn fx:id="supprimercolumn" prefWidth="82.0" text="supprimer" />
-                              <TableColumn fx:id="modifiercolumn" prefWidth="89.0" text="modifier" />
-                           </columns>
-                        </TableView>
+                        <VBox alignment="CENTER" prefHeight="705.0" prefWidth="993.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="355.0" prefWidth="427.0">
+                                 <children>
+                                    <VBox prefHeight="344.0" prefWidth="417.0" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;">
+                                       <children>
+                                          <VBox alignment="CENTER">
+                                             <children>
+                                                <Label alignment="CENTER" prefHeight="39.0" prefWidth="340.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 30;" text="Ajouter un fournisseur " textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="27.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 15;" text="Veuillez saisir les informations du fournisseur" />
+                                             </children>
+                                          </VBox>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <VBox spacing="5.0">
+                                                   <children>
+                                                      <Label style="-fx-text-fill: white;" text="Nom :" />
+                                                      <TextField fx:id="nomFournisseur" prefHeight="25.0" prefWidth="97.0" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox prefHeight="48.0" prefWidth="125.0" spacing="5.0">
+                                                   <children>
+                                                      <Label style="-fx-text-fill: white;" text="Tel :" />
+                                                      <TextField fx:id="numFournisseur" prefHeight="25.0" prefWidth="97.0" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox spacing="5.0">
+                                                   <children>
+                                                      <Label style="-fx-text-fill: white;" text="Ville :" />
+                                                      <TextField fx:id="villeFournisseur" prefHeight="25.0" prefWidth="97.0" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <VBox spacing="5.0">
+                                                   <children>
+                                                      <Label style="-fx-text-fill: white;" text="code APE:" />
+                                                      <TextField fx:id="codeapeFournisseur" prefHeight="25.0" prefWidth="97.0" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox spacing="5.0">
+                                                   <children>
+                                                      <Label prefHeight="18.0" prefWidth="117.0" style="-fx-text-fill: white;" text="Forme Juridique :" />
+                                                      <TextField fx:id="formejuridiqueFournisseur" prefHeight="25.0" prefWidth="97.0" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox spacing="5.0">
+                                                   <children>
+                                                      <Label style="-fx-text-fill: white;" text="Numero siren :" />
+                                                      <TextField fx:id="numsirenFournisseur" prefHeight="25.0" prefWidth="97.0" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <VBox spacing="5.0">
+                                             <children>
+                                                <Label style="-fx-text-fill: white;" text="Email :" />
+                                                <TextField fx:id="emailFournisseur" prefHeight="25.0" prefWidth="136.0" />
+                                             </children>
+                                          </VBox>
+                                          <Button fx:id="btnAjouterFournisseur" mnemonicParsing="false" onAction="#ajouterFournisseur" prefHeight="32.0" prefWidth="337.0" styleClass="button6" text="enregistrer" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                              <TableView fx:id="afficherFournisseurs" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onSort="#onAfficherFournisseurs" prefHeight="286.0" prefWidth="942.0">
+                                 <columns>
+                                    <TableColumn fx:id="nomFCol" prefWidth="120.0" text="nom" />
+                                    <TableColumn fx:id="emailFCol" prefWidth="165.0" text="email" />
+                                    <TableColumn fx:id="villeFCol" prefWidth="62.0" text="ville" />
+                                    <TableColumn fx:id="codeapeFCol" prefWidth="84.0" text="codeape" />
+                                    <TableColumn fx:id="formejuridiqueFCol" prefWidth="128.0" text="fourmejuridique" />
+                                    <TableColumn fx:id="numsirenFCol" prefWidth="119.0" text="numero siiren" />
+                                    <TableColumn fx:id="telFCol" prefWidth="88.0" text="tel" />
+                                    <TableColumn fx:id="supprimercolumn" prefWidth="90.0" text="supprimer" />
+                                    <TableColumn fx:id="modifiercolumn" prefWidth="79.0" text="modifier" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
                      </children>
                   </AnchorPane>
                </content>
@@ -210,26 +305,24 @@
                      <children>
                         <VBox alignment="CENTER" layoutX="106.0" layoutY="10.0" prefHeight="195.0" prefWidth="751.0" spacing="5.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="70.0">
                            <children>
-                              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="725.0" styleClass="mac-pane" stylesheets="@../../../../../../../../gg/GIH-Front/src/main/resources/com/example/frontend/stylesheet.css">
+                              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="725.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" styleClass="mac-pane" stylesheets="@../../../../../../../../dash/GIH-Front/src/main/resources/com/example/frontend/stylesheet.css">
                                  <children>
-                                    <HBox alignment="CENTER" layoutX="14.0" layoutY="40.0" prefHeight="34.0" prefWidth="603.0" spacing="30.0" stylesheets="@../../../../../../../../gg/GIH-Front/src/main/resources/stylesheet.css">
+                                    <HBox alignment="CENTER" layoutX="61.0" layoutY="55.0" prefHeight="34.0" prefWidth="603.0" spacing="50.0" stylesheets="@../../../../../../../../dash/GIH-Front/src/main/resources/stylesheet.css">
                                        <children>
-                                          <Label text="NOM DM :" />
-                                          <TextField fx:id="nomdm1" prefHeight="26.0" prefWidth="125.0" />
-                                          <Label text="QTE :" />
-                                          <TextField fx:id="qtedm1" prefHeight="27.0" prefWidth="45.0" />
-                                          <Label text="TYPE  :" />
+                                          <Label style="-fx-text-fill: white;" text="NOM DM :" />
+                                          <TextField fx:id="nomdm1" prefHeight="34.0" prefWidth="130.0" />
+                                          <Label style="-fx-text-fill: white;" text="TYPE  :" />
                                           <ChoiceBox fx:id="typedmChoiceBox1" prefWidth="150.0" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" layoutX="23.0" layoutY="74.0" prefHeight="61.0" prefWidth="698.0" spacing="50.0">
+                                    <HBox alignment="CENTER" layoutX="27.0" layoutY="91.0" prefHeight="61.0" prefWidth="698.0" spacing="50.0">
                                        <children>
-                                          <Button fx:id="btnUpload" mnemonicParsing="false" onAction="#OnBtnUploadClick" prefHeight="39.0" prefWidth="92.0" text="Upload" />
-                                          <TextField fx:id="txt_filed_imagePath" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="425.0" promptText="image path">
+                                          <TextField fx:id="txt_filed_imagePath" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="444.0" promptText="image path">
                                              <font>
                                                 <Font size="21.0" />
                                              </font>
                                           </TextField>
+                                          <Button fx:id="btnUpload" minWidth="49.0" mnemonicParsing="false" onAction="#OnBtnUploadClick" prefHeight="38.0" prefWidth="54.0" styleClass="button6" />
                                           <Pane prefHeight="61.0" prefWidth="74.0" styleClass="mac-pane">
                                              <children>
                                                 <ImageView fx:id="image_upload" fitHeight="60.0" fitWidth="71.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1);" />
@@ -237,8 +330,8 @@
                                           </Pane>
                                        </children>
                                     </HBox>
-                                    <Button fx:id="btn_create_dm" layoutX="251.0" layoutY="135.0" mnemonicParsing="false" onAction="#onAjouterDM" prefHeight="32.0" prefWidth="247.0" text="Create" />
-                                    <Label layoutX="177.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="372.0" style="-fx-background-color: #2ac93a; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1); -fx-background-radius: 5;" styleClass="label1" text="Creation d'un dispositif medical">
+                                    <Button fx:id="btn_create_dm" layoutX="239.0" layoutY="163.0" mnemonicParsing="false" onAction="#onAjouterDM" prefHeight="32.0" prefWidth="247.0" styleClass="button6" text="Create" />
+                                    <Label layoutX="210.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="306.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 1); -fx-background-radius: 5; -fx-text-fill: white;" styleClass="label1" text="Creation d'un dispositif medical">
                                        <font>
                                           <Font name="System Bold" size="24.0" />
                                        </font>
@@ -247,42 +340,46 @@
                               </Pane>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" layoutX="114.0" layoutY="210.0" prefHeight="118.0" prefWidth="728.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="70.0">
+                        <VBox alignment="CENTER" layoutX="100.0" layoutY="222.0" prefHeight="118.0" prefWidth="728.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="70.0">
                            <children>
-                              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="102.0" prefWidth="725.0" styleClass="mac-pane" stylesheets="@../../../../../../../../gg/GIH-Front/src/main/resources/com/example/frontend/stylesheet.css">
+                              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="102.0" prefWidth="725.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0) dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" styleClass="mac-pane" stylesheets="@../../../../../../../../dash/GIH-Front/src/main/resources/com/example/frontend/stylesheet.css">
                                  <children>
-                                    <HBox alignment="CENTER" layoutX="61.0" layoutY="4.0" prefHeight="51.0" prefWidth="560.0" spacing="100.0">
+                                    <HBox alignment="CENTER" layoutX="57.0" layoutY="-3.0" prefHeight="35.0" prefWidth="604.0" spacing="10.0">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="vous n'avez pas trouvé votre type? cliquer ici pour ajouter un nouveau :" />
-                                          <Button fx:id="créertypedm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" text="créer type" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: white;" text="vous n'avez pas trouvé votre type? cliquer ici pour ajouter un nouveau :" />
+                                          <Button fx:id="créertypedm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="109.0" styleClass="button6" text="créer type" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="4.0" layoutY="42.0" prefHeight="51.0" prefWidth="710.0" spacing="30.0">
                                        <children>
-                                          <Label fx:id="typedmlabel" text="NOM TYPE DM :" />
-                                          <TextField fx:id="typedm" />
-                                          <Label fx:id="typedmlabel1" text="CATEGORIE" />
-                                          <TextField fx:id="txt_categorie" />
-                                          <Button fx:id="ajoutertypedm" mnemonicParsing="false" onAction="#onAjouterTypeDM" text="Ajouter" />
+                                          <Label fx:id="typedmlabel" style="-fx-text-fill: white;" text="NOM TYPE DM :" />
+                                          <TextField fx:id="typedm" prefHeight="25.0" prefWidth="149.0" />
+                                          <Label fx:id="typedmlabel1" style="-fx-text-fill: white;" text="CATEGORIE" />
+                                          <TextField fx:id="txt_categorie" prefHeight="25.0" prefWidth="163.0" />
+                                          <Button fx:id="ajoutertypedm" mnemonicParsing="false" onAction="#onAjouterTypeDM" prefHeight="34.0" prefWidth="92.0" styleClass="button6" text="Ajouter" />
                                        </children>
                                     </HBox>
                                  </children>
                               </Pane>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" layoutX="114.0" layoutY="330.0" prefHeight="431.0" prefWidth="677.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="82.0">
+                        <VBox alignment="CENTER" layoutX="114.0" layoutY="330.0" prefHeight="367.0" prefWidth="800.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="82.0">
                            <children>
-                              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="725.0" styleClass="mac-pane" stylesheets="@../../../../../../../../gg/GIH-Front/src/main/resources/stylesheet.css">
+                              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="725.0" styleClass="mac-pane" stylesheets="@../../../../../../../../dash/GIH-Front/src/main/resources/stylesheet.css">
                                  <children>
-                                    <TableView fx:id="afficherDMTableView" layoutX="74.0" layoutY="41.0" prefHeight="342.0" prefWidth="570.0">
-                                       <columns>
-                                          <TableColumn fx:id="idCol2" prefWidth="64.1091537475586" text="Id" />
-                                          <TableColumn fx:id="nomDMeCol" prefWidth="215.45411682128906" text="Nom DM" />
-                                          <TableColumn fx:id="qteColumn" prefWidth="97.5458984375" text="Qte" />
-                                          <TableColumn fx:id="typeDMColumn" prefWidth="191.9951171875" text="Type DM" />
-                                       </columns>
-                                    </TableView>
-                                    <Button layoutX="280.0" layoutY="3.0" mnemonicParsing="false" onAction="#onAfficherDMs" text="Afficher les DM" />
+                                    <ScrollPane fx:id="scroll_table" prefHeight="360.0" prefWidth="738.0">
+                                       <content>
+                                          <TableView fx:id="SupprimerModifierDMTableView" prefHeight="340.0" prefWidth="738.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" styleClass="mac-pane" stylesheets="@../../../stylesheet.css">
+                                             <columns>
+                                                <TableColumn fx:id="idColSM" prefWidth="64.1091537475586" text="Id" />
+                                                <TableColumn fx:id="nomDMColSM" prefWidth="215.45411682128906" text="Nom DM" />
+                                                <TableColumn fx:id="qteColumnSM" prefWidth="71.37313842773438" text="Qte" />
+                                                <TableColumn fx:id="typeDMColumnSM" prefWidth="176.1085205078125" text="Type DM" />
+                                                <TableColumn fx:id="actionsColSM" prefWidth="221.0" text="Action" />
+                                             </columns>
+                                          </TableView>
+                                       </content>
+                                    </ScrollPane>
                                  </children>
                               </Pane>
                            </children>

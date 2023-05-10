@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="776.0" prefWidth="942.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DmAffecterController">
+   <children>
+      <SplitPane dividerPositions="0.5" layoutX="24.0" layoutY="18.0" prefHeight="776.0" prefWidth="942.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="774.0" prefWidth="696.0">
+               <children>
+                  <TilePane fx:id="tilepane_chambre" layoutX="172.0" layoutY="104.0" prefHeight="774.0" prefWidth="738.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="774.0" prefWidth="196.0">
+               <children>
+                  <Label layoutX="34.0" layoutY="5.0" prefHeight="30.0" prefWidth="138.0" text="Service">
+                     <font>
+                        <Font name="Arial Black" size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="id_txt_search" layoutX="7.0" layoutY="211.0" onInputMethodTextChanged="#On_auto_searchType_KyeBoard" prefHeight="28.0" prefWidth="173.0" promptText="Search" />
+                  <ChoiceBox fx:id="cbox_service" layoutX="16.0" layoutY="44.0" prefWidth="150.0" />
+                  <Separator layoutX="8.0" layoutY="188.0" prefHeight="19.0" prefWidth="171.0" />
+                  <ChoiceBox fx:id="cbox_chambre" layoutX="19.0" layoutY="126.0" prefWidth="150.0" />
+                  <Label layoutX="40.0" layoutY="81.0" prefHeight="37.0" prefWidth="121.0" text="Chmbre N">
+                     <font>
+                        <Font name="Arial Black" size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" layoutX="3.0" layoutY="600.0" prefHeight="90.0" prefWidth="183.0" spacing="15.0" AnchorPane.bottomAnchor="110.0">
+                     <children>
+                        <Button fx:id="btn_save_dm" mnemonicParsing="false" onAction="#Onbtn_save_dmClick" prefHeight="70.0" prefWidth="80.0" text="Save" />
+                        <Button fx:id="btn_cancel_dm" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Onbtn_cancel_dmClick" prefHeight="22.0" prefWidth="80.0" text="Cancel" />
+                     </children>
+                  </HBox>
+                  <StackPane layoutX="1.0" layoutY="244.0" prefHeight="339.0" prefWidth="193.0">
+                     <children>
+                        <Accordion fx:id="accrodion_0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="339.0" prefWidth="193.0" />
+                        <ScrollPane fx:id="id_view_scroll" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="193.0">
+                           <content>
+                              <ListView fx:id="id_list_view_autos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="193.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </StackPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

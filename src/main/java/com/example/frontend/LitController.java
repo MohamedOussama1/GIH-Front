@@ -210,6 +210,8 @@ public class LitController implements Initializable {
                 chBoxService.setValue(service);
                 chBoxEspace.setValue(typeEspace);
                 onBtnChercherClick();
+//                onShowHistorique();
+//                chBoxEspaceService.setValue(typeEspace);
             } else if (oldTab == tabLits) {
                 String histo = chBoxHistorique.getValue();
                 chBoxHistorique.getSelectionModel().clearSelection();

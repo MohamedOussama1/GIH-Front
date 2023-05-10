@@ -35,7 +35,7 @@ public class ServiceCard extends BorderPane {
         Label occupiedBedsLabel = new Label(Integer.toString(occupiedBeds));
         occupiedBedsLabel.setStyle("-fx-text-fill: white;-fx-font-size: 16px;");
 
-        ImageView bed = new ImageView("regularbed.png");
+        ImageView bed = new ImageView("litStock.png");
         bed.setFitWidth(30);
         bed.setFitHeight(30);
         ImageView dispobed = new ImageView("dispobed.png");

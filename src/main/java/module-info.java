@@ -20,6 +20,7 @@ module com.example.frontend {
     requires java.desktop;
     requires org.joml;
     requires obj;
+    requires jersey.media.multipart;
 
     opens com.example.frontend to javafx.fxml;
     exports com.example.frontend;

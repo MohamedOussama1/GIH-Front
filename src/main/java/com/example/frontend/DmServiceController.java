@@ -136,7 +136,8 @@ public class DmServiceController implements Initializable {
                                 jsonDetailDemande.getInt("id"),
                                 jsonDetailDemande.getInt("qte"),
                                 jsonDetailDemande.getJSONObject("dm").getJSONObject("typeDM").getString("nomType"),
-                                jsonDetailDemande.getJSONObject("dm").getString("nom"));
+                                jsonDetailDemande.getJSONObject("dm").getString("nom"),
+                                jsonDetailDemande.getJSONObject("dm").getInt("id"));
                         detailsDemandeDm.add(detailDemandeDm);
                         System.out.println(detailDemandeDm.getEtat());
                     });
@@ -273,7 +274,8 @@ public class DmServiceController implements Initializable {
                             jsonDetailDemande.getInt("id"),
                             jsonDetailDemande.getInt("qte"),
                             jsonDetailDemande.getJSONObject("dm").getJSONObject("typeDM").getString("nomType"),
-                            jsonDetailDemande.getJSONObject("dm").getString("nom"));
+                            jsonDetailDemande.getJSONObject("dm").getString("nom"),
+                            jsonDetailDemande.getJSONObject("dm").getInt("id"));
                     detailsDemandeDm.add(detailDemandeDm);
                     System.out.println(detailDemandeDm.getEtat());
                 });

@@ -111,7 +111,7 @@
                               </ScrollPane>
                            </children>
                         </HBox>
-                        <Button fx:id="btnSaveAllreservation" mnemonicParsing="false" onAction="#onBtnSaveAllreservationClick" prefHeight="39.0" prefWidth="382.0" style="-fx-background-radius: 10; -fx-font-size: 21; -fx-font-weight: bold;" text="Save" />
+                        <Button fx:id="btnSaveAllreservation" mnemonicParsing="false" onAction="#onBtnSaveAllreservationClick" prefHeight="39.0" prefWidth="382.0" style="-fx-background-radius: 10; -fx-font-size: 21; -fx-font-weight: bold;" styleClass="button6" text="Save" />
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -125,7 +125,7 @@
          <content>
             <AnchorPane fx:id="anchorContent11" maxHeight="712.0" maxWidth="996.0" minHeight="712.0" minWidth="921.0" prefHeight="712.0" prefWidth="996.0" style="-fx-background-color: rgb(3,91,117,0.96); -fx-background-color: rgb(240,240,255);">
                <children>
-                  <VBox alignment="CENTER_LEFT" layoutX="205.0" layoutY="41.0" maxHeight="760.0" prefHeight="631.0" prefWidth="587.0" spacing="20.0" style="-fx-background-color: #035b75; -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
+                  <VBox alignment="CENTER_LEFT" layoutX="205.0" layoutY="41.0" maxHeight="760.0" prefHeight="631.0" prefWidth="587.0" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
                      <children>
                         <VBox spacing="5.0">
                            <children>
@@ -223,7 +223,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="39.0" prefWidth="507.0">
                            <children>
-                              <Button fx:id="btnAjouter" alignment="CENTER" mnemonicParsing="false" onAction="#onBtnAjouterLit" prefHeight="48.0" prefWidth="507.0" style="-fx-background-radius: 10; -fx-font-size: 21; -fx-font-weight: bold;" text="Commander" />
+                              <Button fx:id="btnAjouter" alignment="CENTER" mnemonicParsing="false" onAction="#onBtnAjouterLit" prefHeight="48.0" prefWidth="507.0" style="-fx-background-radius: 10; -fx-font-size: 21; -fx-font-weight: bold;" styleClass="button6" text="Commander" />
                            </children>
                         </VBox>
                      </children>

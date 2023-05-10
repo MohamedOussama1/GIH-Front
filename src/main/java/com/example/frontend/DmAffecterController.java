@@ -35,54 +35,99 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+//import org.glassfish.jersey.message.internal.MessageBodyProviderNotFoundException;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 
 public class DmAffecterController implements Initializable {
+
+
+
+
     double mouseX;
     double mouseY;
     @FXML
     private Accordion accrodion_0=new Accordion() ;
+
+
     @FXML
     private TilePane tilepane_chambre;
+
+
+
+
     @FXML
     ChoiceBox<String> cbox_chambre=new ChoiceBox<>();
+
     @FXML
     ChoiceBox<String> cbox_service=new ChoiceBox<>();
+
+
     private Client client = ClientBuilder.newClient()
             .register(JacksonFeature.class);
+
     private Client client2 = ClientBuilder.newClient()
             .register(JacksonFeature.class);
+
     static String url=Connextion_info.url;
+
     private WebTarget target = client.target(url);
+
     private WebTarget target1 = client.target(url);
     private WebTarget target2 = client2.target(url);
+
     HashMap<String,List<Integer>> map_dmitem_id=new HashMap<>();
+
+
     HashMap<String,List<Integer>> map_card_id=new HashMap<>();
+
+
     @FXML
     private Button btn_cancel_dm;
+
     @FXML
     private Button btn_save_dm;
+
     String nomService;
+
     String nomService2;
+
     int N_chambre_now;
+
     int N_chambre_old;
+
     HashMap<Integer,String> map_numero_and_type_espace=new HashMap<>();
+
+
     HashMap<Integer, Integer> id_numero_chambre=new HashMap<>();
+
+
 
 // hashmap of chambre and their dm_s
     Map<JSONObject,List<JSONObject>> data_espace;
+
     Map<JSONObject,List<JSONObject>> data_stock;
+
+
     @FXML
     private ListView<Card> id_list_view_autos=new ListView<>();
+
     @FXML
     private TextField id_txt_search;
+
+
     ObservableList<Card> data_view=FXCollections.observableArrayList();
+
     @FXML
     private ScrollPane id_view_scroll;
+
+
+
+
 
     public void Http_data_to_hashmapat1(String Newvalue){
 
@@ -90,7 +135,7 @@ public class DmAffecterController implements Initializable {
                 .path("dm")
                 .path("dminespace")
                 .queryParam("nomDepartement",Newvalue)
-                .request()
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
 
@@ -99,7 +144,7 @@ public class DmAffecterController implements Initializable {
                 .path("dm")
                 .path("dminstock")
                 .queryParam("nomDepartement",Newvalue)
-                .request(MediaType.APPLICATION_JSON)
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
 
@@ -111,9 +156,9 @@ public class DmAffecterController implements Initializable {
 
             Helpers help = new Helpers();
             data_espace = help.MapString_toJson(data_espace1);
-            System.out.println("==============   espace size  ==== " + data_espace.size());
+//            System.out.println("==============   espace size  ==== " + data_espace.size());
             data_stock = help.MapString_toJson(data_stock1);
-            System.out.println("==============   Stock size  ==== " + data_stock.size());
+//            System.out.println("==============   Stock size  ==== " + data_stock.size());
 
        // }
 
@@ -121,8 +166,9 @@ public class DmAffecterController implements Initializable {
                 .path("departement")
                 .path("getespacebyservice")
                 .queryParam("nomDepartement",Newvalue)
-                .request()
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
+        //System.out.println(Newvalue);
         List<String> chmabres = getResponse2.readEntity(List.class);
 
         List<String> chmabres0=this.choice_chambre_fillOut(chmabres);
@@ -168,7 +214,7 @@ public class DmAffecterController implements Initializable {
 
         Response getResponse = target
                 .path("departement")
-                .request()
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
         List<String> departements = getResponse.readEntity(List.class);
 
@@ -189,8 +235,8 @@ public class DmAffecterController implements Initializable {
             id_numero_chambre.clear();
             tilepane_chambre.getChildren().clear();
 
-            System.out.println("Oldvalue "+Oldvalue);
-            System.out.println("Newvalue "+Newvalue);
+            //System.out.println("Oldvalue "+Oldvalue);
+            //System.out.println("Newvalue "+Newvalue);
 
             nomService=Newvalue;
             nomService2=Oldvalue;
@@ -198,13 +244,13 @@ public class DmAffecterController implements Initializable {
             this.Http_data_to_hashmapat1(Newvalue);
 
 
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!    ###############################");
+            //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!    ###############################");
             DmstockCard dmdm= (DmstockCard) ((TitledPane)accrodion_0.getPanes().get(0)).getContent();
 
            Card card= (Card) dmdm.vbox.getChildren().get(0);
-            System.out.println(card.title);
+            //System.out.println(card.title);
 
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!    ###############################");
+            //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!    ###############################");
 
         });
 
@@ -215,12 +261,37 @@ public class DmAffecterController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
+
+
+
+
+
+
+
+
+
+
         btn_cancel_dm.setVisible(false);
 
         id_view_scroll.setVisible(false);
+
+
+
+
         // Fill out choiceBox of services
 
+
         this.Http_data_to_hashmapat0();
+
+
+
+
+
+
+
+
         // Create a filtered list and bind it to the searchField text property
         FilteredList<Card> filteredList = new FilteredList<>(data_view);
         id_txt_search.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -236,7 +307,7 @@ public class DmAffecterController implements Initializable {
 
             }
 
-            System.out.println("@@@@@@@ ============ @@@@@@@@ =============");
+            //System.out.println("@@@@@@@ ============ @@@@@@@@ =============");
 
             filteredList.setPredicate(item -> newValue == null || newValue.trim().isEmpty() ||
                     item.title.toLowerCase().contains(newValue.toLowerCase()));
@@ -244,32 +315,65 @@ public class DmAffecterController implements Initializable {
 
         // Bind the filtered list to the list view
         id_list_view_autos.setItems(filteredList);
+
+
+
+
         ///  fill out tilepane-chambre
 
         cbox_chambre.getSelectionModel().selectedItemProperty().addListener((observable,oldvalue,newvalue)->{
 
             tilepane_chambre.setDisable(false);
-            System.out.println("n "+newvalue);
-            System.out.println("o "+oldvalue);
+            //System.out.println("n "+newvalue);
+            //System.out.println("o "+oldvalue);
 
             if(oldvalue != null){
                 String[] part2 = oldvalue.split(":");
                 N_chambre_old=Integer.parseInt(part2[1].trim());
                 map_numero_and_type_espace.put(N_chambre_old,oldvalue);
             }
+
+
             if(newvalue !=null) {
+
+
                 String[] parts = newvalue.split(":");
+
+
+
+
                 N_chambre_now = Integer.parseInt(parts[1].trim());
                 map_numero_and_type_espace.put(N_chambre_now,newvalue);
-                System.out.println(cbox_service.getSelectionModel().getSelectedItem());
+
+                //System.out.println(cbox_service.getSelectionModel().getSelectedItem());
+
                 this.fill_out_tilePane_Chambre(newvalue);
+
                 this.make_Draggable_to_tilepane(tilepane_chambre);
+
             }
+
+
+
+
         });
+
+
+
+
+
+
         tilepane_chambre.setPadding(new Insets(10));
         tilepane_chambre.setHgap(10);
         tilepane_chambre.setVgap(10);
         tilepane_chambre.setTileAlignment(Pos.TOP_LEFT);
+
+
+
+
+
+
+
                 try {
             // Your code that throws the exception
 
@@ -277,11 +381,20 @@ public class DmAffecterController implements Initializable {
             this.cbox_service.getSelectionModel().select(0);
             this.cbox_service.getSelectionModel().clearSelection();
             this.accrodion_0.getPanes().clear();
+
+
         } catch (Exception e) {
-            System.out.println("MessageBodyProviderNotFoundException caught: " );
-            System.out.println("Printing a custom message instead of throwing the exception");
+            //System.out.println("MessageBodyProviderNotFoundException caught: " );
+            //System.out.println("Printing a custom message instead of throwing the exception");
         }
+
+
+
     }
+
+
+
+
     public void fill_out_tilePane_Chambre(String espace){
 
         map_dmitem_id.clear();
@@ -289,14 +402,20 @@ public class DmAffecterController implements Initializable {
 
         String[] parts = espace.split(":");
         int numero = Integer.parseInt(parts[1].trim());
+
+
         // traverse this list data2.entrySet() that represents all rooms in a service
         data_espace.entrySet().forEach((elt)->{
+
+
              int numero2= (int) elt.getKey().get("numero");
-            System.out.println(numero2);
+            //System.out.println(numero2);
 
             if(elt.getValue() !=null && numero2==numero) {
 
                 List<JSONObject> json_list = (List<JSONObject>) elt.getValue();
+
+
                 // traverse the json_list(list) which represents a room, and we want add its dispositif medical to it ;
                 json_list.forEach(elt3->{
 
@@ -305,73 +424,147 @@ public class DmAffecterController implements Initializable {
                     Image image = new Image((String) ((JSONObject)elt3_cast.get("dm")).get("image_path"));
 
                     int id_dmitem= (int) elt3_cast.get("id_dmitem");
-                    System.out.println("=========="+id_dmitem+"=======");
+                    //System.out.println("=========="+id_dmitem+"=======");
 
                     String image_name1=image.getUrl();
-                    int start=image_name1.lastIndexOf("\\");
-                    int end=image_name1.lastIndexOf(".");
-                    String image_name2=image_name1.substring(start+1,end);
+//                    int start=image_name1.lastIndexOf("\\");
+//                    int end=image_name1.lastIndexOf(".");
+//                    String image_name2=image_name1.substring(start+1,end);
+
+                    String image_name2 = image_name1.substring(image_name1.lastIndexOf("=") + 1);
 
                     DmItem dm = new DmItem(image_name2, image, 1);
                     if(tilepane_chambre.getChildren().contains(dm)){
+
                         map_dmitem_id.get(dm.title).add(id_dmitem);
+
                         DmItem dm00= (DmItem) tilepane_chambre.getChildren().get(tilepane_chambre.getChildren().indexOf(dm));
                         dm00.setQuantite(dm00.quantite+1);
                         //lst_dmitem_id.add()
                     }
                   else {
+
                       ArrayList<Integer> array=new ArrayList<>();
+
                         array.add(id_dmitem);
+
                         map_dmitem_id.put(dm.title,array);
+
+
                         tilepane_chambre.getChildren().add(dm);
                     }
+
                 });
+
+              //  System.out.println(json11.get("image_path"));
+
+
             }
         });
+
+
     }
+
+
+
+
+
+
+
     public void fillOut_tiledpane() {
+
         map_card_id.clear();
+
         accrodion_0.getPanes().clear();
+
+
+
         // traverse this list data2.entrySet() that represents all rooms in a service
         data_stock.entrySet().forEach((elt)->{
+
+
             int numero2= (int) elt.getKey().get("numero");
            // System.out.println(numero2);
+
             if(elt.getValue() !=null && Set.of(1001,1002,1003,1004).contains(numero2)) {
+
+
                 List<JSONObject> json_list = (List<JSONObject>) elt.getValue();
+
                 List<String> lst_categorie=new ArrayList<>();
+
+
                 json_list.forEach(elt3->{
+
+
                     JSONObject elt3_cast=(JSONObject) elt3;
+
                     JSONObject str=(JSONObject) ((JSONObject)elt3_cast.get("dm")).get("typeDM");
+
                     String categorie= (String) str.get("categorie");
+
+
                     if(!lst_categorie.contains(categorie)){
                         lst_categorie.add(categorie);
                         TitledPane tiledpane_0 = new TitledPane();
                         tiledpane_0.setText(categorie);
                         DmstockCard stock=new DmstockCard();
+
+
                         //this.make_Draggable_to_Vbox(stock.vbox);
+
                         tiledpane_0.setContent(stock);
+
                         tiledpane_0.setExpanded(false);
                         accrodion_0.getPanes().add(tiledpane_0);
                     }
+
+
+
+
                 });
+
                 json_list.forEach(elt3->{
+
 
                     //////////// ==========================
 
                     JSONObject elt3_cast=(JSONObject) elt3;
+
                     JSONObject str=(JSONObject) ((JSONObject)elt3_cast.get("dm")).get("typeDM");
+
                     String categorie= (String) str.get("categorie");
 
                     //////////// ===============
 
+
                     int id_card= (int) elt3_cast.get("id_dmitem");
+                //    System.out.println("Card=========="+id_card+"=======Card");
+
+
                     Image image = new Image((String) ((JSONObject) elt3_cast.get("dm")).get("image_path"));
+
+
+//                    String image_name1 = image.getUrl();
+//                    int start = image_name1.lastIndexOf(new String("="));
+//                    int end = image_name1.lastIndexOf(".");
+//                  //  String image_name2 = image_name1.substring(start + 1, end);
+//
+//                    String image_name2=file.getName();
+
                     String image_name1 = image.getUrl();
-                    int start = image_name1.lastIndexOf("\\");
-                    int end = image_name1.lastIndexOf(".");
-                    String image_name2 = image_name1.substring(start + 1, end);
+                    String image_name2 = image_name1.substring(image_name1.lastIndexOf("=") + 1);
+
+
+                    //System.out.println("======================================================================");
+                    //System.out.println(image_name2);
+
+
 
                     // add to map of card the name as a key and the list of id of dm
+
+
+
                     if(map_card_id.containsKey(image_name2)){
 
                         if(!map_card_id.get(image_name2).contains(id_card)) {
@@ -379,6 +572,7 @@ public class DmAffecterController implements Initializable {
                         }
                     }
                     else{
+
                         ArrayList<Integer> lst_id_card2=new ArrayList<>();
                         lst_id_card2.add(id_card);
                         map_card_id.put(image_name2,lst_id_card2);
@@ -387,36 +581,50 @@ public class DmAffecterController implements Initializable {
 
                     ////////////////////
 
+
                     for (TitledPane tile:accrodion_0.getPanes()) {
+
+
                         if(tile.getText().contains(categorie)){
+
                             DmstockCard stock= (DmstockCard) tile.getContent();
                             this.make_Draggable_to_Vbox(stock);
                             Card card=new Card(image_name2,image,1);
+
 
                             // add to listView
                             if (data_view == null || data_view.stream().noneMatch(card_elt -> card_elt.title.contains(card.title))) {
                                 data_view.add(card);
                             }
 
+
+
                             ////    add right click
+
+
                             MenuItem deleteItem2 = new MenuItem("Affecter plusieur");
                             MenuItem deleteItem3 = new MenuItem("properties");
+
 
                             deleteItem2.setOnAction(actionEvent ->{
 
                                 // Handle delete action
-                                System.out.println("Delete item clicked for book: " );
+                                //System.out.println("Delete item clicked for book: " );
 
                                 Stage primaryStage = (Stage) accrodion_0.getScene().getWindow();
+
                                 Stage popupStage=new Stage();
+
                                 popupStage.initOwner(primaryStage);
                                 popupStage.initModality(Modality.APPLICATION_MODAL);
 
                                 // Create the pop-up window content
                                 VBox vbox=new VBox();
+
                                 vbox.setAlignment(Pos.CENTER);
 
                                 ImageView im_view=new ImageView(card.coverImage);
+
                                 im_view.setFitHeight(80);
                                 im_view.setFitWidth(80);
                                 vbox.getChildren().add(im_view);
@@ -425,55 +633,125 @@ public class DmAffecterController implements Initializable {
                                 vbox.getChildren().add(popupLabel);
 
                                 Spinner<Integer> spinner = new Spinner<>(0, 10, 0);
+
                                 spinner.setPrefSize(62,20);
+
                                 Button button_spinner=new Button("Affecter");
+
                                 button_spinner.setPrefSize(65,30);
+
                                 Label label_spinner=new Label();
                                 label_spinner.setPrefSize(65,30);
 
+                                //HBox hbox_spinner=new HBox();
+
+                                //hbox_spinner.setPadding(new Insets(10));
+
+
+                                //hbox_spinner.getChildren().addAll();
+
                                 vbox.getChildren().addAll(spinner,label_spinner,button_spinner);
+
                                 vbox.setPadding(new Insets(10));
+
 
                                 // Add the pop-up window content to the Stage
                                 Scene scene=new Scene(vbox,300,200);
                                 popupStage.setScene(scene);
                                 // Show the pop-up window
                                 popupStage.showAndWait();
+
+
                             });
+
                             deleteItem2.setStyle("-fx-font-weight: bold;");
                             deleteItem3.setStyle("-fx-font-weight: bold;");
+
                             ContextMenu contextMenu = new ContextMenu(deleteItem2,deleteItem3);
 
                             // Show context menu on right-click
                             card.setOnContextMenuRequested(event -> {
+
+
                                 double mouseX = event.getScreenX();
                                 double mouseY = event.getScreenY();
+
+
                                 contextMenu.show(card, mouseX, mouseY);
+
                             });
+
+
                             ////  end of affecter dm with quantity
+
+
                             stock.setHbox1(card);
                             //break;
+
                         }
+
                     }
+
+
+
                 });
+
+
+
+
             }
         });
+
+
+
+
     }
+
+
+
+
+    private String getImageName(String url) {
+        int start = url.lastIndexOf("\\");
+        int end = url.lastIndexOf(".");
+        return url.substring(start + 1, end);
+    }
+
+    private void makeCard(DmstockCard stock, String imageName, Image image) {
+        make_Draggable_to_Vbox(stock);
+        Card card = new Card(imageName, image, 1);
+        stock.setHbox1(card);
+    }
+
+
+
     public void make_Draggable_to_tilepane(TilePane pane){
-        pane.setOnDragOver(event ->
-            event.acceptTransferModes(TransferMode.ANY));
+
+        //System.out.println("=====   public void make_Draggable_to_tilepane(TilePane pane){ =======");
+        pane.setOnDragOver(event -> {
+            event.acceptTransferModes(TransferMode.ANY);
+
+
+        });
+
         pane.setOnDragDropped(event -> {
+
             btn_cancel_dm.setVisible(true);
+
             Card button = (Card) event.getGestureSource();
+
           if(button.quantite>1) {
               button.setQuantite_moins();
               int id_card_removed = map_card_id.get(button.title).remove(0);
               this.add_to_TilePane_quantity(pane,button.title,button.coverImage,button.quantite,id_card_removed);
+
           }
           else{
+
               outerloop:
               for(TitledPane node:accrodion_0.getPanes()){
+
                   DmstockCard stock=(DmstockCard)node.getContent();
+
                   for(Node stock1:stock.vbox.getChildren()){
                       Card card= (Card) stock1;
                       if(card.equals(button)){
@@ -485,18 +763,38 @@ public class DmAffecterController implements Initializable {
                       }
                   }
               }
+
+
           }
+
+
+
+
             event.setDropCompleted(true);
             event.setDropCompleted(true);
               event.consume();
         });
     }
+
+
+
+
+
+
+
+
+
+
     public void add_to_TilePane_quantity(TilePane pane,String title,Image image,int quantite,int id_card_removed){
         DmItem dm=new DmItem(title,image,1);
         Boolean test=true;
+
         List<Node> lstnode=pane.getChildren();
+
         for (int i = 0; i < lstnode.size(); i++)
+
         {
+
             DmItem dmitem=(DmItem) lstnode.get(i);
 //
             if(dmitem.titleLabel.getText().contains(title)) {
@@ -506,69 +804,156 @@ public class DmAffecterController implements Initializable {
                 map_dmitem_id.get(title).add(id_card_removed);
                 pane.getChildren().remove(dmitem);
                 pane.getChildren().add(i,dmitem2);
+
                 test=false;
                 break;
+
             }
+
+
         }
+
         if(test){
+
             ArrayList array=new ArrayList();
             array.add(id_card_removed);
             map_dmitem_id.put(title,array);
+
             pane.getChildren().add(dm);
+
         }
+
+
+
     }
+
+
     public void make_Draggable_to_Vbox(DmstockCard pane){
+
+
+//        DmstockCard panee=(DmstockCard)pane;
+
         pane.setOnDragOver(event -> {
             event.acceptTransferModes(TransferMode.ANY);
+
+
         });
+
         pane.setOnDragDropped(event -> {
+
+
+
             DmItem button = (DmItem) event.getGestureSource();
+
+
             ImageView imageview=button.coverImageView;
+            Label label = button.titleLabel;
+
             Card card=new Card(button.titleLabel.getText(),imageview.getImage(),1);
             pane.setHbox1(card);
+
             DmItem dm= (DmItem) tilepane_chambre.getChildren().get(tilepane_chambre.getChildren().indexOf(button));
+
             if(dm.quantite>1){
+
+
                 dm.setQuantite(dm.quantite-1);
                 btn_cancel_dm.setVisible(true);
             }
             else{
+
                 tilepane_chambre.getChildren().remove(button);
                 btn_cancel_dm.setVisible(true);
             }
+
             int id_dmitm=map_dmitem_id.get(button.title).remove(0);
+
             if(!map_card_id.containsKey(button.title)) {
                 ArrayList<Integer> array=new ArrayList<>();
                 array.add(id_dmitm);
                 map_card_id.put(button.title,array);
+
             }else{
                 map_card_id.get(button.title).add(id_dmitm);
             }
            // this.make_drag_detected(hbox1);
+
             event.setDropCompleted(true);
             event.setDropCompleted(true);
             event.consume();
         });
     }
+
+
+
+    public double Drop_item_in_postion(Pane pane,Node button){
+        double buttonHeight = button.getBoundsInLocal().getHeight();
+        double vboxHeight = pane.getBoundsInLocal().getHeight();
+
+
+
+        return 0;
+    }
+
+    public Point2D mouseCordoonees(){
+
+        tilepane_chambre.setOnMouseMoved(mouseEvent -> {
+            double mouseX= mouseEvent.getSceneX();
+            double mouseY = mouseEvent.getSceneY();
+            //System.out.println(mouseX+"  "+mouseY);
+        });
+        Point2D point=new Point2D(mouseX,mouseY);
+        return point;
+    }
+
+
+
+
+
+
+
+
     @FXML
     public void Onbtn_cancel_dmClick(ActionEvent event) {
         map_card_id.clear();
         map_dmitem_id.clear();
+
+
+
         cbox_service.getSelectionModel().clearSelection();
         cbox_chambre.getSelectionModel().clearSelection();
+
+
         cbox_service.getSelectionModel().select(nomService2);
+
+
        cbox_chambre.getSelectionModel().select(map_numero_and_type_espace.get(N_chambre_old));
 
-        System.out.println("=================================================");
-        System.out.println(N_chambre_old);
-        System.out.println(N_chambre_now);
-        System.out.println(map_numero_and_type_espace);
+
+        //System.out.println("=================================================");
+        //System.out.println(N_chambre_old);
+        //System.out.println(N_chambre_now);
+
+        //System.out.println(map_numero_and_type_espace);
 
         map_numero_and_type_espace.clear();
         btn_cancel_dm.setVisible(false);
+
+
+
+
+
+
     }
+
     @FXML
     void Onbtn_save_dmClick(ActionEvent event) {
+
+
+
+
         map_card_id.forEach((key,value)->{
+
             int numero_stock;
             switch (nomService) {
                 case "Cardiologie":
@@ -594,13 +979,18 @@ public class DmAffecterController implements Initializable {
                         .path("affecter_dm")
                         .queryParam("id_dmItem",elt)
                         .queryParam("id_espace",numero_stock)
-                        .request(MediaType.APPLICATION_JSON)
+                        .request(MediaType.APPLICATION_JSON_TYPE)
                         // .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(test.getBytes()))
                         .put(Entity.json("{}"));
 
-                System.out.println("Http Response   ====> "+getResponse.getStatus());
+                //System.out.println("Http Response   ====> "+getResponse.getStatus());
             });
+
+
+
+
         });
+
 //
         map_dmitem_id.forEach((key,value)->{
 
@@ -611,48 +1001,72 @@ public class DmAffecterController implements Initializable {
                         .path("affecter_dm")
                         .queryParam("id_dmItem",elt)
                         .queryParam("id_espace",id_numero_chambre.get(N_chambre_now))
-                        .request(MediaType.APPLICATION_JSON)
+                        .request(MediaType.APPLICATION_JSON_TYPE)
                         // .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(test.getBytes()))
                         .put(Entity.json("{}"));
-                System.out.println("Http Response =====> "+getResponse.getStatus());
+                //System.out.println("Http Response =====> "+getResponse.getStatus());
 
             });
+
         });
 
-        System.out.println(nomService);
+
+        //System.out.println(nomService);
 //        System.out.println(numero_stock);
-        System.out.println(N_chambre_now);
-        System.out.println(id_numero_chambre.get(N_chambre_now));
-        System.out.println("===========  Map 1 ================ ");
-        System.out.println(map_card_id);
-        System.out.println("===========  Map 2 ================ ");
-        System.out.println(map_dmitem_id);
+        //System.out.println(N_chambre_now);
+        //System.out.println(id_numero_chambre.get(N_chambre_now));
+
+
+        //System.out.println("===========  Map 1 ================ ");
+        //System.out.println(map_card_id);
+        //System.out.println("===========  Map 2 ================ ");
+        //System.out.println(map_dmitem_id);
+
+
+
+
 
         Stage primaryStage = (Stage) accrodion_0.getScene().getWindow();
+
         Stage popupStage=new Stage();
+
         popupStage.initOwner(primaryStage);
         popupStage.initModality(Modality.APPLICATION_MODAL);
+
         Text text=new Text();
+
         text.setText("Save Successefully");
         text.setStyle("-fx-font-size: 18;-fx-font-family: 'Arial Black';-fx-background-color: Black");
         // Create the pop-up window content
         VBox vbox=new VBox();
         vbox.getChildren().add(text);
+
         vbox.setAlignment(Pos.CENTER);
+
         vbox.setPadding(new Insets(10));
+
         // Add the pop-up window content to the Stage
         Scene scene=new Scene(vbox,300,200);
         popupStage.setScene(scene);
         // Show the pop-up window
         popupStage.show();
+
         popupStage.setOnCloseRequest(even->{
-            System.out.println("jamalalsfjoagh =====================  @@@@@@@@@@@@@@");
+
+            //System.out.println("jamalalsfjoagh =====================  @@@@@@@@@@@@@@");
             Onbtn_cancel_dmClick(new ActionEvent());
         });
+
     }
+
+
+
+
+
     @FXML
     public void On_auto_searchType_KyeBoard(InputMethodEvent event) {
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@");
+
+        //System.out.println("@@@@@@@@@@@@@@@@@@@@@");
         accrodion_0.setVisible(false);
         id_view_scroll.setVisible(true);
 
@@ -662,8 +1076,51 @@ public class DmAffecterController implements Initializable {
             filteredList.setPredicate(item -> newValue == null || newValue.trim().isEmpty() ||
                     item.title.toLowerCase().contains(newValue.toLowerCase()));
         });
+
         // Bind the filtered list to the list view
         id_list_view_autos.setItems(filteredList);
+
+        // Set a custom cell factory to display each item in an HBox with an ImageView and a Label
+//        id_list_view_autos.setCellFactory(param -> new ListCell<>() {
+//
+//
+//            ImageView imageView = new ImageView();
+//
+//
+//            Label label = new Label();
+//            HBox hBox = new HBox(10, imageView, label);
+//
+//            {imageView.setFitWidth(20);
+//                imageView.setFitHeight(20);
+//
+//            }
+//
+//            @Override
+//            protected void updateItem(Main7.Fruit item, boolean empty) {
+//                super.updateItem(item, empty);
+//
+//                if (empty || item == null) {
+//                    setGraphic(null);
+//                } else {
+//                    try {
+//                        // Load the image from the file
+//                        FileInputStream stream = new FileInputStream(item.getImagePath());
+//                        Image image = new Image(stream);
+//
+//                        // Set the image and text for the label
+//                        imageView.setImage(image);
+//                        label.setText(item.getName());
+//
+//                        // Set the graphic for the cell to the HBox
+//                        setGraphic(hBox);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+
+
     }
 
 //    public void On_auto_searchType_KyeBoard(InputMethodEvent inputMethodEvent) {
@@ -673,18 +1130,31 @@ public class DmAffecterController implements Initializable {
              ImageView coverImageView;
              Label titleLabel;
              Label authorLabel=new Label();
+
             double mouseX ;
             double mouseY ;
+
             Stage popupStage;
+
+
             String fristname;
+
             String password;
+
             String test;
 
             int quantite;
             String title;
+
             Image coverImage;
+
             Text t0;
+
+
             int id_dmitem;
+
+
+
             @Override
             public boolean equals(Object o) {
                 if (this == o) return true;
@@ -694,58 +1164,86 @@ public class DmAffecterController implements Initializable {
                         Objects.equals(title, dmItem.title) &&
                         Objects.equals(coverImage.getUrl(), dmItem.coverImage.getUrl());
             }
+
+
+
             public DmItem(String title,Image coverImage,int quantite) {
+
                 this.coverImage=coverImage;
+
                 this.quantite=quantite;
                 this.title=title;
+
         //        this.setBorder(new Border(new BorderStroke(Color.BLACK,
         //                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
                 coverImageView = new ImageView(coverImage);
                 coverImageView.setFitWidth(80);
                 coverImageView.setPreserveRatio(true);
                 titleLabel = new Label(title);
                 titleLabel.setStyle("-fx-font-weight: bold;");
                 titleLabel.setAlignment(Pos.CENTER);
+
               ImageView image=new ImageView(new Image("plus.png"));
               image.setFitWidth(15);
               image.setFitHeight(15);
 
+
                //authorLabel.setText(this.quantite+"");
+
                 HBox hbox=new HBox();
                 hbox.setSpacing(5);
 
                 t0=new Text(quantite+"");
                 t0.setFont(Font.font("Arial", FontWeight.BOLD, 18));
                 t0.setFill(Color.GREEN);
+
+
                 hbox.getChildren().addAll(image,t0);
               authorLabel.setGraphic(hbox);
         //        authorLabel.setG(t0);
                authorLabel.setAlignment(Pos.BOTTOM_RIGHT);
+
                 VBox vb=new VBox();
+
                 vb.setAlignment(Pos.CENTER);
                 vb.getChildren().addAll(coverImageView,titleLabel,authorLabel);
 
                 // Add components to the BookCard pane
                 getChildren().add(vb);
 
+
                 //initialize the client to send http request
+
+
 
                 // Create context menu with a "Delete" option
                 MenuItem deleteItem = new MenuItem("Delete");
                 MenuItem deleteItem2 = new MenuItem("Modify");
                 MenuItem deleteItem3 = new MenuItem("properties");
-
                 //MenuItem deleteItem4 = new MenuItem("Liberer Lit");
                 deleteItem.setStyle("-fx-font-weight: bold;");
 
                 // Delete lit
                 deleteItem.setOnAction(event -> {
+
+
                 });
+
+                // liberer lit
+
+
+    //            deleteItem4.setOnAction(event -> {
+    //
+    //
+    //            });
+
+
 
                 deleteItem3.setOnAction(event -> {
 
                     // Handle delete action
-                    System.out.println("Delete item clicked for book: " + title);
+                    //System.out.println("Delete item clicked for book: " + title);
 
                     Stage primaryStage = (Stage) getScene().getWindow();
                     popupStage.initOwner(primaryStage);
@@ -759,6 +1257,7 @@ public class DmAffecterController implements Initializable {
                     StackPane popupPane = new StackPane(popupLabel);
                     popupPane.setPadding(new Insets(10));
                     popupStage.setScene(new Scene(popupPane, 300, 200));
+
 
                     // Show the pop-up window
                     popupStage.showAndWait();
@@ -787,6 +1286,12 @@ public class DmAffecterController implements Initializable {
                     contextMenu.show(this, mouseX, mouseY);
 
                 });
+
+        //        DropShadow shadow = new DropShadow();
+        //        shadow.setColor(Color.BLACK);
+        //        shadow.setOffsetX(10);
+        //        shadow.setOffsetY(10);
+
                 this.setOnMousePressed(event -> {
                     this.setEffect(null);
                 });
@@ -794,28 +1299,46 @@ public class DmAffecterController implements Initializable {
                 this.setOnMouseReleased(event -> {
                     this.setEffect(null);
                 });
+
+
                 this.make_drag_detected(this);
             }
+
+
             public void setQuantite(int quantite) {
                 this.quantite = quantite;
 
                 this.t0.setText(quantite+"");;
             }
+
+
+
         public void make_drag_detected(Node pane){
+
+
             pane.setOnDragDetected(mouseEvent -> {
                 pane.setMouseTransparent(false);
                 Dragboard db = pane.startDragAndDrop(TransferMode.ANY);
+
+
                 SnapshotParameters snapshotParams = new SnapshotParameters();
                 snapshotParams.setFill(Color.TRANSPARENT);
                 WritableImage snapshot = pane.snapshot(snapshotParams, null);
                 db.setDragView(snapshot);
+
                 ClipboardContent content = new ClipboardContent();
                 content.putString("salam");
                 db.setContent(content);
             });
+
         }
     }
+
     public static class Helpers {
+
+
+
+
         public Map JsonToMap(String input){
 
             Map<String, String> map = new HashMap<>();
@@ -835,9 +1358,40 @@ public class DmAffecterController implements Initializable {
 
                 map.put(key, value);
             }
+
             return map;
 
         }
+
+
+
+        public Map<Map, List<Map>>  MapString_toMap_of_Map(Map<String, List<String>> map_in){
+
+            Map<Map, List<Map>> map_out=new HashMap<>();
+
+            map_in.entrySet().forEach(elt->{
+
+                List<Map> lstmap=new ArrayList<>();
+
+                elt.getValue().forEach(elt0->{
+
+                    lstmap.add(JsonToMap(elt0));
+
+                });
+
+                map_out.put(JsonToMap(elt.getKey()),lstmap);
+
+
+            });
+
+
+
+            return map_out;
+        }
+
+
+
+
         public Map<JSONObject, List<JSONObject>>  MapString_toJson(Map<String, List<String>> map_in){
 
             Map<JSONObject, List<JSONObject>> map_out=new HashMap<>();
@@ -853,17 +1407,38 @@ public class DmAffecterController implements Initializable {
                     lstmap.add(new JSONObject(elt0));
 
                 });
+
+
+
                 map_out.put(new JSONObject(elt.getKey()),lstmap);
+
+
             });
+
+
+
             return map_out;
         }
+
+
+
     }
+
     static class Card extends HBox{
+
         Image coverImage;
+
         int quantite;
+
         String title;
+
         Text t0=new Text();
+
         Label label2;
+
+        int id_item_card;
+
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -875,12 +1450,16 @@ public class DmAffecterController implements Initializable {
         }
 
         public Card(String title, Image coverImage, int quantite) {
+
             this.quantite = quantite;
             this.title = title;
             this.coverImage = coverImage;
+
+
             ImageView imageplus = new ImageView(new Image("plus.png"));
             imageplus.setFitWidth(13);
             imageplus.setFitHeight(13);
+
             t0.setText(this.quantite + "");
             t0.setFont(Font.font("Arial", FontWeight.BOLD, 18));
             t0.setFill(Color.GREEN);
@@ -890,17 +1469,29 @@ public class DmAffecterController implements Initializable {
             hbox_plus.getChildren().addAll(imageplus, t0);
             label2= new Label();
             label2.setGraphic(hbox_plus);
+
+
             Label label = new Label();
             label.setText(title);
+
+
             ImageView image_view = new ImageView();
             image_view.setImage(coverImage);
+
             image_view.setFitHeight(30);
             image_view.setFitWidth(30);
+
+
             this.setSpacing(10);
             this.getChildren().addAll(image_view, label, label2);
+
+
         }
+
+
         public void setQuantite(int quantite){
             this.quantite=this.quantite+quantite;
+
             ImageView imageplus = new ImageView(new Image("plus.png"));
             imageplus.setFitWidth(13);
             imageplus.setFitHeight(13);
@@ -912,12 +1503,18 @@ public class DmAffecterController implements Initializable {
             hbox_plus.setAlignment(Pos.CENTER);
             hbox_plus.getChildren().addAll(imageplus, t0);
             label2.setGraphic(hbox_plus);
+
+
         }
+
+
         public void setQuantite_moins(){
             this.quantite=this.quantite-1;
+
             ImageView imageplus = new ImageView(new Image("plus.png"));
             imageplus.setFitWidth(13);
             imageplus.setFitHeight(13);
+
             t0.setText(this.quantite + "");
             t0.setFont(Font.font("Arial", FontWeight.BOLD, 18));
             t0.setFill(Color.GREEN);
@@ -925,40 +1522,96 @@ public class DmAffecterController implements Initializable {
             hbox_plus.setAlignment(Pos.CENTER);
             hbox_plus.getChildren().addAll(imageplus, t0);
             label2.setGraphic(hbox_plus);
+
+
         }
+
+
+
+
     }
+
     static class DmstockCard extends ScrollPane {
+
+
+
+
         VBox vbox;
+
+        //List<Integer> lst_id_card=new ArrayList<>();
+
+
+
+
         public DmstockCard() {
+
            vbox=new VBox();
+
            this.setContent(vbox);
         }
+
+
         public void setHbox1(Card card) {
+
+    //        this.title=title;
+    //        this.quantite=quantite;
+
+           // Card card=new Card(title,coverImage,quantite);
+
             this.make_drag_detected(card);
+
+
             this.check_increment_qantite(card);
+
+
         }
+
         public void make_drag_detected(Node pane){
+
+
             pane.setOnDragDetected(mouseEvent -> {
                 pane.setMouseTransparent(false);
                 Dragboard db = pane.startDragAndDrop(TransferMode.ANY);
+
+
                 SnapshotParameters snapshotParams = new SnapshotParameters();
                 snapshotParams.setFill(Color.TRANSPARENT);
                 WritableImage snapshot = pane.snapshot(snapshotParams, null);
                 db.setDragView(snapshot);
+
                 ClipboardContent content = new ClipboardContent();
                 content.putString("salam");
                 db.setContent(content);
             });
+
         }
+
+
+
+
         public void check_increment_qantite(Card card){
+
             if(vbox.getChildren().contains(card)){
+
                 Card card1= (Card) vbox.getChildren().get(vbox.getChildren().indexOf(card));
+
                 card1.setQuantite(card.quantite);
+
+
+
             }
             else{
                 vbox.getChildren().add(card);
             }
+
         }
+
+    //    public void add_to_lst_card(int id_card){
+    //
+    //        lst_id_card.add(id_card);
+    //    }
+    //
+
 
     }
 }

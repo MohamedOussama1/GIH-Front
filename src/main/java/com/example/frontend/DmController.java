@@ -1,17 +1,23 @@
 package com.example.frontend;
 
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -100,11 +106,132 @@ public class DmController implements Initializable {
     private ObservableList<DetailDemandeDm> tableData = FXCollections.observableArrayList();
     private List<DetailDemandeDm> demandesAEnvoyer = new ArrayList<>();
 
+
+
+
+
+    // ============================== rachid   ===========================
+
+
+    @FXML
+    ChoiceBox<String> typedmChoiceBox1 = new ChoiceBox();
+    @FXML
+    TextField typedm;
+
+    @FXML
+
+    TextField txt_categorie;
+    @FXML
+    TextField nomdm;
+    @FXML
+    Button créertypedm;
+    @FXML
+    Button ajoutertypedm;
+    @FXML
+    Label typedmlabel;
+//    @FXML
+//    TableView<DM> afficherDMTableView;
+//    @FXML
+//    private TableColumn<DM, Integer> idCol = new TableColumn<>("id");
+//    @FXML
+//    private TableColumn<DM, Integer> qteColumn = new TableColumn<>("quantité");
+//    @FXML
+//    private TableColumn<DM, String> nomDMeCol = new TableColumn<>("nom");
+//    @FXML
+//    private TableColumn<DM, String> typeDMColumn = new TableColumn<>("typeDM");
+
+    @FXML
+    private TextField nomdm1;
+
+    @FXML
+    private Button btn_create_dm;
+
+    @FXML
+    private Button btn_afficher_dm;
+
+
+
+    //aya2front
+
+
+    @FXML
+    TableView<DM> SupprimerModifierDMTableView;
+    @FXML
+    private TableColumn<DM, Integer> idColSM =new TableColumn<>("id");
+    @FXML
+    private TableColumn<DM, Integer> qteColumnSM =new TableColumn<>("quantité");
+    @FXML
+    private TableColumn<DM, String> nomDMColSM = new TableColumn<>("nom");
+    @FXML
+    private TableColumn<DM, String> typeDMColumnSM = new TableColumn<>("typeDM");
+    @FXML
+    private TableColumn<DM, Void> actionsColSM = new TableColumn<>("Actions");
+    @FXML
+    Tab tabCréerDemandes;
+    @FXML
+    Tab tabTraiterDemandes;
+    @FXML
+    Tab tabAfficherDemandes;
+    @FXML
+    TabPane tabPaneDemandes;
+
+
+
+    //aya
+
+    /////   rachid  //////
+
+    @FXML
+    Tab tab_affecter_dm;
+
+    @FXML
+    AnchorPane anchorpane_affecter_dm;
+
+    @FXML
+    TextField txt_filed_imagePath;
+
+    @FXML
+    ImageView image_upload;
+
+    @FXML
+    Button btnUpload;
+
+
+    String last_path = "";
+
+    Boolean isShow = false;
+
+
+
+
+    // ============================== rachid   ===========================
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200);
-        valueFactory.setValue(1);
-        spinnerQuantityDm.setValueFactory(valueFactory);
+        btnUpload.setGraphic(new ImageView(new Image("upload-file.png")));
+
+        tabPaneDemandes.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+            @Override
+            public void changed(ObservableValue<? extends Tab> ov, Tab oldTab, Tab newTab) {
+                if (oldTab == tabCréerDemandes) {
+                    onAfficherDemandesDm();
+                    onAfficherDemandesDm1();
+                } else if (oldTab == tabTraiterDemandes) {
+                    onAfficherDemandesDm1();
+                }
+            }
+        });
+
+        SpinnerValueFactory<Integer> valueFactoryLivraison = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200);
+        valueFactoryLivraison.setValue(1);
+        spinnerQteLivraison.setValueFactory(valueFactoryLivraison);
+
+
+
+
+        SpinnerValueFactory<Integer> valueFactoryDm = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200);
+        valueFactoryDm.setValue(1);
+        spinnerQuantityDm.setValueFactory(valueFactoryDm);
 
         // Demandes
         chBoxService.setItems(FXCollections.observableArrayList(
@@ -122,6 +249,7 @@ public class DmController implements Initializable {
                 .path("typedm")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
+
         List<HashMap<String, String>> listtypedm = getTypeResponse.readEntity(List.class);
         List<String> lstNomTypesDm = new ArrayList<>();
         listtypedm.forEach(elt -> lstNomTypesDm.add(elt.get("Nom")));
@@ -167,7 +295,7 @@ public class DmController implements Initializable {
 
         if (getResponse4.getStatus() == Response.Status.OK.getStatusCode()) {
             String responseString = getResponse4.readEntity(String.class);
-            System.out.println("Response String: " + responseString);
+            //System.out.println("Response String: " + responseString);
             JSONArray jsonArray = new JSONArray(responseString);
             ObservableList<LivraisonFx> tableData1 = FXCollections.observableArrayList();
 
@@ -180,12 +308,12 @@ public class DmController implements Initializable {
                 LivraisonFx livraisonfx = new LivraisonFx(id, nomFournisseur, date);
 
                 JSONArray detailsLivraison = jsonObject.getJSONArray("detailsLivraison");
-                System.out.println(detailsLivraison);
+                //System.out.println(detailsLivraison);
                 List<DetailLivraisonFX> detailsLiv = new ArrayList<>();
                 detailsLivraison.forEach(detailLiv -> {
                     JSONObject jsonDetailLivraison = new JSONObject(detailLiv.toString());
-                    System.out.println(jsonDetailLivraison);
-                    System.out.println(detailLiv);
+                    //System.out.println(jsonDetailLivraison);
+                    //System.out.println(detailLiv);
                     DetailLivraisonFX detailLivraisonFX = new DetailLivraisonFX(
                             jsonDetailLivraison.getJSONObject("dm").getString("nom"),
                             String.valueOf(jsonDetailLivraison.getInt("qte")));
@@ -210,7 +338,7 @@ public class DmController implements Initializable {
                 .get();
         if (getResponse3.getStatus() == Response.Status.OK.getStatusCode()) {
             String responseString = getResponse3.readEntity(String.class);
-            System.out.println("Response String: " + responseString);
+            //System.out.println("Response String: " + responseString);
             JSONArray jsonArray = new JSONArray(responseString);
             ObservableList<FournisseurFx> tableData = FXCollections.observableArrayList();
 
@@ -238,7 +366,7 @@ public class DmController implements Initializable {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    System.out.println(getIndex());
+                    //System.out.println(getIndex());
                     if (empty) {
                         setGraphic(null);
                     } else {
@@ -247,17 +375,39 @@ public class DmController implements Initializable {
                         btnsupprimer.setStyle("-fx-background-color: transparent");
                         btnsupprimer.setOnAction(event -> {
                             int id = fournisseurFx.getId();
-                            Response response = target
-                                    .path("/fournisseur")
-                                    .path("/deleteFournisseur")
-                                    .queryParam("fournisseur_id", id)
-                                    .request(MediaType.APPLICATION_JSON_TYPE)
-                                    .method("DELETE");
-                            System.out.println(response);
                             //getTableView().refresh();
                             ObservableList<FournisseurFx> fournisseurFxes = getTableView().getItems();
-                            fournisseurFxes.remove(fournisseurFx);
-                            afficherFournisseurs.setItems(fournisseurFxes);
+                            boolean canDelete = true;
+                            for (LivraisonFx livraisonFx : afficherLivraison.getItems()){
+                                //System.out.println(livraisonFx.getNomFournisseur());
+                                //System.out.println("hello");
+                                //System.out.println(fournisseurFx.getNom());
+                                if (livraisonFx.getNomFournisseur().equals(fournisseurFx.getNom()))
+                                    canDelete  = false;
+                            }
+                            if (canDelete) {
+                                Response response = target
+                                        .path("/fournisseur")
+                                        .path("/deleteFournisseur")
+                                        .queryParam("fournisseur_id", id)
+                                        .request(MediaType.APPLICATION_JSON_TYPE)
+                                        .method("DELETE");
+                                //System.out.println(response);
+                                fournisseurFxes.remove(fournisseurFx);
+                                afficherFournisseurs.setItems(fournisseurFxes);
+                                Response getResponse2 = target
+                                        .path("/fournisseur")
+                                        .request(MediaType.APPLICATION_JSON_TYPE)
+                                        .get();
+                                List<String> listFournisseur = getResponse2.readEntity(List.class);
+                                fournisseurs.setItems(FXCollections.observableArrayList(listFournisseur));
+                            }else {
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                    alert.setTitle("Failed");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Operation échouée, il existe des livraisons associées à ce fournisseur");
+                                    alert.showAndWait();
+                            }
                         });
                         setGraphic(btnsupprimer);
                     }
@@ -271,14 +421,15 @@ public class DmController implements Initializable {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    System.out.println(getIndex());
+                    //System.out.println(getIndex());
                     if (empty) {
                         setGraphic(null);
                     } else {
                         FournisseurFx fournisseurFx = getTableView().getItems().get(getIndex());
                         Stage stage = new Stage();
                         VBox vbox = new VBox();
-                        Scene scene = new Scene(vbox, 600, 600);
+                        Scene scene = new Scene(vbox, 400, 600);
+                        scene.getStylesheets().add("stylesheet.css");
                         stage.setScene(scene);
                         Label lbl = new Label("Modifier fournisseur");
                         lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
@@ -297,6 +448,7 @@ public class DmController implements Initializable {
 
                         TextField nomFourni = new TextField(fournisseurFx.getNom());
                         Button btnOk = new Button("OK");
+                        btnOk.getStyleClass().add("button6");
                         Button btnCancel = new Button("Cancel");
                         btnOk.setOnAction(event -> {
                             event.consume();
@@ -309,9 +461,16 @@ public class DmController implements Initializable {
 //                                       fournisseurFxes.add(position, fournisseurFx);
 //                                        afficherFournisseurs.setItems(fournisseurFxes);
                                 afficherFournisseurs.refresh();
+                                Response getResponse2 = target
+                                        .path("/fournisseur")
+                                        .request(MediaType.APPLICATION_JSON_TYPE)
+                                        .get();
+                                List<String> listFournisseur = getResponse2.readEntity(List.class);
+                                fournisseurs.setItems(FXCollections.observableArrayList(listFournisseur));
+                                //Update afficherLivraison
                                 stage.close();
                             } catch (Exception e) {
-                                System.out.println(e.getMessage());
+                                //System.out.println(e.getMessage());
                             }
                         });
                         btnCancel.setOnAction(event -> {
@@ -321,8 +480,9 @@ public class DmController implements Initializable {
 
                         // add the fields to the dialog
                         GridPane grid = new GridPane();
-                        grid.setHgap(10);
-                        grid.setVgap(10);
+                        grid.getStyleClass().add("grid");
+                        grid.setHgap(20);
+                        grid.setVgap(20);
                         grid.add(new Label("Nom:"), 0, 0);
                         grid.add(nomFourni, 1, 0);
                         grid.add(new Label("Ville:"), 0, 1);
@@ -337,15 +497,17 @@ public class DmController implements Initializable {
                         grid.add(telField, 1, 5);
                         grid.add(btnOk, 0, 6);
                         grid.add(btnCancel, 1, 6);
+                        grid.setStyle("-fx-padding: 10 40 10 40;-fx-background-radius: 10; -fx-background-color:  linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)");
 
                         vbox.getChildren().addAll(lbl, grid);
+                        vbox.setAlignment(Pos.CENTER);
+                        vbox.setStyle("-fx-background-color:  rgb(240,240,255)");
                         modifierbtn.setGraphic(new ImageView(new Image("modify.png", 20, 20, true, true)));
                         modifierbtn.setStyle("-fx-background-color: transparent");
                         modifierbtn.setOnAction(event -> {
                             event.consume();
                             stage.show();
                         });
-
                         setGraphic(modifierbtn);
                     }
                 }
@@ -364,12 +526,173 @@ public class DmController implements Initializable {
             telFCol.setCellValueFactory(new PropertyValueFactory<>("tel"));
 //        typeDMColumnSM.setCellValueFactory(new PropertyValueFactory<>("typeDM"));
         }
+
+
+
+
+
+
+        // ============================== rachid   ===========================
+        try {
+            this.onAfficherDMs(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Response getResponse = target
+                .path("dm")
+                .path("typedm")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        List<HashMap> listtypedm0 = getResponse.readEntity(List.class);
+
+
+        // System.out.println(listtypedm);
+
+        List<String> lststr = new ArrayList<>();
+
+        listtypedm0.forEach(elt -> {
+
+            HashMap elt0 = (HashMap) elt;
+
+            lststr.add((String) elt0.get("Nom") + " | " + elt0.get("categorie"));
+        });
+
+        // System.out.println(lststr);
+
+        //System.out.println(listtypedm.get(0).getClass());
+
+        if (!lststr.isEmpty()) {
+            typedmChoiceBox1.setItems(FXCollections.observableArrayList(lststr));
+        }
+
+        typedm.setVisible(false);
+        ajoutertypedm.setVisible(false);
+        typedmlabel.setVisible(false);
+        txt_categorie.setVisible(false);
+        créertypedm.setOnAction(event -> {
+
+            if (!ajoutertypedm.isVisible()) {
+                typedm.setVisible(true);
+                ajoutertypedm.setVisible(true);
+                typedmlabel.setVisible(true);
+                txt_categorie.setVisible(true);
+//                isShow=true;
+            } else {
+                typedm.setVisible(false);
+                ajoutertypedm.setVisible(false);
+                typedmlabel.setVisible(false);
+                txt_categorie.setVisible(false);
+//                isShow=false;
+
+            }
+        });
+
+
+        actionsColSM.setCellFactory(param -> new TableCell<>() {
+            private final Button editButton = new Button("Edit");
+            private final Button deleteButton = new Button("Delete");
+
+            {
+                editButton.setOnAction(event -> {
+                    //System.out.println("rachid edit button");
+
+                    DM dm = getTableView().getItems().get(getIndex());
+//                    DM dm = SupprimerModifierDMTableView.getSelectionModel().getSelectedItem();
+                    if (dm != null) {
+
+                        TextInputDialog dialog = new TextInputDialog(dm.getNom());
+                        dialog.setTitle("Edit DM Name");
+                        dialog.setHeaderText("Enter new name for DM");
+                        dialog.setContentText("New Name:");
+
+                        Optional<String> result = dialog.showAndWait();
+                        if (result.isPresent()) {
+                            String newNomDM = result.get();
+                            onModifierDM(dm.getNom(), newNomDM);
+                        }
+                    }
+                    try {
+                        onAfficherDMs(null);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                deleteButton.setOnAction(event -> {
+                    DM dm  = getTableView().getItems().get(getIndex());
+//                    DM dm = SupprimerModifierDMTableView.getSelectionModel().getSelectedItem();
+                    if (dm != null) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Delete DM");
+                        alert.setHeaderText("Are you sure you want to delete " + dm.getNom() + "?");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            SupprimerDM(dm.getNom());
+                        }
+                    }
+                    try {
+                        onAfficherDMs(null);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+            }
+
+            @Override
+            protected void updateItem(Void aVoid, boolean b) {
+                super.updateItem(aVoid, b);
+
+                if (!b) {
+                    setGraphic(new HBox(editButton, deleteButton));
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
+
+
+
+
+
+        //////////////////         <rachid>          ////////////////////
+
+
+        // load DmAffecterController
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("Dm_Affecter.fxml"));
+        AnchorPane pane = null;
+        try {
+            pane = (AnchorPane) fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        anchorpane_affecter_dm.getChildren().clear();
+
+
+        anchorpane_affecter_dm.getChildren().add(pane);
+
+        AnchorPane.setLeftAnchor(pane, 0.0);
+        AnchorPane.setRightAnchor(pane, 0.0);
+
+        image_upload.setImage(new Image("plus.png"));
+
+
+        // ============================== rachid   ===========================
+
+
+
+
     }
     @FXML
     public void onAjouterDetailDemandeDm(ActionEvent event) throws IOException {
         String typeDm = chBoxTypeDm.getValue();
         String nomDm = chBoxNomDm.getValue();
         int qte = spinnerQuantityDm.getValue();
+        if ((nomDm == null))
+            return;
         DetailDemandeDm detailDemandeDm = new DetailDemandeDm(qte, typeDm, nomDm);
         for (DetailDemandeDm detail : tableData){
             if (detail.getNomDm().equals(nomDm)){
@@ -385,23 +708,29 @@ public class DmController implements Initializable {
         nomDmColumn.setCellValueFactory(new PropertyValueFactory<>("nomDm"));
         tblViewAddDetailDemandeDm.refresh();
         demandesAEnvoyer.add(detailDemandeDm);
+        chBoxNomDm.getSelectionModel().clearSelection();
+        chBoxTypeDm.getSelectionModel().clearSelection();
+        spinnerQuantityDm.getValueFactory().setValue(1);
     }
 
     @FXML
     public void onConfirmDemandeDm(ActionEvent event) throws IOException {
         if (tableData.size() == 0)
             return;
+        String service = chBoxService.getValue();
+        if (service == null)
+            return;
         Response postDemandeResponse = target
                 .path("demandeDm")
-                .queryParam("nomDepartement", chBoxService.getValue())
+                .queryParam("nomDepartement", service)
                 .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.json(null));
+                .post(Entity.json("Hello"));
         int idDemandeDm = postDemandeResponse.readEntity(Integer.class);
-        if (postDemandeResponse.getStatus() == 200) {
-            for (DetailDemandeDm detailDetailDemandeDm : tableData) {
+        if (postDemandeResponse.getStatus() == 200 ||postDemandeResponse.getStatus() == 201) {
+            for (DetailDemandeDm detailDemandeDm : tableData) {
                 try {
-                    String nomDM = detailDetailDemandeDm.getNomDm();
-                    int qte = detailDetailDemandeDm.getQte();
+                    String nomDM = detailDemandeDm.getNomDm();
+                    int qte = detailDemandeDm.getQte();
                     Response response = target
                             .path("demandeDm")
                             .path("detailDemande")
@@ -409,10 +738,9 @@ public class DmController implements Initializable {
                             .queryParam("nomDm", nomDM)
                             .queryParam("qte", qte)
                             .request(MediaType.APPLICATION_JSON_TYPE)
-                            .post(Entity.json(null));
-                    if (response.getStatus() != 200) {
-                        throw new RuntimeException("Failed to save detailDemandeDm: " + response.getStatus());
-                    }
+                            .post(Entity.json("Hello"));
+                    detailDemandeDm.setDepartement(service);
+                    response.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -424,7 +752,7 @@ public class DmController implements Initializable {
                     .path("confirmée")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.json("Hello"));
-            System.out.println(cofirmDemandeResponse.getStatus());
+            //System.out.println(cofirmDemandeResponse.getStatus());
         }
 
     }
@@ -437,15 +765,14 @@ public class DmController implements Initializable {
             tblViewAddDetailDemandeDm.getSelectionModel().clearSelection();
         }
     }
-    @FXML
-    protected void onAfficherDemandesDm1(ActionEvent event) throws IOException {
+    protected void onAfficherDemandesDm1() {
         Response getResponse = target
                 .path("demandeDm")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
         if (getResponse.getStatus() == 200) {
             List<String> responseString = getResponse.readEntity(List.class);
-            System.out.println("Response String: " + responseString);
+            //System.out.println("Response String: " + responseString);
             JSONArray jsonArray = new JSONArray(responseString);
             ObservableList<DemandeDm> tableData = FXCollections.observableArrayList();
 
@@ -471,16 +798,17 @@ public class DmController implements Initializable {
                 List<DetailDemandeDm> detailsDemandeDm = new ArrayList<>();
                 detailsDemande.forEach(detailDemande -> {
                     JSONObject jsonDetailDemande = new JSONObject(detailDemande.toString());
-                    System.out.println(jsonDetailDemande);
-                    System.out.println(detailDemande);
+                    //System.out.println(jsonDetailDemande);
+                    //System.out.println(detailDemande);
                     DetailDemandeDm detailDemandeDm = new DetailDemandeDm(
                             jsonDetailDemande.getString("etatDetail"),
                             jsonDetailDemande.getInt("id"),
                             jsonDetailDemande.getInt("qte"),
                             jsonDetailDemande.getJSONObject("dm").getJSONObject("typeDM").getString("nomType"),
-                            jsonDetailDemande.getJSONObject("dm").getString("nom"));
+                            jsonDetailDemande.getJSONObject("dm").getString("nom"),
+                            jsonDetailDemande.getJSONObject("dm").getInt("id"));
                     detailsDemandeDm.add(detailDemandeDm);
-                    System.out.println(detailDemandeDm.getEtat());
+                    //System.out.println(detailDemandeDm.getEtat());
                 });
                 demandeDm.setDetailsDemandeDm(detailsDemandeDm);
                 boolean done = true;
@@ -504,7 +832,7 @@ public class DmController implements Initializable {
                             .request(MediaType.APPLICATION_JSON_TYPE)
                             .put(Entity.json("Hello"));
                     demandeDm.setEtatDemande(newEtat);
-                    System.out.println(response);
+                    //System.out.println(response);
                 }
                 tableData.add(demandeDm);
             }
@@ -549,15 +877,14 @@ public class DmController implements Initializable {
 
         return editor;
     }
-    @FXML
-    protected void onAfficherDemandesDm(ActionEvent event) throws IOException {
+    protected void onAfficherDemandesDm(){
         Response getResponse = target
                 .path("demandeDm")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
         if (getResponse.getStatus() == 200) {
             List<String> responseString = getResponse.readEntity(List.class);
-            System.out.println("Response String: " + responseString);
+            //System.out.println("Response String: " + responseString);
             JSONArray jsonArray = new JSONArray(responseString);
             ObservableList<DemandeDm> tableData = FXCollections.observableArrayList();
 
@@ -584,16 +911,18 @@ public class DmController implements Initializable {
                 List<DetailDemandeDm> detailsDemandeDm = new ArrayList<>();
                 detailsDemande.forEach(detailDemande -> {
                     JSONObject jsonDetailDemande = new JSONObject(detailDemande.toString());
-                    System.out.println(jsonDetailDemande);
-                    System.out.println(detailDemande);
+                    //System.out.println(jsonDetailDemande);
+                    //System.out.println(detailDemande);
                     DetailDemandeDm detailDemandeDm = new DetailDemandeDm(
                             jsonDetailDemande.getString("etatDetail"),
                             jsonDetailDemande.getInt("id"),
                             jsonDetailDemande.getInt("qte"),
                             jsonDetailDemande.getJSONObject("dm").getJSONObject("typeDM").getString("nomType"),
-                            jsonDetailDemande.getJSONObject("dm").getString("nom"));
+                            jsonDetailDemande.getJSONObject("dm").getString("nom"),
+                            jsonDetailDemande.getJSONObject("dm").getInt("id"));
+                    detailDemandeDm.setDepartement(demandeDm.getDepartement());
                     detailsDemandeDm.add(detailDemandeDm);
-                    System.out.println(detailDemandeDm.getEtat());
+                    //System.out.println(detailDemandeDm.getEtat());
                 });
                 demandeDm.setDetailsDemandeDm(detailsDemandeDm);
                 boolean done = true;
@@ -617,7 +946,7 @@ public class DmController implements Initializable {
                              .request(MediaType.APPLICATION_JSON_TYPE)
                             .put(Entity.json("Hello"));
                     demandeDm.setEtatDemande(newEtat);
-                    System.out.println(response);
+                    //System.out.println(response);
                 }
                 tableData.add(demandeDm);
             }
@@ -652,7 +981,6 @@ public class DmController implements Initializable {
         typeDmCola.setCellValueFactory(new PropertyValueFactory<>("typeDm"));
         nomDmCola.setCellValueFactory(new PropertyValueFactory<>("nomDm"));
         qteCola.setCellValueFactory(new PropertyValueFactory<>("qte"));
-
         accepterCola.setCellFactory(column -> new TableCell<DetailDemandeDm, String>() {
             private Button btnAccepter = new Button();
             @Override
@@ -667,31 +995,50 @@ public class DmController implements Initializable {
                     lblAccepte.setStyle("-fx-text-fill: #76ff76");
                     setGraphic(lblAccepte);
                 } else {
+                    //System.out.println("Im here");
                     DetailDemandeDm detailDemandeDm = getTableView().getItems().get(getIndex());
                     btnAccepter.setGraphic(new ImageView(new Image("plus.png", 20,20, true, true)));
                     btnAccepter.setStyle("-fx-background-color: transparent");
                     btnAccepter.setOnAction(event -> {
-                        detailDemandeDm.setEtat("ACCEPTÉE");
-                        Response response = target
-                                .path("demandeDm")
-                                .path("detailDemande")
-                                .queryParam("idDetail", detailDemandeDm.getId())
-                                .queryParam("etatDetail", "acceptée")
+                        //System.out.println("hello");
+//                         Déplacer du stock général vers stock service spécifié
+                        Response putResponse = target
+                                .path("dm")
+                                .path("stock")
+                                .queryParam("nomDepartement", detailDemandeDm.getDepartement())
+                                .queryParam("nomDm", detailDemandeDm.getNomDm())
+                                .queryParam("qte", detailDemandeDm.getQte())
                                 .request(MediaType.APPLICATION_JSON_TYPE)
                                 .put(Entity.json("Hello"));
-                        getTableView().refresh();
-                        boolean doRefresh = true;
-                        for (DetailDemandeDm detail : getTableView().getItems()){
-                            if ((!detail.getEtat().equals("ACCEPTÉE")) && (!detail.getEtat().equals("REJETÉE")))
-                                doRefresh = false;
-                        }
-                        if (doRefresh) {
-                            try {
-                                onAfficherDemandesDm(event);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                        int isSuccess = putResponse.readEntity(Integer.class);
+                        if (isSuccess == 1){
+                            detailDemandeDm.setEtat("ACCEPTÉE");
+                            Response response = target
+                                    .path("demandeDm")
+                                    .path("detailDemande")
+                                    .queryParam("idDetail", detailDemandeDm.getId())
+                                    .queryParam("etatDetail", "acceptée")
+                                    .request(MediaType.APPLICATION_JSON_TYPE)
+                                    .put(Entity.json("Hello"));
+                            response.close();
+                            getTableView().refresh();
+                            boolean doRefresh = true;
+                            for (DetailDemandeDm detail : getTableView().getItems()){
+                                if ((!detail.getEtat().equals("ACCEPTÉE")) && (!detail.getEtat().equals("REJETÉE")))
+                                    doRefresh = false;
                             }
+                            if (doRefresh) {
+                                onAfficherDemandesDm();
+                            }
+                        }else{
+                            Dialog<String> dialog = new Dialog<>();
+                            dialog.setTitle("Success");
+                            dialog.setHeaderText("DM added successfully!");
+                            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+                            dialog.showAndWait();
                         }
+                        putResponse.close();
+
                     });
                     setGraphic(btnAccepter);
                 }
@@ -701,7 +1048,7 @@ public class DmController implements Initializable {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                System.out.println(getIndex());
+                //System.out.println(getIndex());
                 if (empty) {
                     setGraphic(null);
                 } else if (getTableView().getItems().get(getIndex()).getEtat().equals("ACCEPTÉE")){
@@ -723,7 +1070,7 @@ public class DmController implements Initializable {
                                 .queryParam("etatDetail", "rejetée")
                                 .request(MediaType.APPLICATION_JSON_TYPE)
                                 .put(Entity.json("Hello"));
-                        System.out.println(detailDemandeDm.getEtat());
+                        //System.out.println(detailDemandeDm.getEtat());
                         getTableView().refresh();
                         boolean doRefresh = true;
                         for (DetailDemandeDm detail : getTableView().getItems()){
@@ -731,11 +1078,7 @@ public class DmController implements Initializable {
                                 doRefresh = false;
                         }
                         if (doRefresh) {
-                            try {
-                                onAfficherDemandesDm(event);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                                onAfficherDemandesDm();
                         }
                     });
                     setGraphic(btnRejeter);
@@ -762,7 +1105,8 @@ public class DmController implements Initializable {
     ChoiceBox<String> dms = new ChoiceBox<>() ;
 
     @FXML
-    TextField qteLivraison;
+    Spinner<Integer> spinnerQteLivraison;
+
 
     @FXML
     ChoiceBox<String> fournisseurs = new ChoiceBox();
@@ -860,8 +1204,11 @@ public class DmController implements Initializable {
 
     @FXML
     protected void onAjouterLivraison(ActionEvent event) throws IOException {
+        if (details.size() == 0)
+            return;
         String fournisseur = fournisseurs.getValue();
-
+        if (fournisseur == null)
+            return;
         List<String> jsonArray = new ArrayList<>();
         for (DetailLivraisonFX elt : details){
             JSONObject jsonObject = new JSONObject();
@@ -873,8 +1220,8 @@ public class DmController implements Initializable {
         JSONArray jsonArray1= new JSONArray(jsonArray);
         lst.put("detailsLst", jsonArray1.toString());
         lst.put("fournisseur", fournisseur);
-        System.out.println(jsonArray);
-        System.out.println(lst);
+        //System.out.println(jsonArray);
+        //System.out.println(lst);
         // String fournisseurEncoded = URLEncoder.encode(fournisseur, StandardCharsets.UTF_8);
         Response postResponse = target.path("livraisonDM")
                 .path("postLivraison")
@@ -883,7 +1230,7 @@ public class DmController implements Initializable {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(""));
         if (postResponse.getStatus() == 200) {
-            System.out.println("Livraison created successfully!");
+            //System.out.println("Livraison created successfully!");
 
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -892,7 +1239,20 @@ public class DmController implements Initializable {
             alert.setContentText("Livraison Ajoutée!");
             alert.showAndWait();
 
+
+            details.forEach(detail -> {
+                Response pooostResponse = target
+                        .path("fournisseur")
+                        .path("update_qte")
+                        .queryParam("nom_dm", detail.getDm())
+                        .queryParam("qte_dm", detail.getQte())
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .put(Entity.json(""));
+                //System.out.println("Response poooost =    " + pooostResponse.getStatus());
+            });
+
             tableDetailLivraison.setItems(null);
+
 
 
 
@@ -903,7 +1263,7 @@ public class DmController implements Initializable {
 
             if (getResponse4.getStatus() == Response.Status.OK.getStatusCode()) {
                 String responseString = getResponse4.readEntity(String.class);
-                System.out.println("Response String: " + responseString);
+                //System.out.println("Response String: " + responseString);
                 JSONArray jsonArray2 = new JSONArray(responseString);
                 ObservableList<LivraisonFx> tableData1 = FXCollections.observableArrayList();
 
@@ -920,8 +1280,8 @@ public class DmController implements Initializable {
                     List<DetailLivraisonFX> detailsLiv = new ArrayList<>();
                     detailsJson.forEach(detailLiv -> {
                         JSONObject jsonDetailLivraison = new JSONObject(detailLiv.toString());
-                        System.out.println(jsonDetailLivraison);
-                        System.out.println(detailLiv);
+                        //System.out.println(jsonDetailLivraison);
+                        //System.out.println(detailLiv);
                         DetailLivraisonFX detailLivraisonFX = new DetailLivraisonFX(
                                 jsonDetailLivraison.getJSONObject("dm").getString("nom"),
                                 String.valueOf(jsonDetailLivraison.getInt("qte")));
@@ -937,8 +1297,9 @@ public class DmController implements Initializable {
             }
 
         } else {
-            System.out.println("Error adding livraison!");
+            //System.out.println("Error adding livraison!");
         }
+        details = FXCollections.observableArrayList();
     }
     private VBox createEditorLiv(TableRowExpanderColumn.TableRowDataFeatures<LivraisonFx> param){
         VBox editor = new VBox();
@@ -983,12 +1344,14 @@ public class DmController implements Initializable {
     @FXML
     protected void onAjouterDetailLivraison(ActionEvent event) throws IOException {
         String dm = dms.getValue();
-        String qte = qteLivraison.getText();
+        String qte = String.valueOf(spinnerQteLivraison.getValue());
+        if (dm == null)
+            return;
         for (DetailLivraisonFX detail : details){
-            if (detail.getDm().equals(dm)){
-                detail.setQte(String.valueOf(Integer.valueOf(qte) + Integer.valueOf(detail.getQte())));
+        if (detail.getDm().equals(dm)){
+            detail.setQte(String.valueOf(Integer.valueOf(qte) + Integer.valueOf(detail.getQte())));
                 tableDetailLivraison.refresh();
-                return;
+            return;
             }
         }
         dmColumn = new TableColumn<>("DM");
@@ -998,7 +1361,7 @@ public class DmController implements Initializable {
         tableDetailLivraison.setItems(details);
         typeDM2.setValue(null);
         dms.setValue(null);
-        qteLivraison.clear();
+        spinnerQteLivraison.getValueFactory().setValue(1);
     }
     @FXML
     protected void ajouterFournisseur(ActionEvent event) throws IOException {
@@ -1009,6 +1372,9 @@ public class DmController implements Initializable {
         String codeape = codeapeFournisseur.getText();
         String numerosiren = numsirenFournisseur.getText();
         String formeJuridique = formejuridiqueFournisseur.getText();
+
+        if ((nom == null) || (tel == null) || (email == null) || (ville == null))
+            return;
 
         Response postResponse =  target.path("/fournisseur")
                 .path("/postFournisseur")
@@ -1054,7 +1420,7 @@ public class DmController implements Initializable {
                 .get();
         if (getResponse.getStatus() == Response.Status.OK.getStatusCode()) {
             String responseString = getResponse.readEntity(String.class);
-            System.out.println("Response String: " + responseString);
+            //System.out.println("Response String: " + responseString);
             JSONArray jsonArray = new JSONArray(responseString);
             ObservableList<FournisseurFx> tableData = FXCollections.observableArrayList();
 
@@ -1095,7 +1461,7 @@ public class DmController implements Initializable {
                 .get();
         if (getResponse.getStatus() == Response.Status.OK.getStatusCode()) {
             String responseString = getResponse.readEntity(String.class);
-            System.out.println("Response String: " + responseString);
+            //System.out.println("Response String: " + responseString);
             JSONArray jsonArray = new JSONArray(responseString);
             ObservableList<FournisseurFx> tableData = FXCollections.observableArrayList();
 
@@ -1271,12 +1637,221 @@ public class DmController implements Initializable {
                     .queryParam("fournisseur_tel", this.tel)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.json(""));
-            System.out.println(response);
+            //System.out.println(response);
         }}
-    // Rachid
 
 
-    //    public void On_auto_searchType_KyeBoard(InputMethodEvent inputMethodEvent) {
-//    }
+
+
+// rachid =======================   rachid ===========================
+
+
+    @FXML
+    protected void onAjouterTypeDM(ActionEvent event) throws IOException {
+        String nomtypedm = typedm.getText().trim();
+        String categorie = txt_categorie.getText().trim();
+        Response postResponse = target.path("dm")
+                .path("posttypedm")
+                .queryParam("nomtypedm", nomtypedm)
+                .queryParam("categorie", categorie)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(""));
+        if (postResponse.getStatus() == Response.Status.OK.getStatusCode()) {
+            //System.out.println("Type DM created successfully!");
+            Response getResponse = target.path("dm")
+                    .path("typedm")
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get();
+            List<String> listtypedm = getResponse.readEntity(List.class);
+            typedmChoiceBox1.setItems(FXCollections.observableArrayList(listtypedm));
+        } else {
+            //System.out.println("Error adding type DM!");
+        }
+    }
+
+    public void upload_image(String image_path,String name){
+
+
+        File file = new File(image_path);
+
+        FormDataMultiPart formData = new FormDataMultiPart();
+
+        formData.bodyPart(new FileDataBodyPart("file", file, MediaType.APPLICATION_OCTET_STREAM_TYPE));
+
+        Response response = target
+                .path("dm")
+                .path("uploadfile")
+                .queryParam("name",name)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+
+                .post(Entity.entity(formData, formData.getMediaType()));
+
+        //System.out.println(response.getStatus());
+
+    }
+
+
+    @FXML
+    protected void onAjouterDM(ActionEvent event) throws IOException {
+
+//        scroll_table.setFitToHeight(true);
+//        scroll_table.setFitToWidth(true);
+
+        try {
+            this.onAfficherDMs(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String typeDM = typedmChoiceBox1.getValue().trim();
+        String dm = nomdm1.getText().trim();
+
+        //int qte = Integer.parseInt(qtedm1.getText().trim());
+
+        String image_path = txt_filed_imagePath.getText();
+
+        File file=new File(image_path);
+
+        Response postResponse = target.path("dm")
+                .path("postdm")
+                .queryParam("nom", dm)
+                .queryParam("qte", 0)
+                .queryParam("typedm", typeDM)
+                .queryParam("image_path", "http://141.94.205.104:8081/dm/images?image="+file.getName())
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(""));
+
+        //System.out.println(postResponse.getStatus());
+        if (postResponse.getStatus() == 201) {
+
+            this.upload_image(image_path,file.getName());
+
+           SupprimerModifierDMTableView.refresh();
+
+
+            //System.out.println("Type DM created successfully!");
+
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Success");
+            dialog.setHeaderText("DM added successfully!");
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+            dialog.showAndWait();
+
+            try {
+                this.onAfficherDMs(null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            //System.out.println("Error adding type DM!");
+
+            // Create a dialog box to display an error message
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Error");
+            dialog.setHeaderText("Error adding DM!");
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+            dialog.showAndWait();
+        }
+
+        txt_filed_imagePath.clear();
+        image_upload.setImage(null);
+        typedmChoiceBox1.getSelectionModel().clearSelection();
+        nomdm1.clear();
+    }
+
+
+
+    ///////    rachid ///////
+
+    @FXML
+    void OnBtnUploadClick(ActionEvent event) {
+
+        FileChooser fileChooser = new FileChooser();
+        if (last_path.length() > 2) {
+
+            fileChooser.setInitialDirectory(new File(last_path));
+        }
+
+        File selectedFile = fileChooser.showOpenDialog(btnUpload.getScene().getWindow());
+
+        last_path = selectedFile.getParent();
+
+        txt_filed_imagePath.setText(selectedFile.getAbsolutePath());
+
+        image_upload.setImage(new Image(selectedFile.getAbsolutePath()));
+
+
+    }
+
+
+    //aya 2
+
+    protected void onModifierDM(String oldNomDM, String newNomDM) {
+        Entity<?> entity = Entity.entity("", MediaType.APPLICATION_JSON_TYPE);
+        Response response = target.path("dm")
+                .path("/updatenomdm")
+                .queryParam("oldnamedm", oldNomDM)
+                .queryParam("newnamedm", newNomDM)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .put(entity);
+
+    }
+
+
+    protected void SupprimerDM(String nomDM) {
+        Response response = target.path("dm")
+                .path("/deletenomdm")
+                .queryParam("nomdm", nomDM)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .delete();
+
+    }
+
+
+
+
+
+    @FXML
+    protected void onAfficherDMs(ActionEvent event) throws IOException {
+
+
+        idColSM.setCellValueFactory(new PropertyValueFactory<>("id"));
+        qteColumnSM.setCellValueFactory(new PropertyValueFactory<>("quantite"));
+        nomDMColSM.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        typeDMColumnSM.setCellValueFactory(new PropertyValueFactory<>("typeDM"));
+
+
+        Response getResponse = target.path("dm")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+        if (getResponse.getStatus() == Response.Status.OK.getStatusCode()) {
+            String responseString = getResponse.readEntity(String.class);
+            //System.out.println("Response String: " + responseString);
+            JSONArray jsonArray = new JSONArray(responseString);
+            ObservableList<DM> tableData = FXCollections.observableArrayList();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                int id = jsonObject.getInt("id");
+                String nom = jsonObject.getString("nom");
+                int quantite = jsonObject.getInt("quantite");
+                String typeDM = jsonObject.getString("typeDM");
+
+                DM dm = new DM();
+                dm.setId(id);
+                dm.setNom(nom);
+                dm.setQuantite(quantite);
+                dm.setTypeDM(typeDM);
+
+                tableData.add(dm);
+            }
+
+
+            SupprimerModifierDMTableView.setItems(tableData);
+
+        }
+    }
+
+
 
 }

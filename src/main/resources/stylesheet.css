@@ -1,6 +1,13 @@
+.grid .label {
+    -fx-font-size: 15;
+    -fx-text-fill: white;
+}
+
 /* TableView styling */
 .table-view {
     -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3) ;
+    -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    -fx-background-radius: 10;
 }
 .table-view .column-header-background .label{
     -fx-text-fill: white;
@@ -197,6 +204,38 @@
     -fx-background-color: #1976d2;
     -fx-cursor: hand;
 }
+/*TextField*/
+
+
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: 0;
+    -fx-padding: 0.25em 0.5em;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial, sans-serif;
+    -fx-border-width: 1px;
+    -fx-border-color: #A9A9A9;
+    -fx-border-radius: 4px;
+}
+
+.text-field:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+.text-field:focused {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: -0.2, -0.2, -0.8, -0.2;
+    -fx-border-color: #1E90FF;
+    -fx-border-width: 2px;
+}
+
+.text-field:disabled{
+    -fx-opacity: 0.5;
+}
+
+
+/*ChoiceBox*/
+
 .choice-box {
     -fx-background-color: #FFFFFF;
     -fx-background-insets: 0;
@@ -219,7 +258,7 @@
     -fx-border-width: 2px;
 }
 
-.choice-box:arrow {
+.choice-box:arrow{
     -fx-background-color: #FFFFFF;
     -fx-background-insets: 0;
     -fx-padding: 0.25em 0.5em;
