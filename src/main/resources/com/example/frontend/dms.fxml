@@ -226,19 +226,19 @@
                                              <children>
                                                 <VBox spacing="5.0">
                                                    <children>
-                                                      <Label style="-fx-text-fill: white;" text="Nom :" />
+                                                      <Label style="-fx-text-fill: white;" text="Nom *" />
                                                       <TextField fx:id="nomFournisseur" prefHeight="25.0" prefWidth="97.0" />
                                                    </children>
                                                 </VBox>
                                                 <VBox prefHeight="48.0" prefWidth="125.0" spacing="5.0">
                                                    <children>
-                                                      <Label style="-fx-text-fill: white;" text="Tel :" />
+                                                      <Label style="-fx-text-fill: white;" text="Tel *" />
                                                       <TextField fx:id="numFournisseur" prefHeight="25.0" prefWidth="97.0" />
                                                    </children>
                                                 </VBox>
                                                 <VBox spacing="5.0">
                                                    <children>
-                                                      <Label style="-fx-text-fill: white;" text="Ville :" />
+                                                      <Label style="-fx-text-fill: white;" text="Ville *" />
                                                       <TextField fx:id="villeFournisseur" prefHeight="25.0" prefWidth="97.0" />
                                                    </children>
                                                 </VBox>
@@ -268,7 +268,7 @@
                                           </HBox>
                                           <VBox spacing="5.0">
                                              <children>
-                                                <Label style="-fx-text-fill: white;" text="Email :" />
+                                                <Label style="-fx-text-fill: white;" text="Email *" />
                                                 <TextField fx:id="emailFournisseur" prefHeight="25.0" prefWidth="136.0" />
                                              </children>
                                           </VBox>

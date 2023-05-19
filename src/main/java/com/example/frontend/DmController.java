@@ -1032,8 +1032,8 @@ public class DmController implements Initializable {
                             }
                         }else{
                             Dialog<String> dialog = new Dialog<>();
-                            dialog.setTitle("Success");
-                            dialog.setHeaderText("DM added successfully!");
+                            dialog.setTitle("Opération échouée");
+                            dialog.setHeaderText("La quantité dans le stock général est insuffisante pour exécuter cette opération, veuillez passer des livraison pour remplire ce dernier");
                             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
                             dialog.showAndWait();
                         }
@@ -1324,7 +1324,7 @@ public class DmController implements Initializable {
         tableView.minHeightProperty().bind(tableView.prefHeightProperty());
         tableView.maxHeightProperty().bind(tableView.prefHeightProperty());
         editor.getChildren().add(tableView);
-
+        tableView.setStyle("-fx-background-color: white");
         return editor;
     }
     @FXML
@@ -1804,7 +1804,8 @@ public class DmController implements Initializable {
                 .queryParam("nomdm", nomDM)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .delete();
-
+        response.close();
+        SupprimerModifierDMTableView.refresh();
     }
 
 

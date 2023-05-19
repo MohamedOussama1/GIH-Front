@@ -12,6 +12,7 @@ module com.example.frontend {
     requires javafx.fxml;
     requires javafx.web;
     requires jakarta.ws.rs;
+    requires jakarta.xml.bind;
     requires java.base;
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;

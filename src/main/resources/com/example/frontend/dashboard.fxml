@@ -10,17 +10,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="anchorContent" maxHeight="1178.0" maxWidth="931.0" minHeight="816.0" minWidth="921.0" prefHeight="853.0" prefWidth="931.0" styleClass="choice-box" stylesheets="@../../../stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DashboardController">
+<AnchorPane fx:id="anchorContent" maxHeight="1178.0" maxWidth="1071.0" minHeight="791.0" minWidth="921.0" prefHeight="791.0" prefWidth="1071.0" styleClass="choice-box" stylesheets="@../../../stylesheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DashboardController">
    <children>
-      <ScrollPane layoutX="58.0" layoutY="-7.0" prefHeight="835.0" prefWidth="1023.0">
+      <ScrollPane layoutX="58.0" layoutY="-7.0" prefHeight="799.0" prefWidth="1023.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1163.0" prefWidth="899.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="805.0" prefWidth="899.0">
                <children>
-                  <VBox alignment="TOP_CENTER" layoutY="12.0" prefHeight="1136.0" prefWidth="893.0" spacing="70.0">
+                  <VBox alignment="TOP_CENTER" layoutX="3.0" layoutY="14.0" prefHeight="780.0" prefWidth="893.0">
                      <children>
-                        <Pane prefHeight="461.0" prefWidth="893.0" styleClass="medical-pane" stylesheets="@../../../stylesheet.css">
+                        <Pane prefHeight="252.0" prefWidth="893.0" styleClass="medical-pane" stylesheets="@../../../stylesheet.css">
                            <children>
-                              <LineChart fx:id="lineChart" layoutX="53.0" layoutY="36.0" prefHeight="388.0" prefWidth="783.0" stylesheets="@../../../stylesheet.css">
+                              <LineChart fx:id="lineChart" layoutX="53.0" layoutY="6.0" prefHeight="209.0" prefWidth="783.0" stylesheets="@../../../stylesheet.css">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                 </xAxis>
@@ -30,9 +30,9 @@
                               </LineChart>
                            </children>
                         </Pane>
-                        <Pane prefHeight="417.0" prefWidth="887.0" styleClass="medical-pane" stylesheets="@../../../stylesheet.css">
+                        <Pane prefHeight="224.0" prefWidth="893.0" styleClass="medical-pane" stylesheets="@../../../stylesheet.css">
                            <children>
-                              <StackedBarChart fx:id="barChart" layoutX="18.0" layoutY="34.0" prefHeight="349.0" prefWidth="837.0" styleClass="chart" stylesheets="@../../../stylesheet.css">
+                              <StackedBarChart fx:id="barChart" layoutX="18.0" layoutY="3.0" prefHeight="207.0" prefWidth="837.0" styleClass="chart" stylesheets="@../../../stylesheet.css">
                                 <xAxis>
                                   <CategoryAxis fx:id="service" side="BOTTOM" />
                                 </xAxis>
@@ -48,9 +48,24 @@
                               <Insets top="50.0" />
                            </padding>
                         </Pane>
+                        <Pane layoutX="10.0" layoutY="591.0" prefHeight="283.0" prefWidth="893.0" styleClass="medical-pane" stylesheets="@../../../stylesheet.css">
+                           <children>
+                              <StackedBarChart fx:id="chart" layoutX="86.0" prefHeight="268.0" prefWidth="712.0">
+                                 <xAxis>
+                                    <CategoryAxis fx:id="caxis" side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis fx:id="numberAxis" side="LEFT" />
+                                 </yAxis>
+                              </StackedBarChart>
+                           </children>
+                           <padding>
+                              <Insets top="50.0" />
+                           </padding>
+                        </Pane>
                      </children>
                      <padding>
-                        <Insets bottom="50.0" top="50.0" />
+                        <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </VBox>
                </children>

@@ -181,7 +181,7 @@ public class LitController implements Initializable {
 
     private static WebTarget target = client.target(Connextion_info.url);
 
-    protected void formatTextFieldToNumbersOnly(TextField textField, int max) {
+    protected static void formatTextFieldToNumbersOnly(TextField textField, int max) {
         textField.textProperty().addListener((observableValue, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 textField.setText(newValue.replaceAll("\\D", ""));
