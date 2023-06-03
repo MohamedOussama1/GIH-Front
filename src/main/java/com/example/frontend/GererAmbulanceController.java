@@ -27,6 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -36,6 +37,7 @@ import java.awt.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GererAmbulanceController implements Initializable {
@@ -44,7 +46,9 @@ public class GererAmbulanceController implements Initializable {
 
     private static WebTarget target = client.target(Connextion_info.url);
     private static Revision currentRevision;
-    private static int currentIndex;
+    private static Revision selectedRevision;
+    @FXML
+    Button btnPredict;
     @FXML
     ChoiceBox<String> chBoxTypeRevision;
     @FXML
@@ -73,6 +77,7 @@ public class GererAmbulanceController implements Initializable {
 
     @FXML
     private TableColumn modifiercolumn = new TableColumn("modifier");
+    ObservableList<Revision> revisionItems = FXCollections.observableArrayList();
     @FXML
     DatePicker datePicker;
     @FXML
@@ -81,6 +86,7 @@ public class GererAmbulanceController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tblRevisions.setItems(revisionItems);
         chBoxTypeRevision.setItems(FXCollections.observableArrayList(
                 target
                         .path("revision")
@@ -98,7 +104,6 @@ public class GererAmbulanceController implements Initializable {
         startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         nouvelEtatCol.setCellValueFactory(new PropertyValueFactory<>("nouvelEtat"));
 
-
         List<String> revisionsAmbulance = target
                 .path("revision")
                 .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
@@ -106,26 +111,21 @@ public class GererAmbulanceController implements Initializable {
                 .get(List.class);
         populateRevisionTable(tblRevisions, revisionsAmbulance);
         boolean isInRevision = false;
-        for (int i = 0; i < tblRevisions.getItems().size(); i++){
-            Revision revision = tblRevisions.getItems().get(i);
-            if (revision.getEndDate() == null){
+        for (Revision revision : tblRevisions.getItems()){
+            if(revision.getEndDate() == null)
                 isInRevision = true;
-                currentRevision = revision;
-                currentIndex = i;
-            }
         }
-
-        if(!isInRevision)
+        if(!isInRevision) {
             btnUpdate.setOnAction(this::onUpdateClick);
+            btnUpdate.setStyle("-fx-background-color: green");
+        }
         else{
             btnUpdate.setOnAction(this::onEndRevisionClick);
             btnUpdate.setText("Stop");
             btnUpdate.setStyle("-fx-background-color: red");
-           tblRevisions.getItems().remove(chBoxTypeRevision);
+            hBox.getChildren().remove(chBoxTypeRevision);
            tblRevisions.refresh();
         }
-
-
         supprimercolumn.setCellFactory(column -> new TableCell<Revision, String>() {
             private Button btnsupprimer = new Button();
 
@@ -139,17 +139,27 @@ public class GererAmbulanceController implements Initializable {
                     btnsupprimer.setGraphic(new ImageView(new Image("delete.jpg", 20, 20, true, true)));
                     btnsupprimer.setStyle("-fx-background-color: transparent");
                     btnsupprimer.setOnAction(event -> {
+                        if (revision == currentRevision){
+                            btnUpdate.setOnAction(event1-> onUpdateClick(event1));
+                            btnUpdate.setStyle("-fx-background-color: green");
+                            btnUpdate.setText("Update");
+                            hBox.getChildren().remove(0);
+                            hBox.getChildren().add(0,chBoxTypeRevision);
+                            if(!hBox.getChildren().contains(btnUpdate))
+                                hBox.getChildren().add(btnUpdate);
+                        }else{
+
+                        }
                         int id = revision.getId();
-                        ObservableList<Revision> revisionItems = getTableView().getItems();
                         Response response = target
                                 .path("revision")
                                 .queryParam("revisionId", id)
                                 .request(MediaType.APPLICATION_JSON_TYPE)
                                 .method("DELETE");
+                        response.close();
                         if (response.getStatus() == 200)
                             System.out.println("Successfully deleted Revision");
                         revisionItems.remove(revision);
-                        tblRevisions.setItems(revisionItems);
                     });
                     setGraphic(btnsupprimer);
                 }
@@ -163,24 +173,27 @@ public class GererAmbulanceController implements Initializable {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                //System.out.println(getIndex());
                 if (empty) {
                     setGraphic(null);
                 } else {
                     Revision revision = getTableView().getItems().get(getIndex());
+                    selectedRevision = revision;
                     Stage stage = new Stage();
                     VBox vbox = new VBox();
-                    Scene scene = new Scene(vbox, 400, 600);
+                    Scene scene = new Scene(vbox, 800, 600);
                     scene.getStylesheets().add("stylesheet.css");
                     stage.setScene(scene);
-                    Label lbl = new Label("Modifier fournisseur");
+                    Label lbl = new Label("Modifier Revision");
                     lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
                     vbox.setSpacing(10);
                     // create fields for the other attributes
                     TextField ancienKmField = new TextField(String.valueOf(revision.getAncienKm()));
                     ancienKmField.setPromptText("Ancien Km");
                     TextField nouvelKmField = new TextField(String.valueOf(revision.getNouvelKm()));
+                    if (revision.getNouvelKm() == 0)
+                        nouvelKmField.setText(ancienKmField.getText());
                     nouvelKmField.setPromptText("Nouvel Km");
+                    LitController.formatTextFieldToNumbersOnly(ancienKmField, Integer.parseInt(nouvelKmField.getText()));
                     ChoiceBox<String> chBoxTypeUpdate = new ChoiceBox(FXCollections.observableArrayList("S","CD","LD"));
                     chBoxTypeUpdate.setValue(revision.getType());
                     TextArea description = new TextArea(revision.getDescription());
@@ -189,33 +202,52 @@ public class GererAmbulanceController implements Initializable {
                     datePickerUpdateStart.setPromptText("Start Date");
                     DatePicker datePickerUpdateEnd= new DatePicker(LocalDate.parse(revision.getStartDate()));
                     datePickerUpdateEnd.setPromptText("End Date");
+                    datePickerUpdateStart.setDayCellFactory(picker -> new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate date, boolean empty) {
+                            super.updateItem(date, empty);
+                            if(date.isAfter(datePickerUpdateEnd.getValue())){
+                                setDisable(true);
+                                setStyle("-fx-background-color: red;");
+                            }
+                        }});
+                    datePickerUpdateEnd.setDayCellFactory(picker -> new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate date, boolean empty) {
+                            super.updateItem(date, empty);
+                            if(date.isBefore(datePickerUpdateStart.getValue())){
+                                setDisable(true);
+                                setStyle("-fx-background-color: red;");
+                            }
+
+                        }});
                     Button btnOk = new Button("OK");
                     btnOk.getStyleClass().add("button6");
                     Button btnCancel = new Button("Cancel");
                     btnOk.setOnAction(event -> {
+                        if (Integer.parseInt(nouvelKmField.getText()) < Integer.parseInt(ancienKmField.getText()) )
+                            nouvelKmField.setText(ancienKmField.getText());
                         try {
                             Response updateRevisionResponse = target
                                     .path("revision")
                                     .path("update")
                                     .path(String.valueOf(revision.getId()))
-                                    .queryParam("ancienKm", ancienKmField.getText())
+                                    .queryParam("ancienKm", revision.getAncienKm())
                                     .queryParam("nouvelKm", nouvelKmField.getText())
-                                    .queryParam("dateDebut", datePickerUpdateStart.getValue())
+                                    .queryParam("dateDebut", revision.getStartDate())
                                     .queryParam("dateSortie", datePickerUpdateEnd.getValue())
                                     .queryParam("description", description.getText())
-                                    .queryParam("typeRevision", chBoxTypeUpdate.getValue())
+                                    .queryParam("typeRevision", revision.getType())
                                     .request(MediaType.APPLICATION_JSON_TYPE)
-                                    .method("PUT");
-                            System.out.println(updateRevisionResponse);
+                                    .put(Entity.json("Hello"));
+                            updateRevisionResponse.close();
                             if(updateRevisionResponse.getStatus() == 200) {
                                 System.out.println("Successfully updated Revision");
-                                getTableView().getItems().remove(revision);
                                 revision.setAncienKm(Integer.parseInt(ancienKmField.getText()));
                                 revision.setNouvelKm(Integer.parseInt(nouvelKmField.getText()));
                                 revision.setStartDate(datePickerUpdateStart.getValue().toString());
                                 revision.setEndDate(datePickerUpdateEnd.getValue().toString());
                                 revision.setDescription((description.getText()));
-                                getTableView().getItems().add(getIndex(), revision);
                                 getTableView().refresh();
                             }
                             //Update afficherLivraison
@@ -235,22 +267,32 @@ public class GererAmbulanceController implements Initializable {
                     grid.getStyleClass().add("grid");
                     grid.setHgap(20);
                     grid.setVgap(20);
-                    grid.add(new Label("Ancien Km:"), 0, 0);
-                    grid.add(ancienKmField, 1, 0);
-                    grid.add(new Label("Nouvel Km:"), 0, 1);
-                    grid.add(nouvelKmField, 1, 1);
-                    grid.add(new Label("Start Date:"), 0, 2);
-                    grid.add(datePickerUpdateStart, 1, 2);
-                    grid.add(new Label("End Date:"), 0, 3);
-                    grid.add(datePickerUpdateEnd, 1, 3);
-                    grid.add(new Label("Description:"), 0, 4);
-                    grid.add(description, 1, 4);
-                    grid.add(new Label("Type:"), 0, 5);
-                    grid.add(chBoxTypeUpdate, 1, 5);
-                    grid.add(btnOk, 0, 6);
-                    grid.add(btnCancel, 1, 6);
+                    if (revision.getEndDate() == null){
+                        grid.add(new Label("Ancien Km:"), 0, 0);
+                        grid.add(ancienKmField, 1, 0);
+                        grid.add(new Label("Start Date:"), 0, 1);
+                        grid.add(datePickerUpdateStart, 1, 1);
+                        grid.add(new Label("Type:"), 0, 2);
+                        grid.add(chBoxTypeUpdate, 1, 2);
+                        grid.add(btnOk, 0, 3);
+                        grid.add(btnCancel, 1, 3);
+                    }else {
+                        grid.add(new Label("Ancien Km:"), 0, 0);
+                        grid.add(ancienKmField, 1, 0);
+                        grid.add(new Label("Nouvel Km:"), 0, 1);
+                        grid.add(nouvelKmField, 1, 1);
+                        grid.add(new Label("Start Date:"), 0, 2);
+                        grid.add(datePickerUpdateStart, 1, 2);
+                        grid.add(new Label("End Date:"), 0, 3);
+                        grid.add(datePickerUpdateEnd, 1, 3);
+                        grid.add(new Label("Description:"), 0, 4);
+                        grid.add(description, 1, 4);
+                        grid.add(new Label("Type:"), 0, 5);
+                        grid.add(chBoxTypeUpdate, 1, 5);
+                        grid.add(btnOk, 0, 6);
+                        grid.add(btnCancel, 1, 6);
+                    }
                     grid.setStyle("-fx-padding: 10 40 10 40;-fx-background-radius: 10; -fx-background-color:  linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)");
-
                     vbox.getChildren().addAll(lbl, grid);
                     vbox.setAlignment(Pos.CENTER);
                     vbox.setStyle("-fx-background-color:  rgb(240,240,255)");
@@ -284,116 +326,185 @@ public class GererAmbulanceController implements Initializable {
     }
     @FXML
     private void onUpdateClick(ActionEvent event){
-            // Send Request
-            Response response = target
+            for(Revision revision : revisionItems) {
+                if (    LocalDate.parse(revision.getStartDate()).isBefore(datePicker.getValue())
+                        &&
+                        LocalDate.parse(revision.getEndDate()).isAfter(datePicker.getValue())
+                ){
+                    String failMessage = "Une révision existe déjà dans la date choisie";
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, failMessage);
+                    alert.showAndWait();
+                    return;
+                }
+            }
+            target
                     .path("revision")
                     .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
                     .queryParam("dateDebut", datePicker.getValue())
                     .queryParam("typeRevision",  chBoxTypeRevision.getValue())
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json("Hello"));
-        List<String> revisionsAmbulance = target
-                .path("revision")
-                .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .get(List.class);
-        populateRevisionTable(tblRevisions, revisionsAmbulance);
-        chBoxTypeRevision.getSelectionModel().clearSelection();
+            revisionItems.add(new Revision(
+                    revisionItems.size() + 1,
+                    datePicker.getValue().toString(),
+                    AmbulanceCard.selectedAmbulanceEtat,
+                    AmbulanceCard.selectedAmbulanceKm,
+                    chBoxTypeRevision.getValue()
+            ));
+                    tblRevisions.setItems(revisionItems);
+        boolean isInRevision = false;
+        for (Revision revision : tblRevisions.getItems()){
+            if (!(LocalDate.now().isBefore(datePicker.getValue()))){
+                isInRevision = true;
+                currentRevision = revision;
+            }
+        }
+        if(isInRevision) {
+            btnUpdate.setOnAction(this::onEndRevisionClick);
+            btnUpdate.setText("Stop");
+            btnUpdate.setStyle("-fx-background-color: red");
+            hBox.getChildren().remove(chBoxTypeRevision);
+            tblRevisions.refresh();
+        }
     }
     @FXML
     private void onEndRevisionClick(ActionEvent event){
-        // Send Request
-//        Response response = target
-//                .path("revision")
-//                .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
-//                .queryParam("endDate", datePicker.getValue())
-//                .request(MediaType.APPLICATION_JSON_TYPE)
-//                .put(Entity.json("Hello"));
-//        List<String> revisionsAmbulance = target
-//                .path("revision")
-//                .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
-//                .request(MediaType.APPLICATION_JSON_TYPE)
-//                .get(List.class);
-//        populateRevisionTable(tblRevisions, revisionsAmbulance);
-//        chBoxTypeRevision.getSelectionModel().clearSelection();
-        Revision revision = currentRevision;
-        Stage stage = new Stage();
-        VBox vbox = new VBox();
-        Scene scene = new Scene(vbox, 400, 600);
-        scene.getStylesheets().add("stylesheet.css");
-        stage.setScene(scene);
-        Label lbl = new Label("Modifier fournisseur");
-        lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
-        vbox.setSpacing(10);
-        // create fields for the other attributes
-        TextField nouvelKmField = new TextField(String.valueOf(revision.getNouvelKm()));
-        nouvelKmField.setPromptText("Nouvel Km");
-        TextArea description = new TextArea(revision.getDescription());
-        description.setPromptText("Description");
-        DatePicker datePickerUpdateEnd= new DatePicker(LocalDate.parse(revision.getStartDate()));
-        datePickerUpdateEnd.setPromptText("End Date");
-        Button btnOk = new Button("OK");
-        btnOk.getStyleClass().add("button6");
-        Button btnCancel = new Button("Cancel");
-        btnOk.setOnAction(okEvent -> {
-            System.out.println("here");
-            try {
-                System.out.println("out");
-                System.out.println(currentRevision.getType());
-                Response updateRevisionResponse = target
-                        .path("revision")
-                        .path("update")
-                        .path(String.valueOf(revision.getId()))
-                        .queryParam("ancienKm", currentRevision.getAncienKm())
-                        .queryParam("nouvelKm", nouvelKmField.getText())
-                        .queryParam("dateDebut", currentRevision.getStartDate())
-                        .queryParam("dateSortie", datePickerUpdateEnd.getValue())
-                        .queryParam("description", description.getText())
-                        .queryParam("typeRevision", currentRevision.getType())
-                        .request(MediaType.APPLICATION_JSON_TYPE)
-                        .put(Entity.json("Hello"));
-                System.out.println("yo");
-                System.out.println(updateRevisionResponse);
-                if(updateRevisionResponse.getStatus() == 200) {
-                    System.out.println("Successfully updated Revision");
-                    tblRevisions.getItems().remove(revision);
-                    revision.setNouvelKm(Integer.parseInt(nouvelKmField.getText()));
-                    revision.setEndDate(datePickerUpdateEnd.getValue().toString());
-                    revision.setDescription((description.getText()));
-                    revision.setNouvelEtat("F");
-                    tblRevisions.getItems().add(currentIndex, revision);
-                    tblRevisions.refresh();
+        Platform.runLater(() -> {
+            Stage stage = new Stage();
+            VBox vbox = new VBox();
+            Scene scene = new Scene(vbox, 400, 600);
+            scene.getStylesheets().add("stylesheet.css");
+            stage.setScene(scene);
+            Label lbl = new Label("Finir revision");
+            lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
+            vbox.setSpacing(10);
+            // create fields for the other attributes
+            TextField nouvelKmField = new TextField(String.valueOf(currentRevision.getNouvelKm()));
+            nouvelKmField.setPromptText("Nouvel Km");
+            TextArea description = new TextArea(currentRevision.getDescription());
+            description.setPromptText("Description");
+            DatePicker datePickerUpdateEnd= new DatePicker(LocalDate.parse(currentRevision.getStartDate()));
+            datePickerUpdateEnd.setPromptText("End Date");
+            datePickerUpdateEnd.setDayCellFactory(this::disableSpecificDates);
+            datePickerUpdateEnd.setDayCellFactory(picker -> new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    if(date.isBefore(LocalDate.parse(currentRevision.getStartDate()))){
+                        setDisable(true);
+                        setStyle("-fx-background-color: red;");
+                    }
+
+                }});
+            // Custom DayCellFactory to disable specific dates
+
+            Button btnOk = new Button("OK");
+            btnOk.getStyleClass().add("button6");
+            Button btnCancel = new Button("Cancel");
+            btnOk.setOnAction(okEvent -> {
+                try {
+                    Response updateRevisionResponse = target
+                            .path("revision")
+                            .path("update")
+                            .path(String.valueOf(currentRevision.getId()))
+                            .queryParam("ancienKm", currentRevision.getAncienKm())
+                            .queryParam("nouvelKm", nouvelKmField.getText())
+                            .queryParam("dateDebut", currentRevision.getStartDate())
+                            .queryParam("dateSortie", datePickerUpdateEnd.getValue())
+                            .queryParam("description", description.getText())
+                            .queryParam("typeRevision", currentRevision.getType())
+                            .request(MediaType.APPLICATION_JSON_TYPE)
+                            .put(Entity.json("Hello"));
+                    if(updateRevisionResponse.getStatus() == 200) {
+                        currentRevision.setNouvelKm(Integer.parseInt(nouvelKmField.getText()));
+                        currentRevision.setEndDate(datePickerUpdateEnd.getValue().toString());
+                        currentRevision.setDescription((description.getText()));
+                        currentRevision.setNouvelEtat("F");
+                        tblRevisions.refresh();
+                    }
+                    if(datePickerUpdateEnd.getValue().isEqual(LocalDate.now())) {
+                        btnUpdate.setOnAction(this::onUpdateClick);
+                        btnUpdate.setStyle("-fx-background-color: green");
+                    }
+                    else{
+                        hBox.getChildren().removeAll(datePicker, btnUpdate, chBoxTypeRevision);
+                        String lblStatusRevision = currentRevision.getType().equals("S")
+                                ?
+                                "Revision Simple en cours"
+                                : currentRevision.getType().equals("CD")
+                                ?
+                                "Revision Courte Durée en cours"
+                                : "Revision Longue Durée en cours";
+                        hBox.getChildren().add(new Label(lblStatusRevision));
+                    }
+                    okEvent.consume();
+                    stage.close();
+                } catch (Exception e) {
+                    //System.out.println(e.getMessage());
                 }
-                //Update afficherLivraison
-                okEvent.consume();
+            });
+            btnCancel.setOnAction(cancelEvent-> {
+                cancelEvent.consume();
                 stage.close();
-            } catch (Exception e) {
-                //System.out.println(e.getMessage());
+            });
+
+            // add the fields to the dialog
+            GridPane grid = new GridPane();
+            grid.getStyleClass().add("grid");
+            grid.setHgap(20);
+            grid.setVgap(20);
+            grid.add(new Label("Nouvel Km:"), 0, 0);
+            grid.add(nouvelKmField, 1, 0);
+            grid.add(new Label("End Date:"), 0, 1);
+            grid.add(datePickerUpdateEnd, 1, 1);
+            grid.add(new Label("Description:"), 0, 2);
+            grid.add(description, 1, 2);
+            grid.add(btnOk, 0, 3);
+            grid.add(btnCancel, 1, 3);
+            grid.setStyle("-fx-padding: 10 40 10 40;-fx-background-radius: 10; -fx-background-color:  linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)");
+
+            vbox.getChildren().addAll(lbl, grid);
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setStyle("-fx-background-color:  rgb(240,240,255)");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        });}
+    private DateCell disableSpecificDates(DatePicker datePicker) {
+        return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                // Disable specific dates here
+                if (date.isBefore(LocalDate.parse(currentRevision.getStartDate()))){
+                    setDisable(true);
+                    setStyle("-fx-background-color: red;"); // Optional: Change the style of disabled dates
+                }
             }
-        });
-        btnCancel.setOnAction(cancelEvent-> {
-            cancelEvent.consume();
-            stage.close();
-        });
+        };
+    }
+    private DateCell disableSpecificDatesEdit(DatePicker datePicker) {
+        return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                // Disable specific dates here
+                if (date.isBefore(LocalDate.parse(selectedRevision.getStartDate()))){
+                    System.out.println("selected  " + selectedRevision.getStartDate());
+                    setDisable(true);
+                    setStyle("-fx-background-color: red;"); // Optional: Change the style of disabled dates
+                }
+            }
+        };
+    }
 
-        // add the fields to the dialog
-        GridPane grid = new GridPane();
-        grid.getStyleClass().add("grid");
-        grid.setHgap(20);
-        grid.setVgap(20);
-        grid.add(new Label("Nouvel Km:"), 0, 0);
-        grid.add(nouvelKmField, 1, 0);
-        grid.add(new Label("End Date:"), 0, 1);
-        grid.add(datePickerUpdateEnd, 1, 1);
-        grid.add(new Label("Description:"), 0, 2);
-        grid.add(description, 1, 2);
-        grid.add(btnOk, 0, 3);
-        grid.add(btnCancel, 1, 3);
-        grid.setStyle("-fx-padding: 10 40 10 40;-fx-background-radius: 10; -fx-background-color:  linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)");
-
-        vbox.getChildren().addAll(lbl, grid);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setStyle("-fx-background-color:  rgb(240,240,255)");
-        stage.show();
+    @FXML
+    private void onPredictClick(ActionEvent event){
+        double y = target.path("revision")
+                .path("predict_y")
+                .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get()
+                .readEntity(Double.class);
+        btnPredict.setText(String.valueOf(y));
     }
 }

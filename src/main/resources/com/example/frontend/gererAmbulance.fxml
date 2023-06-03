@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="586.0" prefWidth="1147.0" stylesheets="@../../../stylesheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.GererAmbulanceController">
+<AnchorPane prefHeight="586.0" prefWidth="1168.0" stylesheets="@../../../stylesheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.GererAmbulanceController">
    <children>
-      <TableView fx:id="tblRevisions" layoutX="25.0" layoutY="32.0" prefHeight="440.0" prefWidth="1106.0">
+      <TableView fx:id="tblRevisions" layoutX="25.0" layoutY="32.0" prefHeight="440.0" prefWidth="1131.0">
         <columns>
           <TableColumn fx:id="startDateCol" prefWidth="133.0" text="Date d'entrée" />
             <TableColumn fx:id="endDateCol" prefWidth="133.0" text="Date sortie" />
@@ -19,15 +19,16 @@
             <TableColumn fx:id="nouvelEtatCol" prefWidth="107.0" text="Nouvel état" />
             <TableColumn fx:id="ancienKmCol" prefWidth="107.0" text="Ancien Km" />
             <TableColumn fx:id="nouvelKmCol" prefWidth="107.0" text="Nouvel Km" />
-            <TableColumn fx:id="descriptionCol" prefWidth="197.0" text="Description" />
+            <TableColumn fx:id="descriptionCol" prefWidth="140.0" text="Description" />
         </columns>
       </TableView>
       <HBox fx:id="hBox" alignment="CENTER" layoutX="305.0" layoutY="495.0" prefHeight="66.0" prefWidth="487.0" spacing="20.0">
          <children>
             <ChoiceBox fx:id="chBoxTypeRevision" prefWidth="150.0" />
             <DatePicker fx:id="datePicker" prefHeight="36.0" prefWidth="179.0" />
-            <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#onUpdateClick" prefHeight="36.0" prefWidth="124.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Update" textAlignment="CENTER" />
+            <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#onUpdateClick" prefHeight="36.0" prefWidth="124.0" style="-fx-background-color: green;" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Update" textAlignment="CENTER" />
          </children>
       </HBox>
+      <Button fx:id="btnPredict" layoutX="25.0" layoutY="516.0" mnemonicParsing="false" onAction="#onPredictClick" prefHeight="25.0" prefWidth="84.0" text="Predict" />
    </children>
 </AnchorPane>

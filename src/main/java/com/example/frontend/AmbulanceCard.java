@@ -68,9 +68,9 @@ public class AmbulanceCard extends BorderPane {
 
         HBox bottom = new HBox();
         bottom.setAlignment(Pos.CENTER);
-        if (etatAmbulance.equals("Neuve")){bottom.getChildren().addAll(tresbien);}
-        else if (etatAmbulance.equals("Bien")){bottom.getChildren().addAll(bien);}
-        else if(etatAmbulance.equals("Endommagé")){bottom.getChildren().addAll(defectuex);}
+        if (etatAmbulance.equals("F")){bottom.getChildren().addAll(tresbien);}
+        else if (etatAmbulance.equals("NFCD")){bottom.getChildren().addAll(bien);}
+        else if(etatAmbulance.equals("NFLD")){bottom.getChildren().addAll(defectuex);}
         else {bottom.getChildren().addAll(enpanne);}
         this.setStyle("-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 20px;");
         this.topProperty().set(top);
