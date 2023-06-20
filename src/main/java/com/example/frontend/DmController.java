@@ -1318,7 +1318,7 @@ public class DmController implements Initializable {
 
         ObservableList<DetailLivraisonFX> data = FXCollections.observableArrayList(livraisonFx.getDetailLivraisonFXES());
         tableView.setItems(data);
-//        tableView.getStylesheets().add("expandedTable.css");
+        tableView.getStylesheets().add("expandedTable.css");
         tableView.setFixedCellSize(30);
         tableView.prefHeightProperty().bind(tableView.fixedCellSizeProperty().multiply(Bindings.size(tableView.getItems()).add(1.18)));
         tableView.minHeightProperty().bind(tableView.prefHeightProperty());

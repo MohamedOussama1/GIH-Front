@@ -36,6 +36,18 @@ public class Revision {
         this.type = type;
     }
 
+    public Revision(int id, String startDate, String endDate, String description, String ancienEtat, String nouvelEtat, int nouvelKm, int ancienKm, String type) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+        this.ancienEtat = ancienEtat;
+        this.nouvelEtat = nouvelEtat;
+        this.nouvelKm = nouvelKm;
+        this.ancienKm = ancienKm;
+        this.type = type;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

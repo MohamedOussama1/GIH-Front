@@ -12,9 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -29,15 +27,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.json.JSONObject;
 
-import java.awt.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GererAmbulanceController implements Initializable {
@@ -47,6 +42,7 @@ public class GererAmbulanceController implements Initializable {
     private static WebTarget target = client.target(Connextion_info.url);
     private static Revision currentRevision;
     private static Revision selectedRevision;
+    private static boolean isInRevision = false;
     @FXML
     Button btnPredict;
     @FXML
@@ -54,7 +50,7 @@ public class GererAmbulanceController implements Initializable {
     @FXML
     Button btnUpdate;
     @FXML
-    TableView<Revision> tblRevisions;
+    TableView<Revision> tblRevisions = new TableView<>();
     @FXML
     TableColumn startDateCol;
     @FXML
@@ -77,16 +73,16 @@ public class GererAmbulanceController implements Initializable {
 
     @FXML
     private TableColumn modifiercolumn = new TableColumn("modifier");
-    ObservableList<Revision> revisionItems = FXCollections.observableArrayList();
+    ObservableList<Revision> revisionItems = tblRevisions.getItems();
     @FXML
     DatePicker datePicker;
     @FXML
     HBox hBox;
+    LocalDate currentRevisionStartDate;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tblRevisions.setItems(revisionItems);
         chBoxTypeRevision.setItems(FXCollections.observableArrayList(
                 target
                         .path("revision")
@@ -110,21 +106,83 @@ public class GererAmbulanceController implements Initializable {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(List.class);
         populateRevisionTable(tblRevisions, revisionsAmbulance);
-        boolean isInRevision = false;
-        for (Revision revision : tblRevisions.getItems()){
-            if(revision.getEndDate() == null)
-                isInRevision = true;
-        }
-        if(!isInRevision) {
+        updateTblRevisions();
+//        for (Revision revision : tblRevisions.getItems()) {
+//            LocalDate startDate = LocalDate.parse(revision.getStartDate());
+//            LocalDate now = LocalDate.now();
+//            if (revision.getEndDate()==null){
+//                String lblStatusRevision;
+//                if (startDate.isBefore(now) || startDate.isEqual(now)){
+//                    lblStatusRevision = currentRevision.getType().equals("S")
+//                            ?
+//                            "Revision Simple en cours"
+//                            : currentRevision.getType().equals("CD")
+//                            ?
+//                            "Revision Courte Durée en cours"
+//                            : "Revision Longue Durée en cours";
+//                    hBox.getChildren().clear();
+//                    hBox.getChildren().add(new Label(lblStatusRevision));
+//                    currentRevision = revision;
+//                    isInRevision = true;
+//                }else{
+//                String dateDebut = startDate.toString();
+//                lblStatusRevision = currentRevision.getType().equals("S")
+//                        ?
+//                        "Revision Simple débute le " + dateDebut
+//                        : currentRevision.getType().equals("CD")
+//                        ?
+//                        "Revision Courte débute le " + dateDebut
+//                        : "Revision Longue Durée débute le " + dateDebut;
+//                hBox.getChildren().add(new Label(lblStatusRevision));
+//                currentRevision = revision;
+//                isInRevision = true;
+//                }
+//            }else {
+//                LocalDate endDate = LocalDate.parse(revision.getEndDate());
+//                if ((endDate.isAfter(now)) || (endDate.isEqual(now))) {
+//                    String lblStatusRevision;
+//                    if (startDate.isBefore(now) || startDate.isEqual(now)) {
+//                        lblStatusRevision = currentRevision.getType().equals("S")
+//                                ?
+//                                "Revision Simple en cours"
+//                                : currentRevision.getType().equals("CD")
+//                                ?
+//                                "Revision Courte Durée en cours"
+//                                : "Revision Longue Durée en cours";
+//                        isInRevision = true;
+//                    } else {
+//                        String dateDebut = startDate.toString();
+//                        lblStatusRevision = currentRevision.getType().equals("S")
+//                                ?
+//                                "Revision Simple débute le " + dateDebut
+//                                : currentRevision.getType().equals("CD")
+//                                ?
+//                                "Revision Courte débute le " + dateDebut
+//                                : "Revision Longue Durée débute le " + dateDebut;
+//                    isInRevision = true;
+//                    }
+//                    hBox.getChildren().clear();
+//                    hBox.getChildren().add(new Label(lblStatusRevision));
+//                    currentRevision = revision;
+//                }
+//            }
+
+//            if ((startDate.isBefore(now)) || (startDate.isEqual(now))) {
+//                if (endDate == null) {
+//                    btnUpdate.setOnAction(this::onEndRevisionClick);
+//                    btnUpdate.setText("Stop");
+//                    btnUpdate.setStyle("-fx-background-color: red");
+//                    hBox.getChildren().clear();
+//                    hBox.getChildren().add(btnUpdate);
+//                    currentRevision = revision;
+//                    isInRevision = true;
+//            }
+        if (!isInRevision) {
             btnUpdate.setOnAction(this::onUpdateClick);
             btnUpdate.setStyle("-fx-background-color: green");
-        }
-        else{
-            btnUpdate.setOnAction(this::onEndRevisionClick);
-            btnUpdate.setText("Stop");
-            btnUpdate.setStyle("-fx-background-color: red");
-            hBox.getChildren().remove(chBoxTypeRevision);
-           tblRevisions.refresh();
+            hBox.getChildren().clear();
+            datePicker.setDayCellFactory(this::disablePastDays);
+            hBox.getChildren().addAll(chBoxTypeRevision, datePicker, btnUpdate);
         }
         supprimercolumn.setCellFactory(column -> new TableCell<Revision, String>() {
             private Button btnsupprimer = new Button();
@@ -139,17 +197,6 @@ public class GererAmbulanceController implements Initializable {
                     btnsupprimer.setGraphic(new ImageView(new Image("delete.jpg", 20, 20, true, true)));
                     btnsupprimer.setStyle("-fx-background-color: transparent");
                     btnsupprimer.setOnAction(event -> {
-                        if (revision == currentRevision){
-                            btnUpdate.setOnAction(event1-> onUpdateClick(event1));
-                            btnUpdate.setStyle("-fx-background-color: green");
-                            btnUpdate.setText("Update");
-                            hBox.getChildren().remove(0);
-                            hBox.getChildren().add(0,chBoxTypeRevision);
-                            if(!hBox.getChildren().contains(btnUpdate))
-                                hBox.getChildren().add(btnUpdate);
-                        }else{
-
-                        }
                         int id = revision.getId();
                         Response response = target
                                 .path("revision")
@@ -157,9 +204,19 @@ public class GererAmbulanceController implements Initializable {
                                 .request(MediaType.APPLICATION_JSON_TYPE)
                                 .method("DELETE");
                         response.close();
-                        if (response.getStatus() == 200)
+                        if (response.getStatus() == 200){
                             System.out.println("Successfully deleted Revision");
-                        revisionItems.remove(revision);
+                            tblRevisions.getItems().remove(revision);
+                            tblRevisions.refresh();
+                            if (revision == currentRevision){
+                                btnUpdate.setOnAction(event1-> onUpdateClick(event1));
+                                btnUpdate.setStyle("-fx-background-color: green");
+                                btnUpdate.setText("Update");
+                                datePicker.setDayCellFactory(new GererAmbulanceController()::disablePastDays);
+                                hBox.getChildren().clear();
+                                hBox.getChildren().addAll(chBoxTypeRevision, datePicker, btnUpdate);
+                            }
+                        }
                     });
                     setGraphic(btnsupprimer);
                 }
@@ -309,34 +366,101 @@ public class GererAmbulanceController implements Initializable {
         tblRevisions.getColumns().add(modifiercolumn);
         tblRevisions.getColumns().add(supprimercolumn);
     }
+   public void updateTblRevisions() {
+       for (Revision revision : tblRevisions.getItems()) {
+           LocalDate startDate = LocalDate.parse(revision.getStartDate());
+           LocalDate now = LocalDate.now();
+           if (revision.getEndDate() == null) {
+               String lblStatusRevision;
+               currentRevision = revision;
+               isInRevision = true;
+               if (startDate.isBefore(now) || startDate.isEqual(now)) {
+                   lblStatusRevision = currentRevision.getType().equals("S")
+                           ?
+                           "Revision Simple en cours"
+                           : currentRevision.getType().equals("CD")
+                           ?
+                           "Revision Courte Durée en cours"
+                           : "Revision Longue Durée en cours";
+                   btnUpdate.setOnAction(this::onEndRevisionClick);
+                   btnUpdate.setText("Stop");
+                   btnUpdate.setStyle("-fx-background-color: red");
+                   datePicker.setDayCellFactory(this::disableSpecificDates);
+                   hBox.getChildren().clear();
+                   hBox.getChildren().addAll(new Label(lblStatusRevision), btnUpdate);
+               } else {
+                   String dateDebut = startDate.toString();
+                   lblStatusRevision = currentRevision.getType().equals("S")
+                           ?
+                           "Revision Simple débute le " + dateDebut
+                           : currentRevision.getType().equals("CD")
+                           ?
+                           "Revision Courte débute le " + dateDebut
+                           : "Revision Longue Durée débute le " + dateDebut;
+                   hBox.getChildren().clear();
+                   hBox.getChildren().add(new Label(lblStatusRevision));
+               }
+           } else {
+               LocalDate endDate = LocalDate.parse(revision.getEndDate());
+               if ((endDate.isAfter(now)) || (endDate.isEqual(now))) {
+                   String lblStatusRevision;
+                   isInRevision = true;
+                   currentRevision = revision;
+                   if (startDate.isBefore(now) || startDate.isEqual(now)) {
+                       lblStatusRevision = currentRevision.getType().equals("S")
+                               ?
+                               "Revision Simple en cours"
+                               : currentRevision.getType().equals("CD")
+                               ?
+                               "Revision Courte Durée en cours"
+                               : "Revision Longue Durée en cours";
+                   } else {
+                       String dateDebut = startDate.toString();
+                       lblStatusRevision = currentRevision.getType().equals("S")
+                               ?
+                               "Revision Simple débute le " + dateDebut
+                               : currentRevision.getType().equals("CD")
+                               ?
+                               "Revision Courte débute le " + dateDebut
+                               : "Revision Longue Durée débute le " + dateDebut;
+                   }
+                   hBox.getChildren().clear();
+                   hBox.getChildren().add(new Label(lblStatusRevision));
+               }
+           }
+       }
+   }
     private void populateRevisionTable(TableView<Revision> tableRevisions, List<String> jsonRevisions){
         for (String  rev: jsonRevisions){
             JSONObject revision = new JSONObject(rev);
+            tableRevisions.getItems().clear();
+            String endDate = null;
+            String description = null;
+            String nouvelEtat = null;
+            try{
+                endDate = revision.getString("endDate");
+                description = revision.getString("description");
+                nouvelEtat = revision.getString("nouvelEtat");
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
             tableRevisions.getItems().add(
                     new Revision(
                             revision.getInt("id"),
                             revision.getString("startDate"),
-                            revision.getString("nomEtat"),
+                            endDate,
+                            description,
+                            revision.getString("ancienEtat"),
+                            nouvelEtat,
+                            revision.getInt("nouvelKm"),
                             revision.getJSONObject("ambulance").getInt("km"),
                             revision.getString("typeRevision")
                     )
             );
         }
-        tableRevisions.refresh();
     }
     @FXML
     private void onUpdateClick(ActionEvent event){
-            for(Revision revision : revisionItems) {
-                if (    LocalDate.parse(revision.getStartDate()).isBefore(datePicker.getValue())
-                        &&
-                        LocalDate.parse(revision.getEndDate()).isAfter(datePicker.getValue())
-                ){
-                    String failMessage = "Une révision existe déjà dans la date choisie";
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, failMessage);
-                    alert.showAndWait();
-                    return;
-                }
-            }
             target
                     .path("revision")
                     .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
@@ -351,19 +475,15 @@ public class GererAmbulanceController implements Initializable {
                     AmbulanceCard.selectedAmbulanceKm,
                     chBoxTypeRevision.getValue()
             ));
-                    tblRevisions.setItems(revisionItems);
+            updateTblRevisions();
         boolean isInRevision = false;
-        for (Revision revision : tblRevisions.getItems()){
-            if (!(LocalDate.now().isBefore(datePicker.getValue()))){
-                isInRevision = true;
-                currentRevision = revision;
-            }
-        }
         if(isInRevision) {
             btnUpdate.setOnAction(this::onEndRevisionClick);
             btnUpdate.setText("Stop");
             btnUpdate.setStyle("-fx-background-color: red");
-            hBox.getChildren().remove(chBoxTypeRevision);
+            hBox.getChildren().clear();
+            datePicker.setDayCellFactory(this::disableSpecificDates);
+            hBox.getChildren().addAll(chBoxTypeRevision, datePicker, btnUpdate);
             tblRevisions.refresh();
         }
     }
@@ -415,28 +535,14 @@ public class GererAmbulanceController implements Initializable {
                             .queryParam("typeRevision", currentRevision.getType())
                             .request(MediaType.APPLICATION_JSON_TYPE)
                             .put(Entity.json("Hello"));
-                    if(updateRevisionResponse.getStatus() == 200) {
+//                    if(updateRevisionResponse.getStatus() == 200) {
                         currentRevision.setNouvelKm(Integer.parseInt(nouvelKmField.getText()));
-                        currentRevision.setEndDate(datePickerUpdateEnd.getValue().toString());
+                        currentRevision.setEndDate(datePickerUpdateEnd.getValue().plusDays(1).toString());
                         currentRevision.setDescription((description.getText()));
                         currentRevision.setNouvelEtat("F");
                         tblRevisions.refresh();
-                    }
-                    if(datePickerUpdateEnd.getValue().isEqual(LocalDate.now())) {
-                        btnUpdate.setOnAction(this::onUpdateClick);
-                        btnUpdate.setStyle("-fx-background-color: green");
-                    }
-                    else{
-                        hBox.getChildren().removeAll(datePicker, btnUpdate, chBoxTypeRevision);
-                        String lblStatusRevision = currentRevision.getType().equals("S")
-                                ?
-                                "Revision Simple en cours"
-                                : currentRevision.getType().equals("CD")
-                                ?
-                                "Revision Courte Durée en cours"
-                                : "Revision Longue Durée en cours";
-                        hBox.getChildren().add(new Label(lblStatusRevision));
-                    }
+//                    }
+                    hBox.getChildren().remove(btnUpdate);
                     okEvent.consume();
                     stage.close();
                 } catch (Exception e) {
@@ -475,28 +581,26 @@ public class GererAmbulanceController implements Initializable {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 // Disable specific dates here
-                if (date.isBefore(LocalDate.parse(currentRevision.getStartDate()))){
+                if ((date.isBefore(currentRevisionStartDate)) || (date.isEqual(currentRevisionStartDate))){
                     setDisable(true);
                     setStyle("-fx-background-color: red;"); // Optional: Change the style of disabled dates
                 }
             }
         };
     }
-    private DateCell disableSpecificDatesEdit(DatePicker datePicker) {
+    private DateCell disablePastDays(DatePicker datePicker) {
         return new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 // Disable specific dates here
-                if (date.isBefore(LocalDate.parse(selectedRevision.getStartDate()))){
-                    System.out.println("selected  " + selectedRevision.getStartDate());
+                if ((date.isBefore(LocalDate.now()))){
                     setDisable(true);
                     setStyle("-fx-background-color: red;"); // Optional: Change the style of disabled dates
                 }
             }
         };
     }
-
     @FXML
     private void onPredictClick(ActionEvent event){
         double y = target.path("revision")

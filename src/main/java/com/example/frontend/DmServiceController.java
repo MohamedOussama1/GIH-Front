@@ -33,7 +33,7 @@ import java.util.ResourceBundle;
 
 public class DmServiceController implements Initializable {
     @FXML
-    ChoiceBox<String> chBoxEtatDemande;
+    ChoiceBox<String> chBoxEtatDemande = new ChoiceBox<>();
 
     private Client client = ClientBuilder.newClient().register(JacksonFeature.class);
 

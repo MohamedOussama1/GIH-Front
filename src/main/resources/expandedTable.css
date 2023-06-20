@@ -1,6 +1,6 @@
 /* TableView styling */
 .table-view {
-linear-gradient(to bottom right, #3f51b5, #2196f3)
+    -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3)
 }
 .table-view .column-header-background .label{
     -fx-text-fill: white;

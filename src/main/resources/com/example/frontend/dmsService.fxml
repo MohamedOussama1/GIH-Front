@@ -14,7 +14,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.DmServiceController">
    <children>
       <TabPane prefHeight="760.0" prefWidth="996.0" stylesheets="@../../../stylesheet.css" tabClosingPolicy="UNAVAILABLE">
@@ -30,69 +29,86 @@
                            </children>
                         </VBox>
                         <Text layoutX="146.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <TabPane prefHeight="707.0" prefWidth="996.0" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane fx:id="tabPaneDemandes" prefHeight="707.0" prefWidth="996.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <tabs>
-                              <Tab text="créer demande">
+                              <Tab fx:id="tabCréerDemandes" text="Créer Demandes">
                                  <content>
                                     <AnchorPane maxHeight="721.0" minHeight="619.0" minWidth="0.0" prefHeight="639.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);" stylesheets="@../../../stylesheet.css">
                                        <children>
-                                          <HBox alignment="CENTER_RIGHT" layoutX="256.0" layoutY="561.0" prefHeight="30.0" prefWidth="584.0" spacing="40.0">
+                                          <HBox alignment="CENTER" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="598.0" prefWidth="996.0" spacing="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                              <children>
-                                                <Button fx:id="btnDeleteDemandeDm" mnemonicParsing="false" onAction="#onDeleteDetailDemandeDm" prefHeight="27.0" prefWidth="29.0" styleClass="bi-trash-fill" stylesheets="@../../../stylesheet.css" textFill="WHITE" />
-                                                <Button fx:id="btnConfirmDemandeDm" mnemonicParsing="false" onAction="#onConfirmDemandeDm" prefHeight="30.0" prefWidth="31.0" styleClass="check-circle-fill" stylesheets="@../../../stylesheet.css" textFill="WHITE">
-                                                   <font>
-                                                      <Font size="12.0" />
-                                                   </font>
-                                                </Button>
+                                                <AnchorPane prefHeight="608.0" prefWidth="248.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" cache="true" prefHeight="532.0" prefWidth="235.0" spacing="20.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10;">
+                                                         <children>
+                                                            <Label layoutX="99.0" layoutY="72.0" style="-fx-text-fill: white;" styleClass="label1" text="Service :">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ChoiceBox fx:id="chBoxService" layoutX="35.0" layoutY="199.0" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
+                                                            <Label style="-fx-text-fill: white;" styleClass="label1" text="Type :">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ChoiceBox fx:id="chBoxTypeDm" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
+                                                            <Label style="-fx-text-fill: white;" styleClass="label1" text="Nom :">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ChoiceBox fx:id="chBoxNomDm" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
+                                                            <Label layoutX="58.0" layoutY="310.0" style="-fx-text-fill: white;" styleClass="label1" text="Quantité :">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Spinner fx:id="spinnerQuantityDm" prefHeight="42.0" prefWidth="186.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <Button fx:id="btnAddDemandeDm" layoutX="29.0" layoutY="542.0" mnemonicParsing="false" onAction="#onAjouterDetailDemandeDm" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Ajouter" textFill="WHITE" />
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane prefHeight="605.0" prefWidth="544.0">
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" layoutX="75.0" layoutY="542.0" prefHeight="56.0" prefWidth="417.0" spacing="40.0">
+                                                         <children>
+                                                            <Button fx:id="btnDeleteDemandeDm" mnemonicParsing="false" onAction="#onDeleteDetailDemandeDm" prefHeight="27.0" prefWidth="29.0" styleClass="bi-trash-fill" stylesheets="@../../../stylesheet.css" textFill="WHITE" />
+                                                            <Button fx:id="btnConfirmDemandeDm" mnemonicParsing="false" onAction="#onConfirmDemandeDm" prefHeight="30.0" prefWidth="31.0" styleClass="check-circle-fill" stylesheets="@../../../stylesheet.css" textFill="WHITE">
+                                                               <font>
+                                                                  <Font size="12.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </children>
+                                                      </HBox>
+                                                      <TableView fx:id="tblViewAddDetailDemandeDm" cache="true" layoutX="57.0" layoutY="2.0" maxHeight="540.0" maxWidth="610.0" prefHeight="540.0" prefWidth="435.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10;">
+                                                         <columns>
+                                                            <TableColumn fx:id="typeDmColumn" prefWidth="159.0" text="Type " />
+                                                            <TableColumn fx:id="nomDmColumn" prefWidth="161.0" text="Nom" />
+                                                            <TableColumn fx:id="qteDmColumn" minWidth="9.0" prefWidth="127.0" text="Quantité" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
                                              </children>
                                           </HBox>
-                                          <VBox alignment="CENTER" layoutX="157.0" layoutY="87.0" prefHeight="391.0" prefWidth="235.0" spacing="20.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10;">
-                                             <children>
-                                                <Label style="-fx-text-fill: white;" styleClass="label1" text="Type :">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="chBoxTypeDm" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
-                                                <Label style="-fx-text-fill: white;" styleClass="label1" text="Nom :">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="chBoxNomDm" prefHeight="26.0" prefWidth="186.0" styleClass="choice-box-medical" stylesheets="@../../../stylesheet.css" />
-                                                <Label layoutX="58.0" layoutY="310.0" style="-fx-text-fill: white;" styleClass="label1" text="Quantité :">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </Label>
-                                                <Spinner fx:id="spinnerQuantityDm" styleClass="choice-box" />
-                                             </children>
-                                          </VBox>
-                                          <TableView fx:id="tblViewAddDetailDemandeDm" layoutX="474.0" layoutY="16.0" maxHeight="534.0" maxWidth="610.0" prefHeight="532.0" prefWidth="366.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-background-radius: 10;">
-                                             <columns>
-                                                <TableColumn fx:id="typeDmColumn" prefWidth="124.0" text="Type " />
-                                                <TableColumn fx:id="nomDmColumn" prefWidth="124.0" text="Nom" />
-                                                <TableColumn fx:id="qteDmColumn" prefWidth="113.0" text="Quantité" />
-                                             </columns>
-                                          </TableView>
-                                          <Button fx:id="btnAddDemandeDm" layoutX="194.0" layoutY="505.0" mnemonicParsing="false" onAction="#onAjouterDetailDemandeDm" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Ajouter" textFill="WHITE" />
                                        </children>
                                     </AnchorPane>
                                  </content>
                               </Tab>
-                              <Tab text="afficher demandes">
+                              <Tab fx:id="tabAfficherDemandes" text="Afficher Demandes">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="645.0" prefWidth="996.0" style="-fx-background-color: rgb(240,240,255);">
                                        <children>
-                                          <Button fx:id="btnAfficherDemandesDm" layoutX="426.0" layoutY="22.0" mnemonicParsing="false" onAction="#onAfficherDemandesDm" prefHeight="43.0" prefWidth="177.0" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Afficher Demandes" textFill="WHITE" />
-                                          <TableView fx:id="afficherDemandesTableView" layoutX="249.0" layoutY="95.0" maxHeight="532.0" maxWidth="864.0" prefHeight="532.0" prefWidth="339.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;" stylesheets="@../../../stylesheet.css">
+                                          <TableView fx:id="afficherDemandesTableView1" cache="true" layoutX="249.0" layoutY="63.0" maxHeight="532.0" maxWidth="864.0" prefHeight="532.0" prefWidth="499.0" style="-fx-background-color: linear-gradient(to bottom right, #3f51b5, #2196f3); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-radius: 10;" stylesheets="@../../../stylesheet.css">
                                              <columns>
-                                                <TableColumn fx:id="idCol" prefWidth="61.0" text="Id" />
-                                                <TableColumn fx:id="dateDebutCol" prefWidth="153.0" text="Date Debut" />
-                                                <TableColumn fx:id="etatDemandeCol" prefWidth="97.0" text="Etat " />
+                                                <TableColumn fx:id="idCol1" prefWidth="69.0" text="Id" />
+                                                <TableColumn fx:id="serviceCol1" prefWidth="110.0" text="Service" />
+                                                <TableColumn fx:id="dateDebutCol1" prefWidth="133.0" text="Date Debut" />
+                                                <TableColumn fx:id="etatDemandeCol1" prefWidth="147.0" text="Etat Demande" />
                                              </columns>
                                           </TableView>
-                                          <ChoiceBox fx:id="chBoxEtatDemande" layoutX="249.0" layoutY="25.0" prefWidth="150.0" />
                                        </children>
                                     </AnchorPane>
                                  </content>
@@ -101,6 +117,11 @@
                         </TabPane>
                      </children>
                   </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tab_affecter_dm" text="Affecter Dm">
+               <content>
+                  <AnchorPane fx:id="anchorpane_affecter_dm" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
          </tabs>
