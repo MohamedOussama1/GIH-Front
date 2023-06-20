@@ -31,7 +31,9 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,7 +43,6 @@ public class GererAmbulanceController implements Initializable {
 
     private static WebTarget target = client.target(Connextion_info.url);
     private static Revision currentRevision;
-    private static Revision selectedRevision;
     private static boolean isInRevision = false;
     @FXML
     Button btnPredict;
@@ -78,6 +79,8 @@ public class GererAmbulanceController implements Initializable {
     DatePicker datePicker;
     @FXML
     HBox hBox;
+    @FXML
+    HBox hBoxPredict;
     LocalDate currentRevisionStartDate;
 
 
@@ -107,76 +110,6 @@ public class GererAmbulanceController implements Initializable {
                 .get(List.class);
         populateRevisionTable(tblRevisions, revisionsAmbulance);
         updateTblRevisions();
-//        for (Revision revision : tblRevisions.getItems()) {
-//            LocalDate startDate = LocalDate.parse(revision.getStartDate());
-//            LocalDate now = LocalDate.now();
-//            if (revision.getEndDate()==null){
-//                String lblStatusRevision;
-//                if (startDate.isBefore(now) || startDate.isEqual(now)){
-//                    lblStatusRevision = currentRevision.getType().equals("S")
-//                            ?
-//                            "Revision Simple en cours"
-//                            : currentRevision.getType().equals("CD")
-//                            ?
-//                            "Revision Courte Durée en cours"
-//                            : "Revision Longue Durée en cours";
-//                    hBox.getChildren().clear();
-//                    hBox.getChildren().add(new Label(lblStatusRevision));
-//                    currentRevision = revision;
-//                    isInRevision = true;
-//                }else{
-//                String dateDebut = startDate.toString();
-//                lblStatusRevision = currentRevision.getType().equals("S")
-//                        ?
-//                        "Revision Simple débute le " + dateDebut
-//                        : currentRevision.getType().equals("CD")
-//                        ?
-//                        "Revision Courte débute le " + dateDebut
-//                        : "Revision Longue Durée débute le " + dateDebut;
-//                hBox.getChildren().add(new Label(lblStatusRevision));
-//                currentRevision = revision;
-//                isInRevision = true;
-//                }
-//            }else {
-//                LocalDate endDate = LocalDate.parse(revision.getEndDate());
-//                if ((endDate.isAfter(now)) || (endDate.isEqual(now))) {
-//                    String lblStatusRevision;
-//                    if (startDate.isBefore(now) || startDate.isEqual(now)) {
-//                        lblStatusRevision = currentRevision.getType().equals("S")
-//                                ?
-//                                "Revision Simple en cours"
-//                                : currentRevision.getType().equals("CD")
-//                                ?
-//                                "Revision Courte Durée en cours"
-//                                : "Revision Longue Durée en cours";
-//                        isInRevision = true;
-//                    } else {
-//                        String dateDebut = startDate.toString();
-//                        lblStatusRevision = currentRevision.getType().equals("S")
-//                                ?
-//                                "Revision Simple débute le " + dateDebut
-//                                : currentRevision.getType().equals("CD")
-//                                ?
-//                                "Revision Courte débute le " + dateDebut
-//                                : "Revision Longue Durée débute le " + dateDebut;
-//                    isInRevision = true;
-//                    }
-//                    hBox.getChildren().clear();
-//                    hBox.getChildren().add(new Label(lblStatusRevision));
-//                    currentRevision = revision;
-//                }
-//            }
-
-//            if ((startDate.isBefore(now)) || (startDate.isEqual(now))) {
-//                if (endDate == null) {
-//                    btnUpdate.setOnAction(this::onEndRevisionClick);
-//                    btnUpdate.setText("Stop");
-//                    btnUpdate.setStyle("-fx-background-color: red");
-//                    hBox.getChildren().clear();
-//                    hBox.getChildren().add(btnUpdate);
-//                    currentRevision = revision;
-//                    isInRevision = true;
-//            }
         if (!isInRevision) {
             btnUpdate.setOnAction(this::onUpdateClick);
             btnUpdate.setStyle("-fx-background-color: green");
@@ -198,6 +131,7 @@ public class GererAmbulanceController implements Initializable {
                     btnsupprimer.setStyle("-fx-background-color: transparent");
                     btnsupprimer.setOnAction(event -> {
                         int id = revision.getId();
+                        System.out.println(id);
                         Response response = target
                                 .path("revision")
                                 .queryParam("revisionId", id)
@@ -206,8 +140,9 @@ public class GererAmbulanceController implements Initializable {
                         response.close();
                         if (response.getStatus() == 200){
                             System.out.println("Successfully deleted Revision");
-                            tblRevisions.getItems().remove(revision);
-                            tblRevisions.refresh();
+                            ObservableList<Revision> revisions = getTableView().getItems();
+                            revisions.remove(revision);
+                            tblRevisions.setItems(revisions);
                             if (revision == currentRevision){
                                 btnUpdate.setOnAction(event1-> onUpdateClick(event1));
                                 btnUpdate.setStyle("-fx-background-color: green");
@@ -215,6 +150,8 @@ public class GererAmbulanceController implements Initializable {
                                 datePicker.setDayCellFactory(new GererAmbulanceController()::disablePastDays);
                                 hBox.getChildren().clear();
                                 hBox.getChildren().addAll(chBoxTypeRevision, datePicker, btnUpdate);
+                                hBoxPredict.getChildren().clear();
+                                hBoxPredict.getChildren().add(btnPredict);
                             }
                         }
                     });
@@ -234,14 +171,13 @@ public class GererAmbulanceController implements Initializable {
                     setGraphic(null);
                 } else {
                     Revision revision = getTableView().getItems().get(getIndex());
-                    selectedRevision = revision;
                     Stage stage = new Stage();
                     VBox vbox = new VBox();
                     Scene scene = new Scene(vbox, 800, 600);
                     scene.getStylesheets().add("stylesheet.css");
                     stage.setScene(scene);
                     Label lbl = new Label("Modifier Revision");
-                    lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
+                    lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 15");
                     vbox.setSpacing(10);
                     // create fields for the other attributes
                     TextField ancienKmField = new TextField(String.valueOf(revision.getAncienKm()));
@@ -306,6 +242,7 @@ public class GererAmbulanceController implements Initializable {
                                 revision.setEndDate(datePickerUpdateEnd.getValue().toString());
                                 revision.setDescription((description.getText()));
                                 getTableView().refresh();
+                                updateTblRevisions();
                             }
                             //Update afficherLivraison
                             event.consume();
@@ -387,7 +324,9 @@ public class GererAmbulanceController implements Initializable {
                    btnUpdate.setStyle("-fx-background-color: red");
                    datePicker.setDayCellFactory(this::disableSpecificDates);
                    hBox.getChildren().clear();
-                   hBox.getChildren().addAll(new Label(lblStatusRevision), btnUpdate);
+                   Label label = new Label(lblStatusRevision);
+                   label.setStyle("-fx-font-weight: bold; -fx-font-size: 15; -fx-font-family: 'Arial Black'");
+                   hBox.getChildren().addAll(label, btnUpdate);
                } else {
                    String dateDebut = startDate.toString();
                    lblStatusRevision = currentRevision.getType().equals("S")
@@ -398,7 +337,9 @@ public class GererAmbulanceController implements Initializable {
                            "Revision Courte débute le " + dateDebut
                            : "Revision Longue Durée débute le " + dateDebut;
                    hBox.getChildren().clear();
-                   hBox.getChildren().add(new Label(lblStatusRevision));
+                   Label label = new Label(lblStatusRevision);
+                   label.setStyle("-fx-font-weight: bold; -fx-font-size: 15; -fx-font-family: 'Arial Black'");
+                   hBox.getChildren().add(label);
                }
            } else {
                LocalDate endDate = LocalDate.parse(revision.getEndDate());
@@ -425,7 +366,9 @@ public class GererAmbulanceController implements Initializable {
                                : "Revision Longue Durée débute le " + dateDebut;
                    }
                    hBox.getChildren().clear();
-                   hBox.getChildren().add(new Label(lblStatusRevision));
+                   Label label = new Label(lblStatusRevision);
+                   label.setStyle("-fx-font-weight: bold; -fx-font-size: 15; -fx-font-family: 'Arial Black'");
+                   hBox.getChildren().add(label);
                }
            }
        }
@@ -433,7 +376,6 @@ public class GererAmbulanceController implements Initializable {
     private void populateRevisionTable(TableView<Revision> tableRevisions, List<String> jsonRevisions){
         for (String  rev: jsonRevisions){
             JSONObject revision = new JSONObject(rev);
-            tableRevisions.getItems().clear();
             String endDate = null;
             String description = null;
             String nouvelEtat = null;
@@ -457,24 +399,30 @@ public class GererAmbulanceController implements Initializable {
                             revision.getString("typeRevision")
                     )
             );
+            tableRevisions.refresh();
         }
     }
     @FXML
     private void onUpdateClick(ActionEvent event){
-            target
+            int id = target
                     .path("revision")
                     .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
                     .queryParam("dateDebut", datePicker.getValue())
                     .queryParam("typeRevision",  chBoxTypeRevision.getValue())
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.json("Hello"));
-            revisionItems.add(new Revision(
-                    revisionItems.size() + 1,
-                    datePicker.getValue().toString(),
-                    AmbulanceCard.selectedAmbulanceEtat,
-                    AmbulanceCard.selectedAmbulanceKm,
-                    chBoxTypeRevision.getValue()
-            ));
+                    .post(Entity.json("Hello"))
+                    .readEntity(Integer.class);
+            ObservableList<Revision> revisions = tblRevisions.getItems();
+            Revision revision = new Revision(
+                id,
+                datePicker.getValue().toString(),
+                AmbulanceCard.selectedAmbulanceEtat,
+                AmbulanceCard.selectedAmbulanceKm,
+                chBoxTypeRevision.getValue()
+                );
+            revisions.add(revision);
+            revisionItems.add(revision);
+            tblRevisions.setItems(revisions);
             updateTblRevisions();
         boolean isInRevision = false;
         if(isInRevision) {
@@ -486,6 +434,7 @@ public class GererAmbulanceController implements Initializable {
             hBox.getChildren().addAll(chBoxTypeRevision, datePicker, btnUpdate);
             tblRevisions.refresh();
         }
+        id+=1;
     }
     @FXML
     private void onEndRevisionClick(ActionEvent event){
@@ -496,7 +445,7 @@ public class GererAmbulanceController implements Initializable {
             scene.getStylesheets().add("stylesheet.css");
             stage.setScene(scene);
             Label lbl = new Label("Finir revision");
-            lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
+            lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 15");
             vbox.setSpacing(10);
             // create fields for the other attributes
             TextField nouvelKmField = new TextField(String.valueOf(currentRevision.getNouvelKm()));
@@ -603,12 +552,32 @@ public class GererAmbulanceController implements Initializable {
     }
     @FXML
     private void onPredictClick(ActionEvent event){
-        double y = target.path("revision")
+        if (isInRevision){
+        Double y = target.path("revision")
                 .path("predict_y")
                 .queryParam("immatriculation", AmbulanceCard.selectedAmbulanceImmatriculation)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get()
                 .readEntity(Double.class);
-        btnPredict.setText(String.valueOf(y));
+        Double dobl = y - ChronoUnit.DAYS.between(LocalDate.parse(currentRevision.getStartDate()), LocalDate.now());
+        dobl = dobl >= 0 ? dobl : 0;
+        int inter = dobl.intValue();
+        String text = "Il reste " + inter + " jours avant la fin de la révision";
+        Label label = new Label(text);
+        label.setStyle("-fx-font-weight: bold; -fx-font-size: 15; -fx-font-family: 'Arial Black'");
+        hBoxPredict.getChildren().clear();
+        hBoxPredict.getChildren().add(label);
+    }else{
+        String etat = currentRevision.getAncienEtat();
+        String text = etat.equals("F")
+                ? "Il reste " + (200 - ChronoUnit.DAYS.between(LocalDate.parse(currentRevision.getStartDate()), LocalDate.now())) + " jours pour la prochaine revision"
+                : etat.equals("NFCD")
+                ? "Il reste " + (130 - ChronoUnit.DAYS.between(LocalDate.parse(currentRevision.getStartDate()), LocalDate.now())) + " jours pour la prochaine revision"
+                : "Il reste " + (130 - ChronoUnit.DAYS.between(LocalDate.parse(currentRevision.getStartDate()), LocalDate.now())) + " jours pour la prochaine revision";
+        Label label = new Label(text);
+        label.setStyle("-fx-font-weight: bold; -fx-font-size: 15; -fx-font-family: 'Arial Black'");
+        hBoxPredict.getChildren().clear();
+        hBoxPredict.getChildren().add(label);
+        }
     }
 }

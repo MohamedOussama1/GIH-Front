@@ -29,6 +29,10 @@
             <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#onUpdateClick" prefHeight="36.0" prefWidth="124.0" style="-fx-background-color: green;" styleClass="button6" stylesheets="@../../../stylesheet.css" text="Update" textAlignment="CENTER" />
          </children>
       </HBox>
-      <Button fx:id="btnPredict" layoutX="25.0" layoutY="516.0" mnemonicParsing="false" onAction="#onPredictClick" prefHeight="25.0" prefWidth="84.0" text="Predict" />
+      <HBox fx:id="hBoxPredict" layoutX="17.899999618530273" layoutY="509.8999938964844">
+         <children>
+            <Button fx:id="btnPredict" mnemonicParsing="false" onAction="#onPredictClick" text="Predict" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
